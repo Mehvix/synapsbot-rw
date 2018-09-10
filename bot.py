@@ -2,37 +2,28 @@
 # -*- coding: utf-8 -*-
 
 """
-TODO Items to rewrite/add logging to
-• curtime
-• settings
+# TODO Files that are not updated that aren't in use
+• music
 
+# TODO Files that are being updated now
+• admin
 
-TODO New Commands
-• Cool down
-• Hearthstone cards (import hearthstone)
-• Give XP for voice channel usage
-• Remind me in x minutes
-• GUI
-• logging
-• seeb server
-• music bot
-• twitter bot (leaks)
-• slots
-• poker
-• minesweeper
-• who has max level/karma
-• nickname filter
-• black jack
-• .dog
-• .copypasta (from r/copypasta)
-• clever bot
-• stats
-• update help command(s)
-• .aidan
-• .aj
-• https://i.redd.it/4iklecheyw601.jpg
-• hearthstone stats
+# TODO Files that are updated and in use (finished!)
+• basic.py
+• bot.py (duh)
+• canvas.py # TODO doesnt send message when user doenst format correctly
+• poll
+• forwarding
+• karma
+• zalgo
+• typeracer
+• notifications
+• verified
+
 """
+
+import curtime
+import settings
 
 import os
 import sys
@@ -41,17 +32,15 @@ import time
 import random
 import asyncio
 import aiohttp
-import curtime
 import discord
 import datetime
-import settings
 import numpy as np
 from discord.ext import commands
 
-'''
-Make sure to change this to either 'test' or 'main'
-'''
-settings.set_server("test")
+# Cogs being used
+extensions = ['accept', 'admin', 'basic', 'canvas', 'createpoll', 'forwarding', 'karma', 'typeracer', 'notifications', 'verified']
+
+settings.set_server("main")  # make sure this is test or main
 
 
 # Resets uptime settings
@@ -62,14 +51,11 @@ days = 0
 
 ban_message = 0
 
-# Cogs being used
-extensions = []  #'admin', 'karma', 'basic', 'notifications', 'verified', 'createpoll', 'music', 'forwarding', 'typeracer', 'canvas'
-
 
 # Defines Client
-client = commands.Bot(description="synapsBot", command_prefix='.')
-
-aiosession = aiohttp.ClientSession(loop=client.loop)
+client = commands.Bot(description="synapsBot",
+                      command_prefix='.',
+                      owner_id="196355904503939073")
 
 
 def get_json(file_path):
@@ -93,13 +79,13 @@ async def timer():
         if seconds == 60:
             seconds = 0
             minutes += 1
-            file_name = os.path.basename(sys.argv[0])  # Gets file name
+            dirpath = os.getcwd()
             r = random.randint(1, 3)
             if r == 1:
                 await client.change_presence(game=discord.Game(name="Live for {0}".format(curtime.uptime()),
                                                                url="https://twitch.tv/mehvix", type=1))
             if r == 2:
-                await client.change_presence(game=discord.Game(name="Version {}".format(file_name[10:-3]),
+                await client.change_presence(game=discord.Game(name="Version {}".format(os.path.basename(dirpath)),
                                                                url="https://twitch.tv/mehvix", type=1))
             if r == 3:
                 await client.change_presence(
@@ -121,6 +107,11 @@ async def timer():
 
 
 @client.event
+async def on_connect():
+    print("Connected!")
+
+
+@client.event
 async def on_ready():
     users = len(set(client.get_all_members()))
     channels = len([c for c in client.get_all_channels()])
@@ -134,15 +125,16 @@ async def on_ready():
         await client.change_presence(game=discord.Game(name="Created by Mehvix#7172", url="https://twitch.tv/mehvix",
                                                        type=1))
     server_list = list(client.guilds)
+    dirpath = os.getcwd()
 
-    print("============================================================")
-    print("                                      ____        __")
-    print("   _______  ______  ____  ____  _____/ __ )____  / /_")
-    print("  / ___/ / / / __ \/ __ \/ __ \/ ___/ /_/ / __ \/ __/")
-    print(" /__  / /_/ / / / / /_/ / /_/ /__  / /_/ / /_/ / /_")
-    print("/____/\__  /_/ /_/\___,/ ____/____/_____/\____/\__/")
-    print("     /____/           /_/\n")
-    print("• Bot Version:               {}".format("Rewrite"))  # TODO make this based of file locatino (folder this is in
+    print("=========================================================================")
+    print("                                      ____        __  ____ _       __")
+    print("   _______  ______  ____ _____  _____/ __ )____  / /_/ __ \ |     / /")
+    print("  / ___/ / / / __ \/ __ `/ __ \/ ___/ __  / __ \/ __/ /_/ / | /| / /")
+    print(" (__  ) /_/ / / / / /_/ / /_/ (__  ) /_/ / /_/ / /_/ _, _/| |/ |/ /")
+    print("/____/\__, /_/ /_/\__,_/ .___/____/_____/\____/\__/_/ |_| |__/|__/")
+    print("     /____/           /_/")
+    print("• Bot Version:               {}".format(os.path.basename(dirpath)))
     print("• Discord Version:           {}".format(discord.__version__))
     print("• Python Version:            {}".format(sys.version.split()[0]))
     print("• Client Version:            {}".format(settings.get_version()))
@@ -154,7 +146,7 @@ async def on_ready():
     print("• Connected to " + str(len(client.guilds)) + " server(s):")
     for x in range(len(server_list)):
         print("     > " + server_list[x - 1].name)
-    print("============================================================")
+    print("=========================================================================")
 
 
 @client.event
@@ -162,72 +154,22 @@ async def on_resumed():
     print("{}: Resumed".format(curtime.get_time()))
 
 
+# TODO Fix this
+"""
 @client.event
-async def on_message(message):
-    times = 1
-
-    # Message author variables
-    user_id = message.author.id
-    user_name = message.author
-
-    # ".Accept" code
-    if message.server:
-        if message.channel.id == settings.accept_channel:
-            role = discord.utils.get(message.server.roles, name=settings.member_role_name)
-            if settings.member_role_id not in [role.id for role in message.author.roles]:
-                if message.content.upper().startswith(".ACCEPT"):
-                    await client.add_roles(user_name, role)
-                    await asyncio.sleep(1)
-                    await client.delete_message(message)
-                    await client.send_message(discord.Object(id=settings.notification_channel),
-                                              "<@{}> is now a Member :ok_hand:".format(user_id))
-                    print("{0}: {1} joined the server (.accept)".format(curtime.get_time(), user_name))
-
-                if message.content == '':
-                    pass  # discord sends a embed message and this should pass it
-                else:
-                    await asyncio.sleep(.1)
-                    try:
-                        await client.delete_message(message)
-                        print("{0}: DIDN'T type '.accept'".format(curtime.get_time(), user_name))
-                    except discord.NotFound:  # If user types .accept it already deletes the message
-                        pass
-        else:
-            pass
-    else:
-        return
-
-    if message.content.upper().startswith("BAD BOT"):
-        await client.send_message(message.channel, "Bad human")
-
-    if message.content.upper().startswith("GIT "):
-        word = message.content.split(" ")
-        await client.send_message(message.channel, "`git: '{}' is not a git command. See 'git --help'.`".format(
-            word[1]))
-
-    if message.content.upper().startswith(".PING"):
-        print("{0}: {1} activated 'PING".format(curtime.get_time(), user_name))
-        msg = await client.send_message(message.channel, "Pinging...")
-
-        start = time.time()
-        async with aiosession.get("https://discordapp.com"):
-            duration = time.time() - start
-        duration = round(duration * 1000)
-        await client.edit_message(msg, "I have a ping of `{}` ms (`1` try)".format(duration))
-        ping = [duration]
-        print(duration)
-
-        while times < 5:
-            start = time.time()
-            async with aiosession.get("https://discordapp.com"):
-                duration = time.time() - start
-            duration = round(duration * 1000)
-            print(duration)
-            ping.append(duration)
-            print(ping)
-            mean = np.mean(ping)
-            await client.edit_message(msg, "I have a ping of `{}` ms (`{}` / `4` tries)".format(mean, times))
-            times += 1
+async def on_command_error(error, ctx):
+    if isinstance(error, commands.NoPrivateMessage):
+        await ctx.send('This command cannot be used in private messages.')
+    elif isinstance(error, commands.DisabledCommand):
+        await ctx.message.author.send('Sorry. This command is disabled and cannot be used.')
+    elif isinstance(error, commands.CheckFailure):
+        await ctx.message.author.send('Sorry. You dont have permission to use this command.')
+    elif isinstance(error, commands.MissingRequiredArgument):
+        command = ctx.message.content.split()[1]
+        await ctx.send("Missing an argument: " + command)
+    elif isinstance(error, commands.CommandNotFound):
+        await ctx.send("I don't know that command")
+"""
 
 
 @client.command()

@@ -34,7 +34,7 @@ def uptime():
     else:
         up_second = d.second
 
-    return "{}:{}:{}:{} / Days:Hours:Minutes:Seconds".format(up_day, up_hour, up_minute, up_second)
+    return "{}:{}:{}:{} (Days:Hours:Minutes:Seconds)".format(up_day, up_hour, up_minute, up_second)
 
 
 def get_time():

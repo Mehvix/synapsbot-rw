@@ -5,9 +5,14 @@ import os
 import sys
 import time
 import json
+import random
 import discord
 import logging
 import subprocess
+
+
+def random_clock():
+    return random.choice(["🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚", "🕛"])
 
 
 def get_json(file_path):
@@ -35,20 +40,20 @@ def set_server(server):
         token = jsontoken.get("test")
         upvote_emoji = ":upvote:414204250642579488"
         downvote_emoji = ":downvote:414204250948894721"
-        notification_channel = 414974032048553984
+        notification_channel = 414197286596247556
         member_role_id = 414683704737267712
-        member_role_name = "Member ðŸ”¸"
+        member_role_name = "Member 🔸"
         shut_up_role = 414237651504332800
-        admin_role_name = "Admin ðŸ’ "
+        admin_role_name = "Admin 💠"
         admin_role_id = 439175903600181269
-        verified_role_name = "Verified ðŸ”°"
+        verified_role_name = "Verified 🔰"
         verified_role_id = 439191092991229992
         pokemon_channel = 439198154324181002
         mute_role_id = 445059188973109259
         mute_role_name = "Text Muted"
         server_name = "test"
-        accept_channel = None
-        canvas_channel = 484772795687895041
+        accept_channel = 414974032048553984
+        canvas_channel = 486702610745917460
         return
     if server == "main":
         print("Using MAIN account")
@@ -58,11 +63,11 @@ def set_server(server):
         downvote_emoji = ":downvote:412119802904313858"
         notification_channel = 412075980094570506
         member_role_id = 312693233329373194
-        member_role_name = "Member ðŸ”¸"
-        admin_role_name = "Admin ðŸ’ "
+        member_role_name = "Member 🔸"
+        admin_role_name = "Admin 💠"
         admin_role_id = 266701171002048513
         shut_up_role = 414245504537591810
-        verified_role_name = "Verified ðŸ”°"
+        verified_role_name = "Verified 🔰"
         verified_role_id = 366739104203014145
         pokemon_channel = 439198154324181002
         mute_role_id = 363900817805148160
@@ -70,5 +75,6 @@ def set_server(server):
         server_name = "main"
         accept_channel = 356456207185215491
         canvas_channel = 482084251702132746
+
     else:
         sys.exit("No Server (main/test)")
