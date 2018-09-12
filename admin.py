@@ -146,6 +146,23 @@ class Admin:
         await ctx.send("Set `{}`'s nick to `{}`".format(nick_target.name, nickname))
         await nick_target.edit(nick=nickname)
 
+    @client.command()
+    @commands.has_role(settings.admin_role_name)
+    async def load(self, extension_name: str):
+        try:
+            client.load_extension(extension_name)
+            print("LOADED {}".format(extension_name))
+        except (AttributeError, ImportError) as error:
+            await print("```py\n{}: {}\n```".format(type(error).__name__, str(error)))
+            return
+        print("{} loaded.".format(extension_name))
+
+    @client.command()
+    @commands.has_role(settings.admin_role_name)
+    async def unload(self, extension_name: str):
+        client.unload_extension(extension_name)
+        print("{} unloaded.".format(extension_name))
+
 
 def setup(client):
     client.add_cog(Admin(client))
