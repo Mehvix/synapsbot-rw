@@ -22,7 +22,7 @@ class Basic:
 
     @client.command()
     async def ping(self, ctx):
-        await ctx.send("I have a latency of `{}` seconds".format(self.client.latency))
+        await ctx.send("I have a latency of `{}` ms".format(str(float(self.client.latency)*1000)[:2]))
 
     @client.event
     async def on_message(self, message):
