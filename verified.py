@@ -298,8 +298,8 @@ class Verified:
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
-    async def society(self, ctx):
-        search = "https://www.reddit.com/r/coaxedintoasnafu/GamersRiseUp/.json?limit=1"
+    async def hmmm(self, ctx):
+        search = "https://www.reddit.com/r/coaxedintoasnafu/hmmm/.json?limit=1"
         c = 0
         while c != 1:
             async with aiohttp.ClientSession() as session:
@@ -457,15 +457,6 @@ class Verified:
 
         karma.user_add_karma(ctx.message.author.id, -amount)
 
-        rolling_message = await ctx.message.channel.send("Spinning")
-        await asyncio.sleep(.1)
-        await rolling_message.edit(content="Spinning.")
-        await asyncio.sleep(.1)
-        await rolling_message.edit(content="Spinning..")
-        await asyncio.sleep(.1)
-        await rolling_message.edit(content="Spinning...")
-        await asyncio.sleep(.1)
-        await rolling_message.delete()
 
         spin = random.randint(0, 36)
 
@@ -507,6 +498,60 @@ class Verified:
         lower = [item.lower() for item in banned_words]
 
         await ctx.message.channel.send("**Banned Words List:** \n• {}".format("\n• ".join(lower)))
+
+    @client.command()
+    @commands.has_role(settings.verified_role_name)
+    async def jpeg(self, ctx, *args):
+        pass
+
+    @client.command()
+    @commands.has_role(settings.verified_role_name)
+    async def leaderboard(self, ctx, *type):
+        type = " ".join(type)
+        with open("users.json") as fp:
+            karma = json.load(fp)
+
+        if "level" in type.lower():
+            type_new = "level"
+            word = "is"
+        else:
+            type_new = "karma"
+            word = "has"
+
+        karma_leaderboard = sorted(karma, key=lambda x: karma[x].get(type_new, 0), reverse=True)
+        msg = ''
+        for number, user in enumerate(karma_leaderboard):
+            msg += '`{}`. {} {} `{}` {} \n'.format(number + 1,
+                                             karma[user]['name'],
+                                             word,
+                                             karma[user].get(type_new, 0),
+                                             type_new)
+        await ctx.send(msg)
+
+    @client.command()
+    @commands.has_role(settings.verified_role_name)
+    async def invites(self, ctx):
+        server = ctx.message.guild
+        active_invites = await server.invites()
+
+        revoked_invites = ['~~{0.code}: `{0.channel}` created by `{0.inviter}`~~ '.format(x) for x in active_invites if
+                           x.revoked]
+        unlimited_invites = ['[`{0.code}`]({0.url}): `{0.channel}` created by `{0.inviter}`'.format(x) for x in
+                             active_invites if x.max_age == 0 and x not in revoked_invites]
+        limited_invites = ['[`{0.code}`]({0.url}): `{0.channel}` created by `{0.inviter}`'.format(x) for x in
+                           active_invites if x.max_age != 0 and x not in revoked_invites]
+
+        embed = discord.Embed(title='__Invite links for {0.name}__'.format(server),
+                              color=ctx.message.author.color)
+        if unlimited_invites:
+            embed.add_field(name='Unlimited Invites ({})'.format(len(unlimited_invites)),
+                            value='\n'.join(unlimited_invites[:5]))
+        if limited_invites:
+            embed.add_field(name='Temporary/Finite Invites ({})'.format(len(limited_invites)),
+                            value='\n'.join(limited_invites))
+        if revoked_invites:
+            embed.add_field(name='Revoked Invites ({})'.format(len(revoked_invites)), value='\n'.join(revoked_invites))
+        await ctx.send(embed=embed)
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
