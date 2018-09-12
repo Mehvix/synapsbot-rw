@@ -279,8 +279,6 @@ class Canvas:
                 with open('canvas.json', 'w') as fp:
                     json.dump(content, fp, sort_keys=True, indent=4)
 
-    async def on_message(self, message):  # this looks stupid, but otherwise when a user mistypes something it won't get deleted.
-        if message.channel.id == settings.canvas_channel:
             if message.author.id != self.client.user.id:
                 await asyncio.sleep(1)
                 await message.delete()
