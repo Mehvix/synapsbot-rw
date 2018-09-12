@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-import re
+import re # eeeeeeeeee
 import sys
 import json
 import discord
@@ -20,75 +20,28 @@ class Karma:
     print("Loading Karma...")
 
     @client.event
-    async def on_raw_reaction_add(self, reaction, user):  # TODO make this shit work
-        emoji_used = str(reaction.emoji)
-        formated_up = "<{}>".format(settings.upvote_emoji)
-        formated_down = "<{}>".format(settings.downvote_emoji)
+    async def on_reaction_add(self, reaction, user):
+        upvote = "<{}>".format(settings.upvote_emoji)
+        downvote = "<{}>".format(settings.downvote_emoji)
 
-        print("{0}: {1} reacted with {2} to {3}'s message"
-              .format(curtime.get_time(), user, emoji_used, reaction.message.author))
-
-        if reaction.message.channel.id != settings.pokemon_channel:
-            if emoji_used == formated_up:  # If emote is the upvote emote
-                if reaction.message.author.id == user.id:
-                    print("{0}: {1} upvoted there own link. NO CHANGE".format(curtime.get_time(), user))
-                else:
-                    try:
-                        user_add_karma(reaction.message.author.id, 5)
-                        print("{0}: ADDED 5 karma to {1} for a UPVOTE from {2}"
-                              .format(curtime.get_time(), reaction.message.author, user))
-                    except AttributeError:
-                        print("{0}: User doesn't exist! (Probably a webhook)".format(curtime.get_time()))
-
-            # If emote is the downvote emote
-            if emoji_used == formated_down:
-                if reaction.message.author.id == user.id:
-                    print("{0}: {1} downvoted there post. NO CHANGE"
-                          .format(curtime.get_time(), user))
-                else:
-                    try:
-                        user_add_karma(reaction.message.author.id, -5)
-                        print("{0}: REMOVED 5 karma from {1} for a DOWNVOTE from {2}"
-                              .format(curtime.get_time(), reaction.message.author, user))
-                    except AttributeError:
-                        print("{0}: User doesn't exist! (Probably a webhook)".format(curtime.get_time()))
-        else:
-            print("{0}: DIDN'T change {1}'s karma because they're in the Pokemon Channel!"
-                  .format(curtime.get_time(), user))
+        if str(reaction.emoji) == upvote or downvote:
+            if user != reaction.message.author:
+                if str(reaction.emoji) == upvote:
+                    user_add_karma(reaction.message.author.id, 5)
+                if str(reaction.emoji) == downvote:
+                    user_add_karma(reaction.message.author.id, -5)
 
     @client.event
-    async def on_raw_reaction_remove(self, reaction, user):
-        emoji_used = str(reaction.emoji)
-        formated_up = "<{}>".format(settings.upvote_emoji)
-        formated_down = "<{}>".format(settings.downvote_emoji)
+    async def on_reaction_remove(self, reaction, user):
+        upvote = "<{}>".format(settings.upvote_emoji)
+        downvote = "<{}>".format(settings.downvote_emoji)
 
-        if reaction.message.channel.id != settings.pokemon_channel:
-            if emoji_used == formated_up:
-                if reaction.message.author.id == user.id:
-                    print("{0}: {1} REMOVED their upvote to their post. NO CHANGE".format(curtime.get_time(), user.id))
-                else:
-                    try:
-                        user_add_karma(reaction.message.author.id, -5)
-                        print("{0}: REMOVED 5 karma from {0} because {1} REMOVED there UPVOTE"
-                              .format(curtime.get_time(), reaction.message.author, user))
-                    except AttributeError:
-                        print("{0}: User doesn't exist! (Probably a webhook)".format(curtime.get_time()))
-
-            # If emote is the downvote emote
-            if emoji_used == formated_down:
-                if reaction.message.author.id == user.id:
-                    print("{0}: {1} REMOVED their downvote to there own link. NO CHANGE".format(curtime.get_time(),
-                                                                                                user))
-                else:
-                    try:
-                        user_add_karma(reaction.message.author.id, 5)
-                        print("{0}: RE-ADDED 5 karma to {1} for removal of downvote reaction from {2}"
-                              .format(curtime.get_time(), reaction.message.author, user))
-                    except AttributeError:
-                        print("{0}: User doesn't exist! (Probably a webhook)".format(curtime.get_time()))
-        else:
-            print("{0}: DIDN'T change {1}'s karma because it was in the Pokemon Channel!"
-                  .format(curtime.get_time(), user))
+        if str(reaction.emoji) == upvote or downvote:
+            if user != reaction.message.author:
+                if str(reaction.emoji) == upvote:
+                    user_add_karma(reaction.message.author.id, -5)
+                if str(reaction.emoji) == downvote:
+                    user_add_karma(reaction.message.author.id, 5)
 
     @client.command()
     async def karma(self, ctx, *args):
@@ -125,6 +78,8 @@ class Karma:
         # Message author variables
         user_id = message.author.id
         user_name = message.author
+
+        set_name(message.author.id, str(message.author.name).replace('"', "'"))
 
         try:
             author_level = get_level(user_id)
@@ -222,6 +177,16 @@ def set_level(user_id: int, level: int):
         with open('users.json', 'r') as fp:
             users = json.load(fp)
         users[user_id]["level"] = level
+        with open('users.json', 'w') as fp:
+            json.dump(users, fp, sort_keys=True, indent=4)
+
+
+def set_name(user_id: str, name: str):
+    user_id = str(user_id)
+    if os.path.isfile('users.json'):
+        with open('users.json', 'r') as fp:
+            users = json.load(fp)
+        users[user_id]["name"] = name
         with open('users.json', 'w') as fp:
             json.dump(users, fp, sort_keys=True, indent=4)
 
