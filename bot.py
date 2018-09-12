@@ -4,9 +4,9 @@
 """
 # TODO Files that are not updated that aren't in use
 • music
+• make on_message_edit catch banned words
 
 # TODO Files that are being updated now
-• admin
 
 # TODO Files that are updated and in use (finished!)
 • basic.py
@@ -19,6 +19,7 @@
 • typeracer
 • notifications
 • verified
+• admin
 
 """
 
@@ -170,23 +171,6 @@ async def on_command_error(error, ctx):
     elif isinstance(error, commands.CommandNotFound):
         await ctx.send("I don't know that command")
 """
-
-
-@client.command()
-async def load(extension_name: str):
-    try:
-        client.load_extension(extension_name)
-        print("LOADED {}".format(extension_name))
-    except (AttributeError, ImportError) as error:
-        await print("```py\n{}: {}\n```".format(type(error).__name__, str(error)))
-        return
-    print("{} loaded.".format(extension_name))
-
-
-@client.command()
-async def unload(extension_name: str):
-    client.unload_extension(extension_name)
-    print("{} unloaded.".format(extension_name))
 
 
 if __name__ == "__main__":
