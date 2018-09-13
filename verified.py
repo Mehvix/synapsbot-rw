@@ -197,7 +197,7 @@ class Verified:
                     if r.status == 200:
                         result = await r.json()
                         if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
-                                result[0]['data']['children'][0]['data']['pinned'] == "false":
+                                result[0]['data']['children'][0]['data']['pinned'] == "true":
                             print("Post was automodpost, skipping")
                             pass
                         else:
@@ -235,7 +235,7 @@ class Verified:
                     if r.status == 200:
                         result = await r.json()
                         if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
-                                result[0]['data']['children'][0]['data']['pinned'] == "false":
+                                result[0]['data']['children'][0]['data']['pinned'] == "true":
                             print("Post was automodpost, skipping")
                             pass
                         else:
@@ -273,7 +273,7 @@ class Verified:
                     if r.status == 200:
                         result = await r.json()
                         if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
-                                result[0]['data']['children'][0]['data']['pinned'] == "false":
+                                result[0]['data']['children'][0]['data']['pinned'] == "true":
                             print("Post was automodpost, skipping")
                             pass
                         else:
@@ -303,18 +303,17 @@ class Verified:
     @client.command()
     @commands.has_role(settings.verified_role_name)
     async def hmmm(self, ctx):
-        search = "https://www.reddit.com/r/coaxedintoasnafu/hmmm/.json?limit=1"
+        search = "https://www.reddit.com/r/hmmm/random/.json?limit=1"
         c = 0
         while c != 1:
             async with aiohttp.ClientSession() as session:
                 async with session.get(search) as r:
-                    if r.status == 200:
-                        result = await r.json()
-                        if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
-                                result[0]['data']['children'][0]['data']['pinned'] == "false":
-                            print("Post was automodpost, skipping")
-                            pass
-                        else:
+                    result = await r.json()
+                    if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
+                            result[0]['data']['children'][0]['data']['pinned'] == "true":
+                        print("Post was automodpost, skipping")
+                        pass
+                    else:
                             c = 1
         if 'v.redd.it' in result[0]['data']['children'][0]['data']['url']:
             desc = "This posts contains a video that was uploaded via Reddit, so it can only be seen if you go to the " \
