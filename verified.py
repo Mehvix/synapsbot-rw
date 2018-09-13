@@ -27,7 +27,6 @@ class Verified:
     print("Loading Verified...")
 
     # TODO make these verified only
-    # TODO 8ball command
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
@@ -152,6 +151,11 @@ class Verified:
         em.set_thumbnail(url=ctx.message.guild.icon_url)
         em.set_author(name="\u200b")
         await ctx.message.channel.send(embed=em)
+
+    @client.command()
+    @commands.has_role(settings.verified_role_name)
+    async def oujia(self, ctx):
+        pass
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
@@ -558,7 +562,7 @@ class Verified:
     async def insult(self, ctx, user: discord.Member):
         insults = settings.get_json("insults.json")
 
-        if user == self.client.user.id:
+        if user == self.client.user:
             await ctx.message.channel.send(
                 "How original. No one else had thought of trying to get the bot to insult itself. I applaud your "
                 "creativity. Yawn. Perhaps this is why you don't have friends. You don't add anything new to any "
