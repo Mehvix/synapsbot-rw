@@ -79,8 +79,6 @@ class Karma:
         user_id = message.author.id
         user_name = message.author
 
-        set_name(message.author.id, str(message.author.name).replace('"', "'"))
-
         try:
             author_level = get_level(user_id)
             author_karma = get_karma(user_id)
@@ -131,6 +129,8 @@ class Karma:
 
             await message.author.remove_roles(old_level_role)
 
+        set_name(message.author.id, str(message.author.name).replace('"', "'"))
+
 
 def user_add_karma(user_id: int, karma: int):
     user_id = str(user_id)
@@ -141,7 +141,7 @@ def user_add_karma(user_id: int, karma: int):
             users[user_id]['karma'] += karma
             with open('users.json', 'w') as fp:
                 json.dump(users, fp, sort_keys=True, indent=4)
-        except KeyError:
+        except (TypeError, KeyError):
             try:
                 with open('users.json', 'r') as fp:
                     users = json.load(fp)
@@ -184,11 +184,18 @@ def set_level(user_id: int, level: int):
 def set_name(user_id: str, name: str):
     user_id = str(user_id)
     if os.path.isfile('users.json'):
-        with open('users.json', 'r') as fp:
-            users = json.load(fp)
-        users[user_id]["name"] = name
-        with open('users.json', 'w') as fp:
-            json.dump(users, fp, sort_keys=True, indent=4)
+        try:
+            with open('users.json', 'r') as fp:
+                users = json.load(fp)
+            users[user_id]["name"] = name
+            with open('users.json', 'w') as fp:
+                json.dump(users, fp, sort_keys=True, indent=4)
+        except (TypeError, KeyError):
+            with open('users.json', 'r') as fp:
+                users = json.load(fp)
+            users[user_id] = user_id
+            with open('users.json', 'w') as fp:
+                json.dump(users, fp, sort_keys=True, indent=4)
 
 
 def get_level(user_id: int):
