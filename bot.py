@@ -2,25 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-# TODO Files that are not updated that aren't in use
-• music
-• make on_message_edit catch banned words
-
-# TODO Files that are being updated now
-
-# TODO Files that are updated and in use (finished!)
-• basic.py
-• bot.py (duh)
-• canvas.py # TODO doesnt send message when user doenst format correctly
-• poll
-• forwarding
-• karma
-• zalgo
-• typeracer
-• notifications
-• verified
-• admin
-
+# TODO and ideas can be moved to:
+https://trello.com/b/CQBT9vag/synapsbot
 """
 
 import curtime
@@ -116,15 +99,9 @@ async def on_connect():
 async def on_ready():
     users = len(set(client.get_all_members()))
     channels = len([c for c in client.get_all_channels()])
-    file_name = os.path.basename(sys.argv[0])  # Gets file name
 
-    r = random.randint(2, 3)
-    if r == 2:
-        await client.change_presence(game=discord.Game(name="Version {}".format(file_name[10:-3]),
-                                                       url="https://twitch.tv/mehvix", type=1))
-    if r == 3:
-        await client.change_presence(game=discord.Game(name="Created by Mehvix#7172", url="https://twitch.tv/mehvix",
-                                                       type=1))
+    await client.change_presence(game=discord.Game(name="Created by Mehvix#7172", url="https://twitch.tv/mehvix",
+                                                   type=1))
     server_list = list(client.guilds)
     dirpath = os.getcwd()
 
