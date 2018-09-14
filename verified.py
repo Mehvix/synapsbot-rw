@@ -154,11 +154,6 @@ class Verified:
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
-    async def oujia(self, ctx):
-        pass
-
-    @client.command()
-    @commands.has_role(settings.verified_role_name)
     async def emotes(self, ctx):
         emojis = [str(x) for x in ctx.message.guild.emojis]
         await ctx.message.channel.send(" ".join(emojis))
@@ -392,6 +387,40 @@ class Verified:
             await ctx.message.channel.send(invite.url)
         except TypeError:
             pass  #
+
+    @client.command()
+    @commands.has_role(settings.verified_role_name)
+    async def oujia(self, ctx, *question):
+        question = "".join(question)
+        if question != "":
+            outcomes = ["Odds aren't that good" "It is certain.", "It is decidedly so.", "Without a doubt.",
+                        "Yes - definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.",
+                        "Yes.", "Signs point to yes.", "Don't count on it.", "My reply is no.", "My sources say no",
+                        "Outlook not so good.", "Very doubtful."]
+            letters = list(string.printable)
+            choice = "".join(random.choices(outcomes))
+            nums = len(choice)
+            bleh = []
+            z = 0
+            position = 0
+
+            while z != nums:  # generate a str with same length as outcome with random characters
+                bleh.append("".join(random.choices(letters)))
+                z += 1
+
+            msg = await ctx.send("".join(bleh))
+            while position != nums:
+                times = 0
+                while times != 1:  # fake hardsolving
+                    bleh.insert(position, "".join(random.choices(letters)))
+                    bleh.pop(position + 1)
+                    times = random.randint(1, 2)  # this could be at '1,5' or high but discord rate limits are very restrictive
+                    await msg.edit(content="".join(bleh))
+                bleh.insert(position, str(choice)[position])
+                bleh.pop(position + 1)
+                position += 1
+        else:
+            await ctx.send("You need a question!")
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
