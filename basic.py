@@ -25,7 +25,8 @@ class Basic:
         info = await self.client.application_info()
         embed = discord.Embed(
             title="Info about {}:".format(info.name),
-            description="[Github](https://github.com/Mehvix/synapsBotRW)",
+            description="• [Github](https://github.com/Mehvix/synapsBotRW)\n"
+                        "• [Trello](https://trello.com/b/CQBT9vag/synapsbot)",
             color=settings.embed_color)
         embed.add_field(name="Creator:", value=info.owner, inline=True)
         embed.add_field(name="Python Version:", value=sys.version.split()[0], inline=True)
@@ -33,6 +34,10 @@ class Basic:
         embed.add_field(name="Client Version:", value=settings.get_version(), inline=True)
         embed.set_thumbnail(url=self.client.user.avatar_url)
         await ctx.send(embed=embed)
+
+    @client.command()
+    async def trello(self, ctx):
+        await ctx.send("Trello Link:\nhttps://trello.com/b/CQBT9vag/synapsbot")
 
     @client.command()
     async def ping(self, ctx):
