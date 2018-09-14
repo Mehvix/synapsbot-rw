@@ -21,17 +21,27 @@ class Admin:
     print("Loading Admin...")
 
     @client.event
+    async def on_message_edit(self, before, after):
+        banned_words = settings.get_json("banned_words.json")
+
+        if any(word in str(after.content).upper() for word in banned_words):
+            await before.author.send(
+                "NO POOPY DOOPY WORDSIES!1! THE HECKIN BOOPIN POOPIN DOOPIN PUPPER SUPPER LUPPER DOGGO "
+                "NIGGOS NOT LIEK IT!!! BRB HAVIN A ZOOMIE! XDDDLOLOELELALA \nYou can see what is banned "
+                "via the `.bannedwords` command.")
+
+            await after.delete()
+
+    @client.event
     async def on_message(self, message):
         banned_words = settings.get_json("banned_words.json")
 
         if any(word in str(message.content).upper() for word in banned_words):
-            try:
-                await message.author.send(
-                    "NO POOPY DOOPY WORDSIES!1! THE HECKIN BOOPIN POOPIN DOOPIN PUPPER SUPPER LUPPER DOGGO "
-                    "NIGGOS NOT LIEK IT!!! BRB HAVIN A ZOOMIE! XDDDLOLOELELALA \nYou can see what is banned "
-                    "via the `.bannedwords` command.")
-            except discord.Forbidden:
-                pass
+            await message.author.send(
+                "NO POOPY DOOPY WORDSIES!1! THE HECKIN BOOPIN POOPIN DOOPIN PUPPER SUPPER LUPPER DOGGO "
+                "NIGGOS NOT LIEK IT!!! BRB HAVIN A ZOOMIE! XDDDLOLOELELALA \nYou can see what is banned "
+                "via the `.bannedwords` command.")
+
             await message.delete()
 
     @client.event
