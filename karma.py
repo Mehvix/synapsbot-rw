@@ -75,6 +75,8 @@ class Karma:
 
     @client.event
     async def on_message(self, message):
+        if message.webhook_id:
+            return
         # Message author variables
         user_id = message.author.id
         user_name = message.author
