@@ -22,7 +22,8 @@ import numpy as np
 from discord.ext import commands
 
 # Cogs being used
-extensions = ['accept', 'admin', 'basic', 'canvas', 'createpoll', 'forwarding', 'karma', 'typeracer', 'notifications', 'verified']
+extensions = ['accept', 'admin', 'basic', 'canvas', 'createpoll', 'forwarding', 'karma', 'typeracer', 'notifications',
+              'verified', 'reddit']
 
 settings.set_server("main")  # make sure this is test or main
 
