@@ -39,7 +39,8 @@ ban_message = 0
 # Defines Client
 client = commands.Bot(description="synapsBot",
                       command_prefix='.',
-                      owner_id="196355904503939073")
+                      owner_id="196355904503939073",
+                      case_insensitive=False)
 
 
 def get_json(file_path):
