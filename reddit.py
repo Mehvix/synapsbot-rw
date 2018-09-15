@@ -18,7 +18,7 @@ class Reddit:
 
     @client.event
     async def on_message(self, message):
-        if "reddit.com/r/" and "http" in message.content:
+        if "http" and "reddit.com/r/" in message.content:
             url = [s for s in str(message.content).split(" ") if "reddit.com/r/" in s]
             url = str("".join(url)) + ".json?limit=1"
 
@@ -30,7 +30,7 @@ class Reddit:
             embed = discord.Embed(
                 title=str(result[0]['data']['children'][0]['data']['title'])[:256],
                 color=settings.embed_color, description="[View Post]({})\n[View Image/Link]({})\n {}".format(
-                    "https://old.reddit.com/" + str(result[0]['data']['children'][0]['data']['permalink']),
+                    "https://old.reddit.com" + str(result[0]['data']['children'][0]['data']['permalink']),
                     str(result[0]['data']['children'][0]['data']['url']),
                     str(result[0]['data']['children'][0]['data']['selftext'])[:1800]))
 

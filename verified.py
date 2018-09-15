@@ -199,7 +199,7 @@ class Verified:
             title=str(result[0]['data']['children'][0]['data']['title'])[:256],
             color=settings.embed_color,
             description="[View Post]({})\n {}".format(
-                "https://old.reddit.com/" + str(result[0]['data']['children'][0]['data']['permalink']),
+                "https://old.reddit.com" + str(result[0]['data']['children'][0]['data']['permalink']),
                 str(result[0]['data']['children'][0]['data']['selftext'])[:1800]))
 
         if len(result[0]['data']['children'][0]['data']['selftext']) > 1800:
@@ -227,7 +227,7 @@ class Verified:
         embed = discord.Embed(
             title=str(result[0]['data']['children'][0]['data']['title'])[:256],
             color=settings.embed_color, description="[View Post]({})\n {}".format(
-                'https://old.reddit.com/' + str(result[0]['data']['children'][0]['data']['permalink']),
+                'https://old.reddit.com' + str(result[0]['data']['children'][0]['data']['permalink']),
                 str(result[0]['data']['children'][0]['data']['selftext'])[:1800]))
 
         if 'v.redd.it' in result[0]['data']['children'][0]['data']['url']:
@@ -263,7 +263,7 @@ class Verified:
         embed = discord.Embed(
             title=str(result[0]['data']['children'][0]['data']['title'])[:256],
             color=settings.embed_color, description="[View Post]({})\n[View Image/Link]({})\n {}".format(
-                "https://old.reddit.com/" + str(result[0]['data']['children'][0]['data']['permalink']),
+                "https://old.reddit.com" + str(result[0]['data']['children'][0]['data']['permalink']),
                 str(result[0]['data']['children'][0]['data']['url']),
                 str(result[0]['data']['children'][0]['data']['selftext'])[:1800]))
 
@@ -300,7 +300,7 @@ class Verified:
         embed = discord.Embed(
             title=str(result[0]['data']['children'][0]['data']['title'])[:256],
             color=settings.embed_color, description="[View Post]({})\n[View Image/Link]({})\n {}".format(
-                "https://old.reddit.com/" + str(result[0]['data']['children'][0]['data']['permalink']),
+                "https://old.reddit.com" + str(result[0]['data']['children'][0]['data']['permalink']),
                 str(result[0]['data']['children'][0]['data']['url']),
                 str(result[0]['data']['children'][0]['data']['selftext'])[:1800]))
 
