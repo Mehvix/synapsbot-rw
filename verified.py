@@ -26,8 +26,6 @@ class Verified:
 
     print("Loading Verified...")
 
-    # TODO make these verified only
-
     @client.command()
     @commands.has_role(settings.verified_role_name)
     async def ud(self, ctx, *word: str):
@@ -61,8 +59,9 @@ class Verified:
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
-    async def zalgo(self, ctx, target):
-        intensity = {"up": 10, "mid": 10, "down": 10}
+    async def zalgo(self, ctx, *target):
+        target = " ".join(target)
+        intensity = {"up": 5, "mid": 5, "down": 5}
         await ctx.message.channel.send(zalgo.zalgo(target, intensity))
 
     @client.command()
@@ -125,7 +124,6 @@ class Verified:
             if str(i.status) == "online" or str(i.status) == "idle" or str(i.status) == "dnd":
                 online += 1
 
-        # TODO Use this later for .banlist
         ban_list = await ctx.message.guild.bans()
         user = [user for user in ban_list]
 
@@ -161,7 +159,7 @@ class Verified:
     @client.command()
     @commands.has_role(settings.verified_role_name)
     async def beta(self, ctx):
-        user = self.client.get_user(196355904503939073)  # TODO replace these with stuff from bot token
+        user = self.client.get_user(196355904503939073)
         user.send("Hey <@!196355904503939073>, <@{}> wants beta access.\nType `.allow` to send them an invite".format(
             ctx.author.id))
 
@@ -353,8 +351,8 @@ class Verified:
         embed.add_field(name="User Custom Name:", value=user.nick)
         embed.add_field(name="User Role Color:", value=user.color)
 
-        #profile = await self.client.get_user_profile(user.id)
-        #print(profile.premium)
+        # profile = await self.client.get_user_profile(user.id)
+        # print(profile.premium)
 
         embed.add_field(name="User Role Color:", value=user.color)
         if len(user.roles) > 1:  # TIL @everyone is a role that is assigned to everyone but hidden
@@ -380,13 +378,10 @@ class Verified:
     @client.command()
     @commands.has_role(settings.verified_role_name)
     async def createinvite(self, ctx):
-        try:  # TODO add more info to this
-            invite = await ctx.channel.create_invite(
-                temporary=True, unique=True, reason="{} ({}) created this invite via .createinvite".format(
-                    ctx.message.author.name, ctx.message.author.id))
-            await ctx.message.channel.send(invite.url)
-        except TypeError:
-            pass  #
+        invite = await ctx.channel.create_invite(
+            temporary=True, unique=True, reason="{} ({}) created this invite via .createinvite".format(
+                ctx.message.author.name, ctx.message.author.id))
+        await ctx.message.channel.send(invite.url) # TODO add more info to this
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
@@ -538,26 +533,34 @@ class Verified:
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
-    async def leaderboard(self, ctx, *type):
-        type = " ".join(type)
-        with open("users.json") as fp:
-            karma = json.load(fp)
+    async def generate(self, ctx, *args):
+        args = " ".join(args)
+        emote = args[0]
+        emote = " ".join(emote)
+        text = args[1:]
+        text = "".join(text)
 
-        if "level" in type.lower():
+        await ctx.send(str(text).replace(" ", " " + emote) + " " + emote)
+
+    @client.command()
+    @commands.has_role(settings.verified_role_name)
+    async def leaderboard(self, ctx, *kind):
+        kind = " ".join(kind)
+        with open("users.json") as fp:
+            file = json.load(fp)
+
+        if "level" in kind.lower():
             type_new = "level"
             word = "is"
         else:
             type_new = "karma"
             word = "has"
 
-        karma_leaderboard = sorted(karma, key=lambda x: karma[x].get(type_new, 0), reverse=True)
+        karma_leaderboard = sorted(file, key=lambda x: file[x].get(type_new, 0), reverse=True)
         msg = ''
         for number, user in enumerate(karma_leaderboard):
-            msg += '`{}`. {} {} `{}` {} \n'.format(number + 1,
-                                             karma[user]['name'],
-                                             word,
-                                             karma[user].get(type_new, 0),
-                                             type_new)
+            msg += '__{}__. **{}** {} `{}` {} \n'.format(
+                number + 1, file[user]['name'], word, file[user].get(type_new, 0), type_new)
         await ctx.send(msg)
 
     @client.command()
