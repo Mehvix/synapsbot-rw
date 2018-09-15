@@ -187,29 +187,20 @@ class Verified:
         while c != 1:
             async with aiohttp.ClientSession() as session:
                 async with session.get(search) as r:
-                    if r.status == 200:
-                        result = await r.json()
-                        if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
-                                result[0]['data']['children'][0]['data']['pinned'] == "true":
-                            print("Post was automodpost, skipping")
-                            pass
-                        else:
-                            c = 1
-        if 'v.redd.it' in result[0]['data']['children'][0]['data']['url']:
-            desc = "This posts contains a video that was uploaded via Reddit, so it can only be seen if you go to the " \
-                   "website. "
-        else:
-            desc = " "
+                    result = await r.json()
+                    if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
+                            result[0]['data']['children'][0]['data']['pinned'] == "true":
+                        print("Post was automodpost, skipping")
+                        pass
+                    else:
+                        c = 1
 
         embed = discord.Embed(
             title=str(result[0]['data']['children'][0]['data']['title'])[:256],
-            color=settings.embed_color, description="[View Post]({})\n {}".format(
-                str(result[0]['data']['children'][0]['data']['url']),
-                str(result[0]['data']['children'][0]['data']['selftext'])[:1800],
-                description=desc))
-
-        if 'i.redd.it' or 'imgur' in result[0]['data']['children'][0]['data']['url']:
-            embed.set_image(url=result[0]['data']['children'][0]['data']['url'])
+            color=settings.embed_color,
+            description="[View Post]({})\n {}".format(
+                "https://old.reddit.com/" + str(result[0]['data']['children'][0]['data']['permalink']),
+                str(result[0]['data']['children'][0]['data']['selftext'])[:1800]))
 
         if len(result[0]['data']['children'][0]['data']['selftext']) > 1800:
             embed.set_footer(text="This post was too long to fit. Full version can be found via the 'View "
@@ -225,29 +216,27 @@ class Verified:
         while c != 1:
             async with aiohttp.ClientSession() as session:
                 async with session.get(search) as r:
-                    if r.status == 200:
-                        result = await r.json()
-                        if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
-                                result[0]['data']['children'][0]['data']['pinned'] == "true":
-                            print("Post was automodpost, skipping")
-                            pass
-                        else:
-                            c = 1
-        if 'v.redd.it' in result[0]['data']['children'][0]['data']['url']:
-            desc = "This posts contains a video that was uploaded via Reddit, so it can only be seen if you go to the " \
-                   "website. "
-        else:
-            desc = " "
+                    result = await r.json()
+                    if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
+                            result[0]['data']['children'][0]['data']['pinned'] == "true":
+                        print("Post was automodpost, skipping")
+                        pass
+                    else:
+                        c = 1
 
         embed = discord.Embed(
             title=str(result[0]['data']['children'][0]['data']['title'])[:256],
             color=settings.embed_color, description="[View Post]({})\n {}".format(
-                str(result[0]['data']['children'][0]['data']['url']),
-                str(result[0]['data']['children'][0]['data']['selftext'])[:1800],
-                description=desc))
+                'https://old.reddit.com/' + str(result[0]['data']['children'][0]['data']['permalink']),
+                str(result[0]['data']['children'][0]['data']['selftext'])[:1800]))
 
-        if 'i.redd.it' or 'imgur' in result[0]['data']['children'][0]['data']['url']:
-            embed.set_image(url=result[0]['data']['children'][0]['data']['url'])
+        if 'v.redd.it' in result[0]['data']['children'][0]['data']['url']:
+            embed.set_footer(text="NOTE: This is just the thumbnail of video that cannot be played via Discord. You can "
+                                  "see the video by clicking on 'View Post'")
+            embed.set_image(url=result[0]['data']['children'][0]['data']['preview']['images'][0]['source']['url'])
+        else:
+            if '.jpg' or '.png' or '.jpeg' or '.gif' in result[0]['data']['children'][0]['data']['url']:
+                embed.set_image(url=result[0]['data']['children'][0]['data']['url'])
 
         if len(result[0]['data']['children'][0]['data']['selftext']) > 1800:
             embed.set_footer(text="This post was too long to fit. Full version can be found via the 'View "
@@ -263,33 +252,32 @@ class Verified:
         while c != 1:
             async with aiohttp.ClientSession() as session:
                 async with session.get(search) as r:
-                    if r.status == 200:
-                        result = await r.json()
-                        if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
-                                result[0]['data']['children'][0]['data']['pinned'] == "true":
-                            print("Post was automodpost, skipping")
-                            pass
-                        else:
-                            c = 1
-        if 'v.redd.it' in result[0]['data']['children'][0]['data']['url']:
-            desc = "This posts contains a video that was uploaded via Reddit, so it can only be seen if you go to the " \
-                   "website. "
-        else:
-            desc = " "
+                    result = await r.json()
+                    if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
+                            result[0]['data']['children'][0]['data']['pinned'] == "true":
+                        print("Post was automodpost, skipping")
+                        pass
+                    else:
+                        c = 1
 
         embed = discord.Embed(
             title=str(result[0]['data']['children'][0]['data']['title'])[:256],
-            color=settings.embed_color, description="[View Post]({})\n {}".format(
+            color=settings.embed_color, description="[View Post]({})\n[View Image/Link]({})\n {}".format(
+                "https://old.reddit.com/" + str(result[0]['data']['children'][0]['data']['permalink']),
                 str(result[0]['data']['children'][0]['data']['url']),
-                str(result[0]['data']['children'][0]['data']['selftext'])[:1800],
-                description=desc))
-
-        if 'i.redd.it' or 'imgur' in result[0]['data']['children'][0]['data']['url']:
-            embed.set_image(url=result[0]['data']['children'][0]['data']['url'])
+                str(result[0]['data']['children'][0]['data']['selftext'])[:1800]))
 
         if len(result[0]['data']['children'][0]['data']['selftext']) > 1800:
             embed.set_footer(text="This post was too long to fit. Full version can be found via the 'View "
                                   "Post' button above")
+
+        if 'v.redd.it' in result[0]['data']['children'][0]['data']['url']:
+            embed.set_footer(text="NOTE: This is just the thumbnail of video that cannot be played via Discord. You can "
+                                  "see the video by clicking on 'View Post'")
+            embed.set_image(url=result[0]['data']['children'][0]['data']['preview']['images'][0]['source']['url'])
+        else:
+            if '.jpg' or '.png' or '.jpeg' or '.gif' in result[0]['data']['children'][0]['data']['url']:
+                embed.set_image(url=result[0]['data']['children'][0]['data']['url'])
 
         await ctx.message.channel.send(embed=embed)
 
@@ -307,26 +295,26 @@ class Verified:
                         print("Post was automodpost, skipping")
                         pass
                     else:
-                            c = 1
-        if 'v.redd.it' in result[0]['data']['children'][0]['data']['url']:
-            desc = "This posts contains a video that was uploaded via Reddit, so it can only be seen if you go to the " \
-                   "website. "
-        else:
-            desc = " "
+                        c = 1
 
         embed = discord.Embed(
             title=str(result[0]['data']['children'][0]['data']['title'])[:256],
-            color=settings.embed_color, description="[View Post]({})\n {}".format(
+            color=settings.embed_color, description="[View Post]({})\n[View Image/Link]({})\n {}".format(
+                "https://old.reddit.com/" + str(result[0]['data']['children'][0]['data']['permalink']),
                 str(result[0]['data']['children'][0]['data']['url']),
-                str(result[0]['data']['children'][0]['data']['selftext'])[:1800],
-                description=desc))
-
-        if 'i.redd.it' or 'imgur' in result[0]['data']['children'][0]['data']['url']:
-            embed.set_image(url=result[0]['data']['children'][0]['data']['url'])
+                str(result[0]['data']['children'][0]['data']['selftext'])[:1800]))
 
         if len(result[0]['data']['children'][0]['data']['selftext']) > 1800:
             embed.set_footer(text="This post was too long to fit. Full version can be found via the 'View "
                                   "Post' button above")
+
+        if 'v.redd.it' in result[0]['data']['children'][0]['data']['url']:
+            embed.set_footer(text="NOTE: This is just the thumbnail of video that cannot be played via Discord. You can "
+                                  "see the video by clicking on 'View Post'")
+            embed.set_image(url=result[0]['data']['children'][0]['data']['preview']['images'][0]['source']['url'])
+        else:
+            if '.jpg' or '.png' or '.jpeg' or '.gif' in result[0]['data']['children'][0]['data']['url']:
+                embed.set_image(url=result[0]['data']['children'][0]['data']['url'])
 
         await ctx.message.channel.send(embed=embed)
 
