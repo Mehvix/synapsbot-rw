@@ -59,6 +59,24 @@ class Verified:
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
+    async def price(self, ctx, coin: str):
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://api.coinmarketcap.com/v1/ticker/") as r:
+                result = await r.json()
+        coin = "".join(coin)
+        print(result)
+        print(coin)
+        x = 0
+        while x != 999:
+            data = result[int(x)]
+            if coin in data:
+                x = 999
+                return
+            x += 1
+        print(data)
+
+    @client.command()
+    @commands.has_role(settings.verified_role_name)
     async def zalgo(self, ctx, *target):
         target = " ".join(target)
         intensity = {"up": 5, "mid": 5, "down": 5}
@@ -223,6 +241,8 @@ class Verified:
                         pass
                     else:
                         c = 1
+
+        print(search)
 
         embed = discord.Embed(
             title=str(result[0]['data']['children'][0]['data']['title'])[:256],
