@@ -48,7 +48,7 @@ class Basic:
         await ctx.send("I have a latency of `{}` ms".format(str(float(self.client.latency)*1000)[:2]))
 
     @client.event
-    async def on_message(self, message):
+    async def on_message(self, message):  # TODO make this automaticaly happen for everyone in the server
         level_role = discord.utils.get(message.guild.roles, id=settings.level_role)
         roles_role = discord.utils.get(message.guild.roles, id=settings.roles_role)
         groups_role = discord.utils.get(message.guild.roles, id=settings.groups_role)
