@@ -22,7 +22,6 @@ class Reddit:
             url = [s for s in str(message.content).split(" ") if "reddit.com/r/" in s]
             url = str("".join(url)) + ".json?limit=1"
 
-            print(url)
             async with aiohttp.ClientSession() as session:
                 async with session.get(url) as r:
                     result = await r.json()
