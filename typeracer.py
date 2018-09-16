@@ -23,7 +23,7 @@ class Typeracer:
         async with aiohttp.ClientSession() as session:
             async with session.get(search) as r:
                 if r.status == 200:
-                    result = await r.json()
+                    result = await r.json(content_type='text/html')
 
                     try:
                         embed = discord.Embed(
