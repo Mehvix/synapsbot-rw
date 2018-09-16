@@ -1,16 +1,9 @@
-.idea/
-venv/
-media/
-__pycache__/
+\.idea
+\__pycache__
+\media
+\venv
 tokens.json
-users.json
-users backup.json
-test_token.json
+testserver_invite.json
+test.py
+music-old.py
 banned_words.json
-commands to import.py
-oldversion/main_token.json
-oldversino/test_server.json
-ping.py
-run.py
-restart_bot.bat
-oldversion/test_server.json
