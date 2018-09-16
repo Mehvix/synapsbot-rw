@@ -40,6 +40,10 @@ class Basic:
         await ctx.send("Trello Link:\nhttps://trello.com/b/CQBT9vag/synapsbot")
 
     @client.command()
+    async def issue(self, ctx):
+        await ctx.send("Please report the issue here:\nhttps://github.com/Mehvix/synapsBotRW/issues")
+
+    @client.command()
     async def ping(self, ctx):
         await ctx.send("I have a latency of `{}` ms".format(str(float(self.client.latency)*1000)[:2]))
 
@@ -50,6 +54,9 @@ class Basic:
 
             if message.content.upper().startswith("BAD BOT"):
                 await channel.send("Bad Human.")
+
+            if message.content.upper().startswith("BOT BROKE"):
+                await channel.send("Please report the issue here:\nhttps://github.com/Mehvix/synapsBotRW/issues")
 
             if message.content.upper().startswith("GIT "):
                 word = message.content.split(" ")
