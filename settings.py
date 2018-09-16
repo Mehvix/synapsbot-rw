@@ -31,7 +31,9 @@ def get_version():
 def set_server(server):
     global token, upvote_emoji, downvote_emoji, notification_channel, member_role_id, member_role_name, shut_up_role, \
         admin_role_name, verified_role_id, admin_role_id, verified_role_name, pokemon_channel, mute_role_id, \
-        mute_role_name, embed_color, server_name, accept_channel, canvas_channel
+        mute_role_name, embed_color, server_name, accept_channel, canvas_channel, level_role, roles_role, groups_role, \
+        games_role, restriction_role, game_channel, league_role, hs_role, fortnite_role, pubg_role, tf2_role, gta_role, \
+        chiv_role, cs_role, aoe_role, civ_role, rainbow_role, brawl_role
     embed_color = 0x593595
 
     if server == "test":
@@ -54,6 +56,12 @@ def set_server(server):
         server_name = "test"
         accept_channel = 414974032048553984
         canvas_channel = 486702610745917460
+
+        level_role = None
+        roles_role = None
+        groups_role = None
+        games_role = None
+        restriction_role = None
         return
     if server == "main":
         print("Using MAIN account")
@@ -75,6 +83,26 @@ def set_server(server):
         server_name = "main"
         accept_channel = 356456207185215491
         canvas_channel = 482084251702132746
+
+        level_role = 490738787140370472
+        roles_role = 490738558882021376
+        groups_role = 490739316037910539
+        games_role = 479745379399630858
+        restriction_role = 490739413467398184
+
+        game_channel = 490741754262192129
+        league_role = 346535079390085120
+        hs_role = 434513786972405761
+        fortnite_role = 373673740304777216
+        pubg_role = 346535016001699851
+        tf2_role = 371431977234202624
+        gta_role = 378718118152896512
+        chiv_role = 346536597640183808
+        cs_role = 368195375502327811
+        aoe_role = 346535115393990656
+        civ_role = 401585649872011274
+        rainbow_role = 421846788534697984
+        brawl_role = 488201787468414976
 
     else:
         sys.exit("No Server (main/test)")
