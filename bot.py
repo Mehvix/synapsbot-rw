@@ -25,7 +25,7 @@ from discord.ext import commands
 extensions = ['accept', 'admin', 'basic', 'canvas', 'forwarding', 'karma', 'typeracer', 'notifications', 'games',
               'verified', 'reddit']
 
-settings.set_server("test")  # make sure this is test or main
+settings.set_server("main")  # make sure this is test or main
 
 
 # Resets uptime settings
