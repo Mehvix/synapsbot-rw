@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import os
-import re # eeeeeeeeee
+import re#eeeeeeeeee
 import sys
 import json
+import time
 import discord
 import curtime
 import settings
+import asyncio
 from discord.ext import commands
 
 
@@ -18,6 +20,26 @@ class Karma:
         self.client = client
 
     print("Loading Karma...")
+
+    @client.event
+    async def on_ready(self):
+        seconds = 0
+        while self.client:
+            await asyncio.sleep(1)
+            seconds += 1
+            if seconds == 60:
+                seconds = 0
+                for member in self.client.get_all_members():
+                    if \
+                            member.voice \
+                            and not member.voice.deaf \
+                            and not member.voice.mute \
+                            and not member.voice.self_deaf \
+                            and not member.voice.self_mute \
+                            and not member.voice.afk:
+                        user_add_karma(member.id, 1)
+                        print("gave {} 1 karma for being in a vc".format(member.name))
+
 
     @client.event
     async def on_reaction_add(self, reaction, user):
