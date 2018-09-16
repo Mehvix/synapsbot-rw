@@ -57,7 +57,7 @@ class Verified:
                                                "https://www.urbandictionary.com/add.php?word={}".
                                                format(error, term_link))
 
-    @client.command()
+    @client.command()  # TODO work on this
     @commands.has_role(settings.verified_role_name)
     async def price(self, ctx, coin: str):
         async with aiohttp.ClientSession() as session:
@@ -74,6 +74,17 @@ class Verified:
                 return
             x += 1
         print(data)
+
+    @client.command()
+    @commands.has_role(settings.verified_role_name)
+    async def profile(self, ctx):
+        search = "https://discordapp.com/users/{}/profile".format(ctx.message.author.id)
+        # this is going to take a lot more webscraping knowledge than I have because you have to log into discord...
+        async with aiohttp.ClientSession() as session:
+            async with session.get(search) as r:
+                if r.status == 200:
+                    result = await r.json()
+                    await ctx.message.channel.send(result)
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
