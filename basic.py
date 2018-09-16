@@ -52,10 +52,10 @@ class Basic:
         if message.author.id != self.client.user.id:
             channel = message.channel
 
-            if message.content.upper().startswith("BAD BOT"):
+            if "BAD BOT" in message.content.upper():
                 await channel.send("Bad Human.")
 
-            if message.content.upper().startswith("BOT BROKE"):
+            if "BOT BROKE" in message.content.upper():
                 await channel.send("Please report the issue here:\nhttps://github.com/Mehvix/synapsBotRW/issues")
 
             if message.content.upper().startswith("GIT "):
