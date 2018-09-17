@@ -5,10 +5,14 @@ import os
 import sys
 import time
 import random
+import aiohttp
 import curtime
 import asyncio
 import discord
 import settings
+import html5lib
+import settings
+from bs4 import BeautifulSoup
 from discord.ext import commands
 
 
@@ -82,6 +86,23 @@ class Basic:
             if message.content.upper().startswith("GIT "):
                 word = message.content.split(" ")
                 await channel.send("`git: '{}' is not a git command. See 'git --help'.`".format(" ".join(word[1:])))
+
+            states = ['ALABAMA', 'ALASKA', 'ARIZONA', 'ARKANSAS', 'CALIFORNIA', 'COLORADO', 'CONNECTICUT', 'DELAWARE', 'FLORIDA', 'GEORGIA', 'HAWAII', 'IDAHO', 'ILLINOIS', 'INDIANA', 'IOWA', 'KANSAS', 'KENTUCKY', 'LOUISIANA', 'MAINE', 'MARYLAND', 'MASSACHUSETTS', 'MICHIGAN', 'MINNESOTA', 'MISSISSIPPI', 'MISSOURI', 'MONTANA', 'NEBRASKA', 'NEVADA', 'NEW HAMPSHIRE', 'NEW JERSEY', 'NEW MEXICO', 'NEW YORK', 'NORTH CAROLINA', 'NORTH DAKOTA', 'OHIO', 'OKLAHOMA', 'OREGON', 'PENNSYLVANIA', 'RHODE ISLAND', 'SOUTH CAROLINA', 'SOUTH DAKOTA', 'TENNESSEE', 'TEXAS', 'UTAH', 'VERMONT', 'VIRGINIA', 'WASHINGTON', 'WEST VIRGINIA', 'WISCONSIN', 'WYOMING']
+            msg = message.content.upper()
+            msg = msg.split(" ")
+            if [word for word in msg if word in states]:
+                word = [word for word in msg if word in states]
+                word = "".join(word)
+                search = "https://www.50states.com/facts/{}.htm".format(str(word).lower())
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(search) as r:
+                        text = await r.read()
+                        soup = BeautifulSoup(text.decode('utf-8'), 'html5lib')
+
+                        facts = soup.find('ol', attrs={'class': 'stripedList'})
+                        facts = facts.text
+                        facts = facts.split("\n")
+                        await message.channel.send("Speaking of {}, did you know that {}".format(word.title(), random.choice(facts)))
 
             try:
                 if message.author.id != self.client.user.id:
