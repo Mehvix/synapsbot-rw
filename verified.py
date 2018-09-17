@@ -102,7 +102,14 @@ class Verified:
     @client.command()
     @commands.has_role(settings.verified_role_name)
     async def announce(self, ctx, role: discord.Role, message: str):
-        print(role, message)
+        print(role.members, message)
+        for member in role.members:
+            embed = discord.Embed(
+                color=settings.embed_color, description=message)
+            embed.set_author(name="{} sent an announcement to {} others in {}".format(
+                    ctx.message.author.name, len(role.members), role.name), url=ctx.message.author.avatar_url)
+            await member.send(embed=embed)
+
 
 
     @client.command()
