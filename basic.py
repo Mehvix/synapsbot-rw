@@ -83,9 +83,13 @@ class Basic:
                 word = message.content.split(" ")
                 await channel.send("`git: '{}' is not a git command. See 'git --help'.`".format(" ".join(word[1:])))
 
-            if message.author.id != self.client.user.id:
+            try:
+                if message.author.id != self.client.user.id:
+                    print("{}: {} sent '{}' in {}".format(curtime.get_time(), message.author.name, message.content,
+                                                          message.channel.name))
+            except AttributeError:
                 print("{}: {} sent '{}' in {}".format(curtime.get_time(), message.author.name, message.content,
-                                                      message.channel.name))
+                                                      message.channel.recipient.name))
 
 
 def setup(client):
