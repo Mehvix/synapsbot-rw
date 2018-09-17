@@ -14,6 +14,7 @@ import discord
 import asyncio
 import curtime
 import settings
+
 from discord.ext import commands
 from urbandictionary_top import udtop
 
@@ -110,8 +111,6 @@ class Verified:
             embed.set_author(name="{} sent an announcement to {} others in {}".format(
                     ctx.message.author.name, len(role.members), role.name), icon_url=ctx.message.author.avatar_url)
             await member.send(embed=embed)
-
-
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
