@@ -39,8 +39,8 @@ class Forwarding:
         else:
             embed.set_author(name=message.author,
                              icon_url=message.author.avatar_url or message.author.default_avatar_url)
-            embed.title = '{} messaged me:'.format(message.channel.user.id)
-        embed.description = "Clean Content:{}".format(message.clean_content)
+            embed.title = '{} messaged me:'.format(message.channel.recipient.name)
+        embed.description = "Clean Content:\n{}".format(message.clean_content)
         embed.timestamp = message.created_at
 
         user = await self.client.get_user_info(196355904503939073)
