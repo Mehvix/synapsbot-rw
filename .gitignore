@@ -4,6 +4,6 @@
 \venv
 tokens.json
 testserver_invite.json
-test.py
+.test.py
 music-old.py
 banned_words.json
