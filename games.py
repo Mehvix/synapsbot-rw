@@ -16,44 +16,90 @@ class Games:
     print("Loading Games...")
 
     @client.event
-    async def on_reaction_add(self, reaction, user):  # TODO add on_reaction_remove
-        if int(reaction.message.channel.id) == settings.game_channel:
+    async def on_raw_reaction_add(self, payload):
+        if int(payload.channel_id) == settings.game_channel:
+            guild = self.client.get_guild(payload.guild_id)
+            user = guild.get_member(payload.user_id)
+            reaction = payload.emoji.name
             if str(reaction) == '🇦':
-                role = discord.utils.get(reaction.message.guild.roles, id=settings.league_role)
+                role = discord.utils.get(guild.roles, id=settings.league_role)
                 await user.add_roles(role)
             if str(reaction) == '🇧':
-                role = discord.utils.get(reaction.message.guild.roles, id=settings.hs_role)
+                role = discord.utils.get(guild.roles, id=settings.hs_role)
                 await user.add_roles(role)
             if str(reaction) == '🇨':
-                role = discord.utils.get(reaction.message.guild.roles, id=settings.fortnite_role)
+                role = discord.utils.get(guild.roles, id=settings.fortnite_role)
                 await user.add_roles(role)
             if str(reaction) == '🇩':
-                role = discord.utils.get(reaction.message.guild.roles, id=settings.pubg_role)
+                role = discord.utils.get(guild.roles, id=settings.pubg_role)
                 await user.add_roles(role)
             if str(reaction) == '🇪':
-                role = discord.utils.get(reaction.message.guild.roles, id=settings.tf2_role)
+                role = discord.utils.get(guild.roles, id=settings.tf2_role)
                 await user.add_roles(role)
             if str(reaction) == '🇫':
-                role = discord.utils.get(reaction.message.guild.roles, id=settings.gta_role)
+                role = discord.utils.get(guild.roles, id=settings.gta_role)
                 await user.add_roles(role)
             if str(reaction) == '🇬':
-                role = discord.utils.get(reaction.message.guild.roles, id=settings.chiv_role)
+                role = discord.utils.get(guild.roles, id=settings.chiv_role)
                 await user.add_roles(role)
             if str(reaction) == '🇭':
-                role = discord.utils.get(reaction.message.guild.roles, id=settings.cs_role)
+                role = discord.utils.get(guild.roles, id=settings.cs_role)
                 await user.add_roles(role)
             if str(reaction) == '🇮':
-                role = discord.utils.get(reaction.message.guild.roles, id=settings.aoe_role)
+                role = discord.utils.get(guild.roles, id=settings.aoe_role)
                 await user.add_roles(role)
             if str(reaction) == '🇯':
-                role = discord.utils.get(reaction.message.guild.roles, id=settings.civ_role)
+                role = discord.utils.get(guild.roles, id=settings.civ_role)
                 await user.add_roles(role)
             if str(reaction) == '🇰':
-                role = discord.utils.get(reaction.message.guild.roles, id=settings.rainbow_role)
+                role = discord.utils.get(guild.roles, id=settings.rainbow_role)
                 await user.add_roles(role)
             if str(reaction) == '🇱':
-                role = discord.utils.get(reaction.message.guild.roles, id=settings.brawl_role)
+                role = discord.utils.get(guild.roles, id=settings.brawl_role)
                 await user.add_roles(role)
+
+    @client.event
+    async def on_raw_reaction_remove(self, payload):
+        if int(payload.channel_id) == settings.game_channel:
+            guild = self.client.get_guild(payload.guild_id)
+            user = guild.get_member(payload.user_id)
+            reaction = payload.emoji.name
+            if str(reaction) == '🇦':
+                role = discord.utils.get(guild.roles, id=settings.league_role)
+                await user.remove_roles(role)
+            if str(reaction) == '🇧':
+                role = discord.utils.get(guild.roles, id=settings.hs_role)
+                await user.remove_roles(role)
+            if str(reaction) == '🇨':
+                role = discord.utils.get(guild.roles, id=settings.fortnite_role)
+                await user.remove_roles(role)
+            if str(reaction) == '🇩':
+                role = discord.utils.get(guild.roles, id=settings.pubg_role)
+                await user.remove_roles(role)
+            if str(reaction) == '🇪':
+                role = discord.utils.get(guild.roles, id=settings.tf2_role)
+                await user.remove_roles(role)
+            if str(reaction) == '🇫':
+                role = discord.utils.get(guild.roles, id=settings.gta_role)
+                await user.remove_roles(role)
+            if str(reaction) == '🇬':
+                role = discord.utils.get(guild.roles, id=settings.chiv_role)
+                await user.remove_roles(role)
+            if str(reaction) == '🇭':
+                role = discord.utils.get(guild.roles, id=settings.cs_role)
+                await user.remove_roles(role)
+            if str(reaction) == '🇮':
+                role = discord.utils.get(guild.roles, id=settings.aoe_role)
+                await user.remove_roles(role)
+            if str(reaction) == '🇯':
+                role = discord.utils.get(guild.roles, id=settings.civ_role)
+                await user.remove_roles(role)
+            if str(reaction) == '🇰':
+                role = discord.utils.get(guild.roles, id=settings.rainbow_role)
+                await user.remove_roles(role)
+            if str(reaction) == '🇱':
+                role = discord.utils.get(guild.roles, id=settings.brawl_role)
+                await user.remove_roles(role)
 
     @client.command()
     @commands.has_role(settings.admin_role_name)
