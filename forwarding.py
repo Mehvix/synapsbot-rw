@@ -34,13 +34,14 @@ class Forwarding:
         # TODO Add more info (yoink from .whois command)
         embed = discord.Embed(color=settings.embed_color)
         if message.author == self.client.user:
-            embed.title = 'Sent PM to {}#{} ({}).'.format(message.channel.recipient.name, message.channel.recipient.discriminator,
-                                                          message.channel.recipient.id)
+            embed.set_author(
+                name='I sent a PM to {}#{} ({}).'.format(
+                    message.channel.recipient.name, message.channel.recipient.discriminator, message.channel.recipient.id),
+                icon_url=message.author.avatar_url or message.author.default_avatar_url)
         else:
-            embed.set_author(name=message.author,
+            embed.set_author(name='{} ({}) messaged me:'.format(message.channel.recipient.name, message.channel.recipient.id),
                              icon_url=message.author.avatar_url or message.author.default_avatar_url)
-            embed.title = '{} messaged me:'.format(message.channel.recipient.name)
-        embed.description = "Clean Content:\n{}".format(message.clean_content)
+        embed.description = "{}".format(message.clean_content)
         embed.timestamp = message.created_at
 
         user = await self.client.get_user_info(196355904503939073)
