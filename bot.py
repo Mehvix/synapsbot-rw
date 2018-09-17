@@ -41,7 +41,7 @@ ban_message = 0
 client = commands.Bot(description="synapsBot",
                       command_prefix='.',
                       owner_id="196355904503939073",
-                      case_insensitive=False)
+                      case_insensitive=True)
 
 
 def get_json(file_path):
@@ -53,33 +53,19 @@ async def timer():
     await client.wait_until_ready()
     global seconds
     seconds = 0
-    global minutes
-    minutes = 0
-    global hours
-    hours = 0
-    global days
-    days = 0
     while not client.is_closed:
         await asyncio.sleep(1)
         seconds += 1
+
         if seconds == 60:
             seconds = 0
-            minutes += 1
-            dirpath = os.getcwd()
-            r = random.randint(1, 3)
-            if r == 1:
-                await client.change_presence(game=discord.Game(name="Live for {0}".format(curtime.uptime()),
-                                                               url="https://twitch.tv/mehvix", type=1))
-            if r == 2:
-                await client.change_presence(game=discord.Game(name="Version {}".format(os.path.basename(dirpath)),
-                                                               url="https://twitch.tv/mehvix", type=1))
-            if r == 3:
-                await client.change_presence(
-                    game=discord.Game(name="Created by Mehvix#7172", url="https://twitch.tv/mehvix",
-                                      type=1))
-        elif minutes == 60:
-            minutes = 0
-            hours += 1
+
+            flairs = ['Created by Mehvix#7172',
+                      'Online for {0}'.format(curtime.uptime()),
+                      'Running Version {}'.format(settings.get_version())]  # TODO add more of these
+            await client.change_presence(
+                activity=discord.Streaming(name="".join(random.choice(flairs)), url='https://twitch.tv/mehvix',
+                                           twitch_name="Mehvix"))
 
             fp = random.choice(os.listdir("media/avatars"))
             with open('media/avatars/{}'.format(fp), 'rb') as f:
@@ -87,9 +73,6 @@ async def timer():
                     await client.edit_profile(avatar=f.read())
                 except discord.HTTPException:
                     pass  # Sometimes discord gets angry when the profile pic is changed a lot
-        elif hours == 24:
-            hours = 0
-            days += 1
 
 
 @client.event
@@ -102,8 +85,12 @@ async def on_ready():
     users = len(set(client.get_all_members()))
     channels = len([c for c in client.get_all_channels()])
 
-    await client.change_presence(game=discord.Game(name="Created by Mehvix#7172", url="https://twitch.tv/mehvix",
-                                                   type=1))
+    start = datetime.datetime(year=2010, month=1, day=1)
+    flairs = ['Created by Mehvix#7172', 'Running Version {}'.format(settings.get_version())]
+    await client.change_presence(
+        activity=discord.Streaming(name="".join(random.choice(flairs)), url='https://twitch.tv/mehvix',
+                                   twitch_name="Mehvix"))  # TODO add more presences
+
     server_list = list(client.guilds)
     dirpath = os.getcwd()
 
