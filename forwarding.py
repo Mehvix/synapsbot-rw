@@ -31,7 +31,6 @@ class Forwarding:
         if not isinstance(message.channel, discord.abc.PrivateChannel) or message.channel.recipient.id == my_id:
             return
 
-        # TODO Add more info (yoink from .whois command)
         embed = discord.Embed(color=settings.embed_color)
         if message.author == self.client.user:
             embed.set_author(
