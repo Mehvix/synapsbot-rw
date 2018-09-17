@@ -101,6 +101,12 @@ class Verified:
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
+    async def announce(self, ctx, role: discord.Role, message: str):
+        print(role, message)
+
+
+    @client.command()
+    @commands.has_role(settings.verified_role_name)
     async def sam(self, ctx):
         fp = random.choice(os.listdir("media/sams"))
         await ctx.message.channel.send(file=discord.File("media/sams/{}".format(fp)))
@@ -502,7 +508,6 @@ class Verified:
             json.dump(outcomes, fp, sort_keys=True, indent=4)
 
         karma.user_add_karma(ctx.message.author.id, -amount)
-
 
         spin = random.randint(0, 36)
 
