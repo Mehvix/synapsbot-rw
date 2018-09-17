@@ -44,7 +44,7 @@ class Poll:
         for x, option in enumerate(options):
             description += '\n {}  {}'.format(reactions[x], str(option).title())
 
-        embed = discord.Embed(title=str(question).title(), description=''.join(description))
+        embed = discord.Embed(title=str(question).title(), color=settings.embed_color, description=''.join(description))
         embed.set_author(name="Created by " + ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
         react_message = await ctx.send(embed=embed)
         embed.set_footer(text='Poll ID: {}'.format(react_message.id))
