@@ -27,7 +27,7 @@ class Karma:
         while self.client:
             await asyncio.sleep(1)
             seconds += 1
-            if seconds == 60:
+            if seconds == 180:
                 seconds = 0
                 for member in self.client.get_all_members():
                     if \
@@ -39,7 +39,6 @@ class Karma:
                             and not member.voice.afk:
                         user_add_karma(member.id, 1)
                         print("gave {} 1 karma for being in a vc".format(member.name))
-
 
     @client.event
     async def on_reaction_add(self, reaction, user):
