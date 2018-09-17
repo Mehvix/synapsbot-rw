@@ -43,27 +43,33 @@ class Basic:
     async def issue(self, ctx):
         await ctx.send("Please report the issue here:\nhttps://github.com/Mehvix/synapsBotRW/issues")
 
-    @client.command()
+    @client.command(case_insensitive=True)
     async def ping(self, ctx):
         await ctx.send("I have a latency of `{}` ms".format(str(float(self.client.latency)*1000)[:2]))
 
-    @client.event
-    async def on_message(self, message):  # TODO make this automaticaly happen for everyone in the server
-        level_role = discord.utils.get(message.guild.roles, id=settings.level_role)
-        roles_role = discord.utils.get(message.guild.roles, id=settings.roles_role)
-        groups_role = discord.utils.get(message.guild.roles, id=settings.groups_role)
-        games_role = discord.utils.get(message.guild.roles, id=settings.games_role)
-        restriction_role = discord.utils.get(message.guild.roles, id=settings.restriction_role)
-        level1_role = discord.utils.get(message.guild.roles, name="Level 1")
-        if level_role and level_role not in message.author.roles:
-            await message.author.add_roles(level_role,
-                                           roles_role,
-                                           groups_role,
-                                           games_role,
-                                           restriction_role,
-                                           level1_role)
-            print("Added Notation Roles")
+    '''
+    @client.command(case_insensitive=True)
+    async def notation(self, ctx):
+        level_role = discord.utils.get(ctx.guild.roles, id=settings.level_role)
+        roles_role = discord.utils.get(ctx.guild.roles, id=settings.roles_role)
+        groups_role = discord.utils.get(ctx.guild.roles, id=settings.groups_role)
+        games_role = discord.utils.get(ctx.guild.roles, id=settings.games_role)
+        restriction_role = discord.utils.get(ctx.guild.roles, id=settings.restriction_role)
+        level1_role = discord.utils.get(ctx.guild.roles, name="Level 1")
 
+        for member in ctx.message.guild.members:
+            if level_role and level_role not in member.roles:
+                await member.add_roles(level_role,
+                                               roles_role,
+                                               groups_role,
+                                               games_role,
+                                               restriction_role,
+                                               level1_role)
+                print("Added Notation Roles")
+    '''
+
+    @client.event
+    async def on_message(self, message):
         if message.author.id != self.client.user.id:
             channel = message.channel
 
