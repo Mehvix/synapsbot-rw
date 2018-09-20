@@ -24,13 +24,16 @@ class Reddit:
     async def on_message(self, message):
         if "http" and "reddit.com/r/" in message.content:
             url = [s for s in str(message.content).split(" ") if "reddit.com/r/" in s]
+            url = str("".join(url)).split("/")
+            if "?utm_" in url[-1]:
+                url = "/".join(url[:-1])
+            else:
+                url = "/".join(url)
             url = str("".join(url)) + ".json?limit=1"
 
             async with aiohttp.ClientSession() as session:
                 async with session.get(url) as r:
                     result = await r.json(content_type='application/json')
-
-            # TODO https://github.com/Mehvix/synapsBotRW/issues/1
 
             embed = discord.Embed(
                 title=str(result[0]['data']['children'][0]['data']['title'])[:256],
