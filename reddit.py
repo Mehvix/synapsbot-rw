@@ -5,6 +5,7 @@
 import discord
 import aiohttp
 import settings
+from datetime import datetime
 from discord.ext import commands
 
 image_files = ['.ras', '.xwd', '.bmp', '.jpe', '.jpg', '.jpeg', '.xpm', '.ief', '.pbm', '.tif', '.gif',
@@ -27,7 +28,9 @@ class Reddit:
 
             async with aiohttp.ClientSession() as session:
                 async with session.get(url) as r:
-                    result = await r.json(content_type='text/html')
+                    result = await r.json(content_type='application/json')
+
+            # TODO https://github.com/Mehvix/synapsBotRW/issues/1
 
             embed = discord.Embed(
                 title=str(result[0]['data']['children'][0]['data']['title'])[:256],
@@ -53,8 +56,10 @@ class Reddit:
             embed.add_field(name="Subreddit:", value=result[0]['data']['children'][0]['data']['subreddit_name_prefixed'], inline=True)
             embed.add_field(name="Upvotes:", value=result[0]['data']['children'][0]['data']['score'], inline=True)
             embed.add_field(name="Author:", value=result[0]['data']['children'][0]['data']['author'], inline=True)
-            embed.add_field(name="Subreddit Subs:", value=result[0]['data']['children'][0]['data']['subreddit_subscribers'], inline=True)
-            # embed.add_field(name="Time Created:", value=result[0]['data']['children'][0]['data']['create_utc'], inline=True) # TODO figure out how to convert this
+            # embed.add_field(name="Subreddit Subs:", value=result[0]['data']['children'][0]['data']['subreddit_subscribers'], inline=True)
+            wack_time = float(result[0]['data']['children'][0]['data']['created'])
+            embed.add_field(
+                name="Posted at:", value=datetime.utcfromtimestamp(wack_time).strftime('%Y-%m-%d %H:%M:%S'), inline=True)
 
             await message.channel.send("Here's a preview of that Reddit link!")
             await message.channel.send(embed=embed)
