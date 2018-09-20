@@ -18,6 +18,8 @@ import settings
 from discord.ext import commands
 from urbandictionary_top import udtop
 
+image_files = ['.ras', '.xwd', '.bmp', '.jpe', '.jpg', '.jpeg', '.xpm', '.ief', '.pbm', '.tif', '.gif',
+               '.ppm', '.xbm', '.tiff', '.rgb', '.pgm', '.png', '.pnm']
 
 class Verified:
     client = commands.Bot(command_prefix='.')
@@ -63,7 +65,7 @@ class Verified:
     async def price(self, ctx, coin: str):
         async with aiohttp.ClientSession() as session:
             async with session.get("https://api.coinmarketcap.com/v1/ticker/") as r:
-                result = await r.json()
+                result = await r.json(content_type='text/html')
         coin = "".join(coin)
         print(result)
         print(coin)
@@ -84,7 +86,7 @@ class Verified:
         async with aiohttp.ClientSession() as session:
             async with session.get(search) as r:
                 if r.status == 200:
-                    result = await r.json()
+                    result = await r.json(content_type='text/html')
                     await ctx.message.channel.send(result)
 
     @client.command()
@@ -144,7 +146,7 @@ class Verified:
         async with aiohttp.ClientSession() as session:
             async with session.get(search) as r:
                 if r.status == 200:
-                    result = await r.json()
+                    result = await r.json(content_type='text/html')
                     await ctx.message.channel.send(result['url'])
 
     @client.command()
@@ -155,7 +157,7 @@ class Verified:
         async with aiohttp.ClientSession() as session:
             async with session.get(search) as r:
                 if r.status == 200:
-                    result = await r.json()
+                    result = await r.json(content_type='text/html')
                     await ctx.message.channel.send(result['message'])
 
     @client.command()
@@ -229,7 +231,7 @@ class Verified:
         while c != 1:
             async with aiohttp.ClientSession() as session:
                 async with session.get(search) as r:
-                    result = await r.json()
+                    result = await r.json(content_type='text/html')
                     if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
                             result[0]['data']['children'][0]['data']['pinned'] == "true":
                         print("Post was automodpost, skipping")
@@ -258,7 +260,7 @@ class Verified:
         while c != 1:
             async with aiohttp.ClientSession() as session:
                 async with session.get(search) as r:
-                    result = await r.json()
+                    result = await r.json(content_type='application/json')
                     if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
                             result[0]['data']['children'][0]['data']['pinned'] == "true":
                         print("Post was automodpost, skipping")
@@ -275,11 +277,11 @@ class Verified:
                 str(result[0]['data']['children'][0]['data']['selftext'])[:1800]))
 
         if 'v.redd.it' in result[0]['data']['children'][0]['data']['url']:
-            embed.set_footer(text="NOTE: This is just the thumbnail of video that cannot be played via Discord. You can "
-                                  "see the video by clicking on 'View Post'")
+            embed.set_footer(text="NOTE: This is just the thumbnail of video that cannot be played via Discord. You can"
+                                  " see the video by clicking on 'View Post'")
             embed.set_image(url=result[0]['data']['children'][0]['data']['preview']['images'][0]['source']['url'])
         else:
-            if '.jpg' or '.png' or '.jpeg' or '.gif' in result[0]['data']['children'][0]['data']['url']:
+            if any(word in str(result[0]['data']['children'][0]['data']['url']).rsplit('/', 1)[1] for word in image_files):
                 embed.set_image(url=result[0]['data']['children'][0]['data']['url'])
 
         if len(result[0]['data']['children'][0]['data']['selftext']) > 1800:
@@ -296,7 +298,7 @@ class Verified:
         while c != 1:
             async with aiohttp.ClientSession() as session:
                 async with session.get(search) as r:
-                    result = await r.json()
+                    result = await r.json(content_type='text/html')
                     if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
                             result[0]['data']['children'][0]['data']['pinned'] == "true":
                         print("Post was automodpost, skipping")
@@ -320,7 +322,7 @@ class Verified:
                                   "see the video by clicking on 'View Post'")
             embed.set_image(url=result[0]['data']['children'][0]['data']['preview']['images'][0]['source']['url'])
         else:
-            if '.jpg' or '.png' or '.jpeg' or '.gif' in result[0]['data']['children'][0]['data']['url']:
+            if any(word in str(result[0]['data']['children'][0]['data']['url']).rsplit('/', 1)[1] for word in image_files):
                 embed.set_image(url=result[0]['data']['children'][0]['data']['url'])
 
         await ctx.message.channel.send(embed=embed)
@@ -333,7 +335,7 @@ class Verified:
         while c != 1:
             async with aiohttp.ClientSession() as session:
                 async with session.get(search) as r:
-                    result = await r.json()
+                    result = await r.json(content_type='text/html')
                     if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
                             result[0]['data']['children'][0]['data']['pinned'] == "true":
                         print("Post was automodpost, skipping")
@@ -357,7 +359,7 @@ class Verified:
                                   "see the video by clicking on 'View Post'")
             embed.set_image(url=result[0]['data']['children'][0]['data']['preview']['images'][0]['source']['url'])
         else:
-            if '.jpg' or '.png' or '.jpeg' or '.gif' in result[0]['data']['children'][0]['data']['url']:
+            if any(word in str(result[0]['data']['children'][0]['data']['url']).rsplit('/', 1)[1] for word in image_files):
                 embed.set_image(url=result[0]['data']['children'][0]['data']['url'])
 
         await ctx.message.channel.send(embed=embed)
@@ -413,7 +415,7 @@ class Verified:
         invite = await ctx.channel.create_invite(
             temporary=True, unique=True, reason="{} ({}) created this invite via .createinvite".format(
                 ctx.message.author.name, ctx.message.author.id))
-        await ctx.message.channel.send(invite.url) # TODO add more info to this
+        await ctx.message.channel.send(invite.url)  # TODO add more info to this
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
