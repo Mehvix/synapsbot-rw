@@ -57,6 +57,9 @@ class Games:
             if str(reaction) == '🇱':
                 role = discord.utils.get(guild.roles, id=settings.brawl_role)
                 await user.add_roles(role)
+            if str(reaction) == '🇲':
+                role = discord.utils.get(guild.roles, id=settings.ratz_role)
+                await user.add_roles(role)
 
     @client.event
     async def on_raw_reaction_remove(self, payload):
@@ -99,6 +102,9 @@ class Games:
                 await user.remove_roles(role)
             if str(reaction) == '🇱':
                 role = discord.utils.get(guild.roles, id=settings.brawl_role)
+                await user.remove_roles(role)
+            if str(reaction) == '🇱':
+                role = discord.utils.get(guild.roles, id=settings.ratz_role)
                 await user.remove_roles(role)
 
     @client.command()
