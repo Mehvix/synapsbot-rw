@@ -103,14 +103,14 @@ class Games:
             if str(reaction) == '🇱':
                 role = discord.utils.get(guild.roles, id=settings.brawl_role)
                 await user.remove_roles(role)
-            if str(reaction) == '🇱':
+            if str(reaction) == '🇲':
                 role = discord.utils.get(guild.roles, id=settings.ratz_role)
                 await user.remove_roles(role)
 
     @client.command()
     @commands.has_role(settings.admin_role_name)
     async def games(self, ctx):
-        letters = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴']
+        letters = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲']  # '🇳', '🇴'
 
         embed = discord.Embed(color=settings.embed_color, title="Games:",
                               description='🇦 League\n'
@@ -124,10 +124,17 @@ class Games:
                                           '🇮 Age of Empires 2\n'
                                           '🇯 Civilization V\n'
                                           '🇰 Rainbow 6 Siege\n'
-                                          '🇱 Brawlhalla')
-        react_message = await ctx.send(embed=embed)
-        for reaction in letters[:12]:
-            await react_message.add_reaction(reaction)
+                                          '🇱 Brawlhalla\n'
+                                          '🇲 Ratz Instagib\n')
+
+        try:
+            msg = await ctx.channel.get_message(490768003080650755)
+            await msg.edit(embed=embed)
+        except discord.NotFound:
+            msg = await ctx.send(embed=embed)
+
+        for reaction in letters[:len(letters)]:
+            await msg.add_reaction(reaction)
 
         await ctx.message.delete()
 
