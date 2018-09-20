@@ -66,7 +66,7 @@ class Verified:
     async def price(self, ctx, coin: str):
         async with aiohttp.ClientSession() as session:
             async with session.get("https://api.coinmarketcap.com/v1/ticker/") as r:
-                result = await r.json(content_type='text/html')
+                result = await r.json(content_type='application/json')
         coin = "".join(coin)
         print(result)
         print(coin)
@@ -87,7 +87,7 @@ class Verified:
         async with aiohttp.ClientSession() as session:
             async with session.get(search) as r:
                 if r.status == 200:
-                    result = await r.json(content_type='text/html')
+                    result = await r.json(content_type='application/json')
                     await ctx.message.channel.send(result)
 
     @client.command()
@@ -147,7 +147,7 @@ class Verified:
         async with aiohttp.ClientSession() as session:
             async with session.get(search) as r:
                 if r.status == 200:
-                    result = await r.json(content_type='text/html')
+                    result = await r.json(content_type='application/json')
                     await ctx.message.channel.send(result['url'])
 
     @client.command()
@@ -158,7 +158,7 @@ class Verified:
         async with aiohttp.ClientSession() as session:
             async with session.get(search) as r:
                 if r.status == 200:
-                    result = await r.json(content_type='text/html')
+                    result = await r.json(content_type='application/json')
                     await ctx.message.channel.send(result['message'])
 
     @client.command()
@@ -232,7 +232,7 @@ class Verified:
         while c != 1:
             async with aiohttp.ClientSession() as session:
                 async with session.get(search) as r:
-                    result = await r.json(content_type='text/html')
+                    result = await r.json(content_type='application/json')
                     if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
                             result[0]['data']['children'][0]['data']['pinned'] == "true":
                         print("Post was automodpost, skipping")
@@ -299,7 +299,7 @@ class Verified:
         while c != 1:
             async with aiohttp.ClientSession() as session:
                 async with session.get(search) as r:
-                    result = await r.json(content_type='text/html')
+                    result = await r.json(content_type='application/json')
                     if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
                             result[0]['data']['children'][0]['data']['pinned'] == "true":
                         print("Post was automodpost, skipping")
@@ -336,7 +336,7 @@ class Verified:
         while c != 1:
             async with aiohttp.ClientSession() as session:
                 async with session.get(search) as r:
-                    result = await r.json(content_type='text/html')
+                    result = await r.json(content_type='application/json')
                     if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
                             result[0]['data']['children'][0]['data']['pinned'] == "true":
                         print("Post was automodpost, skipping")
