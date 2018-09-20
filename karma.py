@@ -40,7 +40,7 @@ class Karma:
                         user_add_karma(member.id, 1)
                         print("gave {} 1 karma for being in a vc".format(member.name))
 
-    @client.event
+    @client.event  # todo make raw
     async def on_reaction_add(self, reaction, user):
         upvote = "<{}>".format(settings.upvote_emoji)
         downvote = "<{}>".format(settings.downvote_emoji)
@@ -98,6 +98,9 @@ class Karma:
     async def on_message(self, message):
         if message.webhook_id:
             return
+
+        set_name(message.author.id, str(message.author.name).replace('"', "'"))
+
         # Message author variables
         user_id = message.author.id
         user_name = message.author
@@ -152,7 +155,6 @@ class Karma:
 
             await message.author.remove_roles(old_level_role)
 
-        set_name(message.author.id, str(message.author.name).replace('"', "'"))
 
 
 def user_add_karma(user_id: int, karma: int):
