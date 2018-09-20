@@ -24,7 +24,6 @@ class Accept:
             temporary=True, unique=True, reason="{} ({}) typed .decline instead of .accept".format(
                 ctx.message.author.name, ctx.message.author.id))
         await ctx.message.author.send("Here's an invite if you change your mind!\n{}".format(invite.url))
-        # TODO make this send user a DM with an invite back
         await ctx.message.author.kick()
 
     @commands.command()
