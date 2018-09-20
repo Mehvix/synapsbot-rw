@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-# TODO and ideas can be moved to:
+# T0DO and ideas can be moved to:
 https://trello.com/b/CQBT9vag/synapsbot
 """
 
