@@ -21,6 +21,7 @@ from urbandictionary_top import udtop
 image_files = ['.ras', '.xwd', '.bmp', '.jpe', '.jpg', '.jpeg', '.xpm', '.ief', '.pbm', '.tif', '.gif',
                '.ppm', '.xbm', '.tiff', '.rgb', '.pgm', '.png', '.pnm']
 
+
 class Verified:
     client = commands.Bot(command_prefix='.')
 

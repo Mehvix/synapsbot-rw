@@ -7,6 +7,9 @@ import aiohttp
 import settings
 from discord.ext import commands
 
+image_files = ['.ras', '.xwd', '.bmp', '.jpe', '.jpg', '.jpeg', '.xpm', '.ief', '.pbm', '.tif', '.gif',
+               '.ppm', '.xbm', '.tiff', '.rgb', '.pgm', '.png', '.pnm']
+
 
 class Reddit:
     client = commands.Bot(command_prefix='.')
@@ -24,7 +27,7 @@ class Reddit:
 
             async with aiohttp.ClientSession() as session:
                 async with session.get(url) as r:
-                    result = await r.json()
+                    result = await r.json(content_type='text/html')
 
             embed = discord.Embed(
                 title=str(result[0]['data']['children'][0]['data']['title'])[:256],
@@ -43,7 +46,8 @@ class Reddit:
                          "see the video by clicking on 'View Post'")
                 embed.set_image(url=result[0]['data']['children'][0]['data']['preview']['images'][0]['source']['url'])
             else:
-                if '.jpg' or '.png' or '.jpeg' or '.gif' in result[0]['data']['children'][0]['data']['url']:
+                if any(word in str(result[0]['data']['children'][0]['data']['url']).rsplit('/', 1)[1] for word in image_files):
+
                     embed.set_image(url=result[0]['data']['children'][0]['data']['url'])
 
             embed.add_field(name="Subreddit:", value=result[0]['data']['children'][0]['data']['subreddit_name_prefixed'], inline=True)
