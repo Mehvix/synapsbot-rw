@@ -33,7 +33,7 @@ def set_server(server):
         admin_role_name, verified_role_id, admin_role_id, verified_role_name, pokemon_channel, mute_role_id, \
         mute_role_name, embed_color, server_name, accept_channel, canvas_channel, level_role, roles_role, groups_role, \
         games_role, restriction_role, game_channel, league_role, hs_role, fortnite_role, pubg_role, tf2_role, gta_role, \
-        chiv_role, cs_role, aoe_role, civ_role, rainbow_role, brawl_role
+        chiv_role, cs_role, aoe_role, civ_role, rainbow_role, brawl_role, ratz_role
     embed_color = 0x593595
 
     if server == "test":
@@ -62,6 +62,7 @@ def set_server(server):
         groups_role = None
         games_role = None
         restriction_role = None
+        ratz_role = None
         return
     if server == "main":
         print("Using MAIN account")
@@ -103,6 +104,7 @@ def set_server(server):
         civ_role = 401585649872011274
         rainbow_role = 421846788534697984
         brawl_role = 488201787468414976
+        ratz_role = 491388165618270218
 
     else:
         sys.exit("No Server (main/test)")
