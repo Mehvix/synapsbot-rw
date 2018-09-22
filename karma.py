@@ -38,7 +38,6 @@ class Karma:
                             and not member.voice.self_mute \
                             and not member.voice.afk:
                         user_add_karma(member.id, 1)
-                        print("gave {} 1 karma for being in a vc".format(member.name))
 
     @client.event  # todo make raw
     async def on_reaction_add(self, reaction, user):
@@ -154,7 +153,6 @@ class Karma:
                 await message.channel.send("Congrats, <@{0}>! You're now level `{1}` :tada: ".format(user_id, new_level))
 
             await message.author.remove_roles(old_level_role)
-
 
 
 def user_add_karma(user_id: int, karma: int):
