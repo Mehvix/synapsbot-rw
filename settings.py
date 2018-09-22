@@ -68,8 +68,8 @@ def set_server(server):
         print("Using MAIN account")
         jsontoken = get_json('tokens.json')
         token = jsontoken.get("main")
-        upvote_emoji = ":benupvote:489977461602385930"  # ":upvote:412119803034075157"
-        downvote_emoji = ":femdownvote:489976102673186848"  # ":downvote:412119802904313858"
+        upvote_emoji = ":upvote:412119803034075157"
+        downvote_emoji = ":downvote:412119802904313858"
         notification_channel = 412075980094570506
         member_role_id = 312693233329373194
         member_role_name = "Member 🔸"
