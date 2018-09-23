@@ -6,20 +6,17 @@
 https://trello.com/b/CQBT9vag/synapsbot
 """
 
+import asyncio
+import os
+import random
+import sys
+from datetime import datetime
+
+import discord
+from discord.ext import commands
+
 import curtime
 import settings
-
-import os
-import sys
-import math
-import time
-import random
-import asyncio
-import aiohttp
-import discord
-import numpy as np
-from datetime import datetime
-from discord.ext import commands
 
 # Cogs being used
 extensions = ['accept', 'admin', 'basic', 'canvas', 'forwarding', 'karma', 'typeracer', 'notifications', 'games',

@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
-import discord
-import aiohttp
-import settings
 from datetime import datetime
+
+import aiohttp
+import discord
 from discord.ext import commands
+
+import settings
 
 image_files = ['.ras', '.xwd', '.bmp', '.jpe', '.jpg', '.jpeg', '.xpm', '.ief', '.pbm', '.tif', '.gif',
                '.ppm', '.xbm', '.tiff', '.rgb', '.pgm', '.png', '.pnm']

@@ -1,22 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import os
-import sys
-import time
 import json
-import zalgo
-import karma
+import os
 import random
 import string
+
 import aiohttp
 import discord
-import asyncio
-import curtime
-import settings
-
 from discord.ext import commands
 from urbandictionary_top import udtop
+
+import curtime
+import karma
+import settings
+import zalgo
 
 image_files = ['.ras', '.xwd', '.bmp', '.jpe', '.jpg', '.jpeg', '.xpm', '.ief', '.pbm', '.tif', '.gif',
                '.ppm', '.xbm', '.tiff', '.rgb', '.pgm', '.png', '.pnm']
@@ -60,24 +57,6 @@ class Verified:
                 await ctx.message.channel.send("ERROR: `{}`\n However, you can add your own here: "
                                                "https://www.urbandictionary.com/add.php?word={}".
                                                format(error, term_link))
-
-    @client.command()  # TODO work on this
-    @commands.has_role(settings.verified_role_name)
-    async def price(self, ctx, coin: str):
-        async with aiohttp.ClientSession() as session:
-            async with session.get("https://api.coinmarketcap.com/v1/ticker/") as r:
-                result = await r.json(content_type='application/json')
-        coin = "".join(coin)
-        print(result)
-        print(coin)
-        x = 0
-        while x != 999:
-            data = result[int(x)]
-            if coin in data:
-                x = 999
-                return
-            x += 1
-        print(data)
 
     @client.command()
     @commands.has_role(settings.verified_role_name)
@@ -500,7 +479,7 @@ class Verified:
                 "You need to format your message such as \n`.roulette [odd/even/zero] [amount of karma <250 and > 10]`")
             return
 
-        if 10 > amount > 250:
+        if 10 > amount > 250:  # TODO fix this becuase it doesn't
             print('2')
             await ctx.message.channel.send(
                 "You need to format your message such as \n`.roulette [odd/even/zero] [amount of karma < 250 and > 10]`")

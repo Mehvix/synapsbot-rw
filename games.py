@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 import discord
-import settings
 from discord.ext import commands
+
+import settings
 
 
 class Games:
@@ -15,7 +15,7 @@ class Games:
 
     print("Loading Games...")
 
-    @client.event
+    @client.event  # TODO make cam blacklisted
     async def on_raw_reaction_add(self, payload):
         if int(payload.channel_id) == settings.game_channel:
             guild = self.client.get_guild(payload.guild_id)

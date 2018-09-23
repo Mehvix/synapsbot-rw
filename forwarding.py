@@ -7,10 +7,10 @@ Original:   https://github.com/jacobcheatley/dankbot
 Import:     https://github.com/aikaterna/aikaterna-cogs/blob/master/away/away.py
 """
 
-
 import discord
-import settings
 from discord.ext import commands
+
+import settings
 
 
 class Forwarding:

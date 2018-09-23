@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import os
-import sys
-import karma
-import curtime
 import discord
-import settings
 from discord.ext import commands
+
+import curtime
+import karma
+import settings
 
 ban_message = 0
 

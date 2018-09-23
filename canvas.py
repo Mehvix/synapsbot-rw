@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import json
-import basic
-import random
-import discord
 import asyncio
+import json
+
+import discord
+
 import settings
-from discord.ext import commands
 
 red = ":red:481329772102942740"
 orange = ":orange:481329772232704010"

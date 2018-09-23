@@ -1,13 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import random
-import string
-import asyncio
 import discord
-import curtime
-import settings
 from discord.ext import commands
+
+import settings
 
 vote_phase = 0
 

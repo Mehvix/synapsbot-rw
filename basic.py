@@ -1,20 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import os
-import sys
-import time
 import random
-import aiohttp
-import curtime
-import asyncio
-import discord
+import sys
 from datetime import datetime
-import settings
-import html5lib
-import settings
+
+import aiohttp
+import discord
 from bs4 import BeautifulSoup
 from discord.ext import commands
+
+import curtime
+import settings
 
 
 class Basic:

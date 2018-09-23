@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
-import discord
-import settings
 from discord.ext import commands
 
 

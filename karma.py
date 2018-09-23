@@ -1,16 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-import re#eeeeeeeeee
-import sys
-import json
-import time
-import discord
-import curtime
-import settings
 import asyncio
+import json
+import os
+import re  # eeeeeeeeee
+
+import discord
 from discord.ext import commands
+
+import settings
 
 
 class Karma:

@@ -1,14 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-import sys
-import time
 import json
 import random
-import discord
-import logging
 import subprocess
+import sys
 
 
 def random_clock():
