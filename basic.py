@@ -9,6 +9,7 @@ import aiohttp
 import curtime
 import asyncio
 import discord
+from datetime import datetime
 import settings
 import html5lib
 import settings
@@ -42,6 +43,10 @@ class Basic:
     @client.command()
     async def trello(self, ctx):
         await ctx.send("Trello Link:\nhttps://trello.com/b/CQBT9vag/synapsbot")
+
+    @client.command()
+    async def time(self, ctx):
+        await ctx.send("It's `{0}".format(str(datetime.now()).split(" ")[1]).split(".")[0] + "`")
 
     @client.command()
     async def issue(self, ctx):
