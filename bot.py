@@ -17,8 +17,8 @@ import random
 import asyncio
 import aiohttp
 import discord
-import datetime
 import numpy as np
+from datetime import datetime
 from discord.ext import commands
 
 # Cogs being used
@@ -53,13 +53,15 @@ async def timer():
     await client.wait_until_ready()
     global seconds
     seconds = 0
-    while not client.is_closed:
+#    while not client.is_closed:
+    while True:
         await asyncio.sleep(1)
         seconds += 1
 
         if seconds == 60:
             seconds = 0
 
+            # Presence stuff
             flairs = ['Created by Mehvix#7172',
                       'Online for {0}'.format(curtime.uptime()),
                       'Running Version {}'.format(settings.get_version())]  # TODO add more of these
@@ -74,6 +76,15 @@ async def timer():
                 except discord.HTTPException:
                     pass  # Sometimes discord gets angry when the profile pic is changed a lot
 
+        # Comic Code
+        if str(str(str(datetime.now()).split(" ")[1]).split(".")[0]) == "12:10:15":  # TODO change this
+            date = datetime.today().strftime('%Y/%m/%d')
+            search = "https://www.gocomics.com/calvinandhobbes/{}".format(date)
+            print(search)
+            channel = client.get_channel(settings.notification_channel)
+            await channel.send(search)
+            await asyncio.sleep(2)
+
 
 @client.event
 async def on_connect():
@@ -85,7 +96,6 @@ async def on_ready():
     users = len(set(client.get_all_members()))
     channels = len([c for c in client.get_all_channels()])
 
-    start = datetime.datetime(year=2010, month=1, day=1)
     flairs = ['Created by Mehvix#7172', 'Running Version {}'.format(settings.get_version())]
     await client.change_presence(
         activity=discord.Streaming(name="".join(random.choice(flairs)), url='https://twitch.tv/mehvix',
