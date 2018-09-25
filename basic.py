@@ -81,6 +81,11 @@ class Basic:
             if "BAD BOT" in message.content.upper():
                 await channel.send("Bad Human.")
 
+            variations = ["DELETE SOMEONE ELSE'S POST", "DELETE SOMEONE ELSES POST", "DELET THIS" or "DELETE THIS"]
+            if any(word in message.content.upper() for word in variations):
+                await channel.send("Post deleted. OP in custody. Good job boys, take 'em away"
+                                   "\nhttps://i.imgur.com/NynXgUA.png")
+
             if "BOT BROKE" in message.content.upper():
                 await channel.send("Please report the issue here:\nhttps://github.com/Mehvix/synapsBotRW/issues")
 
