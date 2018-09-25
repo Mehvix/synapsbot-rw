@@ -69,7 +69,7 @@ async def timer():
             fp = random.choice(os.listdir("media/avatars"))
             with open('media/avatars/{}'.format(fp), 'rb') as f:
                 try:
-                    await client.edit_profile(avatar=f.read())
+                    await client.user.edit(avatar=f.read())
                 except discord.HTTPException:
                     pass  # Sometimes discord gets angry when the profile pic is changed a lot
 
