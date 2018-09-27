@@ -23,7 +23,7 @@ class Reddit:
 
     @client.event
     async def on_message(self, message):
-        if "http" and "reddit.com/r/" in message.content:
+        if "http" and "reddit.com/r/" in message.content:  # TODO make this work for subreddits
             url = [s for s in str(message.content).split(" ") if "reddit.com/r/" in s]
             url = str("".join(url)).split("/")
             if "?utm_" in url[-1]:
