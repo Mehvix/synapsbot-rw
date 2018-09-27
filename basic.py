@@ -86,7 +86,7 @@ class Basic:
                 await channel.send("Post deleted. OP in custody. Good job boys, take 'em away"
                                    "\nhttps://i.imgur.com/NynXgUA.png")
 
-            if "BOT BROKE" in message.content.upper():
+            if "DELETE THIS" in message.content.upper():
                 await channel.send("Hahaha you fucking idiot you have to say `delet this` hahaha fucking moron")
 
             if "BOT BROKE" in message.content.upper():
@@ -96,6 +96,7 @@ class Basic:
                 word = message.content.split(" ")
                 await channel.send("`git: '{}' is not a git command. See 'git --help'.`".format(" ".join(word[1:])))
 
+            # State facts code
             states = ['ALABAMA', 'ALASKA', 'ARIZONA', 'ARKANSAS', 'CALIFORNIA', 'COLORADO', 'CONNECTICUT', 'DELAWARE', 'FLORIDA', 'GEORGIA', 'HAWAII', 'IDAHO', 'ILLINOIS', 'INDIANA', 'IOWA', 'KANSAS', 'KENTUCKY', 'LOUISIANA', 'MAINE', 'MARYLAND', 'MASSACHUSETTS', 'MICHIGAN', 'MINNESOTA', 'MISSISSIPPI', 'MISSOURI', 'MONTANA', 'NEBRASKA', 'NEVADA', 'NEW HAMPSHIRE', 'NEW JERSEY', 'NEW MEXICO', 'NEW YORK', 'NORTH CAROLINA', 'NORTH DAKOTA', 'OHIO', 'OKLAHOMA', 'OREGON', 'PENNSYLVANIA', 'RHODE ISLAND', 'SOUTH CAROLINA', 'SOUTH DAKOTA', 'TENNESSEE', 'TEXAS', 'UTAH', 'VERMONT', 'VIRGINIA', 'WASHINGTON', 'WEST VIRGINIA', 'WISCONSIN', 'WYOMING']
             msg = message.content.upper()
             msg = msg.split(" ")

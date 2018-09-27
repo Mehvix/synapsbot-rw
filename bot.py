@@ -1,10 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-# T0DO and ideas can be moved to:
-https://trello.com/b/CQBT9vag/synapsbot
-"""
+""" ''''''''''''''''''''''''''''''''''''''''''
+          TODOs are located on Trello:
+    https://trello.com/b/CQBT9vag/synapsbot
+
+
+          Code can be found on GitHub:
+    https://github.com/Mehvix/synapsBotRW
+
+'''''''''''''''''''''''''''''''''''''''''' """
 
 import asyncio
 import os
@@ -126,22 +131,47 @@ async def on_resumed():
     print("{}: Resumed".format(curtime.get_time()))
 
 
-# TODO Fix this
-"""
 @client.event
-async def on_command_error(error, ctx):
+async def on_command_error(ctx, error):
+    print(error)
     if isinstance(error, commands.NoPrivateMessage):
-        await ctx.send('This command cannot be used in private messages.')
+        await ctx.send("This command cannot be used in private messages.")
+
     elif isinstance(error, commands.DisabledCommand):
-        await ctx.message.author.send('Sorry. This command is disabled and cannot be used.')
+        await ctx.send("Sorry. This command is disabled and cannot be used.")
+
     elif isinstance(error, commands.CheckFailure):
-        await ctx.message.author.send('Sorry. You dont have permission to use this command.')
+        await ctx.send("Sorry. You don't have permission to use this command.")
+
     elif isinstance(error, commands.MissingRequiredArgument):
+        await ctx.send("Missing an argument: {}".format(commands.MissingRequiredArgument.param))
+
+    elif isinstance(error, commands.NotOwner):
+        await ctx.send("Only the bot owner can use this command")
+
+    elif isinstance(error, commands.BotMissingPermissions):
+        await ctx.send("I need special permissions to use that command: \n{}".format(
+            "\n ".join(commands.BotMissingPermissions.missing_perms)))
+
+    elif isinstance(error, commands.MissingPermissions):
+        await ctx.send("You need special permissions to use that command: \n{}".format(
+            "\n ".join(commands.MissingPermissions.missing_perms)))
+
+    elif isinstance(error, commands.TooManyArguments):
+        await ctx.send("You have too many arguments")
+
+    elif isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(
+            "That command is on a cooldown for `{}` more seconds. It can be used every `{}` seconds".format(
+                commands.CommandOnCooldown.cooldown, str(commands.CommandOnCooldown.retry_after)[:5]))
+
+    """
+    elif isinstance(error, commands.BadArgument):
         command = ctx.message.content.split()[1]
         await ctx.send("Missing an argument: " + command)
     elif isinstance(error, commands.CommandNotFound):
         await ctx.send("I don't know that command")
-"""
+    """
 
 
 if __name__ == "__main__":
