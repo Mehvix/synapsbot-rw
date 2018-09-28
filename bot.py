@@ -45,6 +45,8 @@ client = commands.Bot(description="synapsBot",
                       owner_id="196355904503939073",
                       case_insensitive=True)
 
+discord.ext.commands.HelpFormatter(show_hidden=False)
+
 
 def get_json(file_path):
     with open(file_path, 'r') as fp:
@@ -123,6 +125,9 @@ async def on_ready():
     for x in range(len(server_list)):
         print("     > " + server_list[x - 1].name)
     print("=========================================================================")
+
+    if len(client.guilds) > 1:
+        print("ISSUE: It's not recommended to have more than one server being hosted at the same time...")
 
 
 @client.event
