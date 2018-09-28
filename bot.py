@@ -56,7 +56,7 @@ async def timer():
     global seconds
     seconds = 0
     while True:
-        await asyncio.sleep(.5)
+        await asyncio.sleep(1)
         seconds += 1
         if seconds == 60:
             seconds = 0
@@ -75,9 +75,8 @@ async def timer():
                     await client.user.edit(avatar=f.read())
                 except discord.HTTPException:
                     pass  # Sometimes discord gets angry when the profile pic is changed a lot
-
         # Comic Code
-        if str(str(str(datetime.now()).split(" ")[1]).split(".")[0]) == "1:00:00":  # TODO change this
+        if str(str(str(datetime.now()).split(" ")[1]).split(".")[0]) == "01:00:00":  # TODO change this
             date = datetime.today().strftime('%Y/%m/%d')
             search = "https://www.gocomics.com/calvinandhobbes/{}".format(date)
             print(search)
