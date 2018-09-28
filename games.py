@@ -27,7 +27,6 @@ class Games:
 
         try:
             for role in new_role:
-
                 print(before.name + " had " + role.name + status)
         except UnboundLocalError:
             pass  # If user is updated but a role isn't add/removed
@@ -35,8 +34,9 @@ class Games:
     @client.event
     async def on_ready(self):
         for guild in self.client.guilds:
-            global league, hs, fortnite, pubg, tf2, gta, chiv, cs, aoe, civ, rainbow, brawl, ratz
 
+            # Game Roles
+            global league, hs, fortnite, pubg, tf2, gta, chiv, cs, aoe, civ, rainbow, brawl, ratz
             league = discord.utils.get(guild.roles, id=settings.league_role)
             hs = discord.utils.get(guild.roles, id=settings.hs_role)
             fortnite = discord.utils.get(guild.roles, id=settings.fortnite_role)
@@ -51,6 +51,16 @@ class Games:
             brawl = discord.utils.get(guild.roles, id=settings.brawl_role)
             ratz = discord.utils.get(guild.roles, id=settings.ratz_role)
 
+            # Group Roles
+            global code, boof, max_role, path, poker, dj, snowboard
+            code = discord.utils.get(guild.roles, id=settings.code_role)
+            boof = discord.utils.get(guild.roles, id=settings.boof_role)
+            max_role = discord.utils.get(guild.roles, id=settings.max_role)
+            path = discord.utils.get(guild.roles, id=settings.path_role)
+            poker = discord.utils.get(guild.roles, id=settings.poker_role)
+            dj = discord.utils.get(guild.roles, id=settings.dj_role)
+            snowboard = discord.utils.get(guild.roles, id=settings.snowboard_role)
+
     @client.event  # TODO make cam blacklisted
     async def on_raw_reaction_add(self, payload):
         if int(payload.channel_id) == settings.game_channel:
@@ -58,32 +68,41 @@ class Games:
             user = guild.get_member(payload.user_id)
             reaction = payload.emoji.name
 
-            if str(reaction) == '🇦':
-                await user.add_roles(league)  # TODO blacklist cam from this
-            if str(reaction) == '🇧':
-                await user.add_roles(hs)
-            if str(reaction) == '🇨':
-                await user.add_roles(fortnite)
-            if str(reaction) == '🇩':
-                await user.add_roles(pubg)
-            if str(reaction) == '🇪':
-                await user.add_roles(tf2)
-            if str(reaction) == '🇫':
-                await user.add_roles(gta)
-            if str(reaction) == '🇬':
-                await user.add_roles(chiv)
-            if str(reaction) == '🇭':
-                await user.add_roles(cs)
-            if str(reaction) == '🇮':
-                await user.add_roles(aoe)
-            if str(reaction) == '🇯':
-                await user.add_roles(civ)
-            if str(reaction) == '🇰':
-                await user.add_roles(rainbow)
-            if str(reaction) == '🇱':
-                await user.add_roles(brawl)
-            if str(reaction) == '🇲':
-                await user.add_roles(ratz)
+            if int(payload.message_id) == settings.groups_message_id:
+                if str(reaction) == '🇦':
+                    await user.add_roles(code)
+                if str(reaction) == '🇧':
+                    await user.add_roles(poker)
+                if str(reaction) == '🇨':
+                    await user.add_roles(snowboard)
+
+            if int(payload.message_id) == settings.games_message_id:
+                if str(reaction) == '🇦':
+                    await user.add_roles(league)  # TODO blacklist cam from this
+                if str(reaction) == '🇧':
+                    await user.add_roles(hs)
+                if str(reaction) == '🇨':
+                    await user.add_roles(fortnite)
+                if str(reaction) == '🇩':
+                    await user.add_roles(pubg)
+                if str(reaction) == '🇪':
+                    await user.add_roles(tf2)
+                if str(reaction) == '🇫':
+                    await user.add_roles(gta)
+                if str(reaction) == '🇬':
+                    await user.add_roles(chiv)
+                if str(reaction) == '🇭':
+                    await user.add_roles(cs)
+                if str(reaction) == '🇮':
+                    await user.add_roles(aoe)
+                if str(reaction) == '🇯':
+                    await user.add_roles(civ)
+                if str(reaction) == '🇰':
+                    await user.add_roles(rainbow)
+                if str(reaction) == '🇱':
+                    await user.add_roles(brawl)
+                if str(reaction) == '🇲':
+                    await user.add_roles(ratz)
 
     @client.event
     async def on_raw_reaction_remove(self, payload):
@@ -91,37 +110,47 @@ class Games:
             guild = self.client.get_guild(payload.guild_id)
             user = guild.get_member(payload.user_id)
             reaction = payload.emoji.name
-            if str(reaction) == '🇦':
-                await user.remove_roles(league)
-            if str(reaction) == '🇧':
-                await user.remove_roles(hs)
-            if str(reaction) == '🇨':
-                await user.remove_roles(fortnite)
-            if str(reaction) == '🇩':
-                await user.remove_roles(pubg)
-            if str(reaction) == '🇪':
-                await user.remove_roles(tf2)
-            if str(reaction) == '🇫':
-                await user.remove_roles(gta)
-            if str(reaction) == '🇬':
-                await user.remove_roles(chiv)
-            if str(reaction) == '🇭':
-                await user.remove_roles(cs)
-            if str(reaction) == '🇮':
-                await user.remove_roles(aoe)
-            if str(reaction) == '🇯':
-                await user.remove_roles(civ)
-            if str(reaction) == '🇰':
-                await user.remove_roles(rainbow)
-            if str(reaction) == '🇱':
-                await user.remove_roles(brawl)
-            if str(reaction) == '🇲':
-                await user.remove_roles(ratz)
+
+            if int(payload.message_id) == settings.games_message_id:
+                if str(reaction) == '🇦':
+                    await user.remove_roles(league)
+                if str(reaction) == '🇧':
+                    await user.remove_roles(hs)
+                if str(reaction) == '🇨':
+                    await user.remove_roles(fortnite)
+                if str(reaction) == '🇩':
+                    await user.remove_roles(pubg)
+                if str(reaction) == '🇪':
+                    await user.remove_roles(tf2)
+                if str(reaction) == '🇫':
+                    await user.remove_roles(gta)
+                if str(reaction) == '🇬':
+                    await user.remove_roles(chiv)
+                if str(reaction) == '🇭':
+                    await user.remove_roles(cs)
+                if str(reaction) == '🇮':
+                    await user.remove_roles(aoe)
+                if str(reaction) == '🇯':
+                    await user.remove_roles(civ)
+                if str(reaction) == '🇰':
+                    await user.remove_roles(rainbow)
+                if str(reaction) == '🇱':
+                    await user.remove_roles(brawl)
+                if str(reaction) == '🇲':
+                    await user.remove_roles(ratz)
+
+            if int(payload.message_id) == settings.groups_message_id:
+                if str(reaction) == '🇦':
+                    await user.remove_roles(code)
+                if str(reaction) == '🇧':
+                    await user.remove_roles(poker)
+                if str(reaction) == '🇨':
+                    await user.remove_roles(snowboard)
 
     @client.command()
     @commands.has_role(settings.admin_role_name)
     async def games(self, ctx):
-        letters = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲']  # '🇳', '🇴'
+        letters = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲']
 
         embed = discord.Embed(color=settings.embed_color, title="Games:",
                               description='🇦 League\n'
@@ -136,15 +165,51 @@ class Games:
                                           '🇯 Civilization V\n'
                                           '🇰 Rainbow 6 Siege\n'
                                           '🇱 Brawlhalla\n'
-                                          '🇲 Ratz Instagib\n')
+                                          '🇲 Ratz Instagib\n'
+                                          # '🇳'
+                                          # '🇴'
+                                          # '🇵'
+                                          # '🇶'
+                                          # '🇷'
+                                          # '🇸'
+                                          # '🇹'
+                                          # '🇺'
+                                          # '🇻'
+                                          # '🇼'
+                                          # '🇾'
+                                          # '🇽'
+                                          # '🇿'
+                              )
 
         try:
-            msg = await ctx.channel.get_message(490768003080650755)
+            msg = await ctx.channel.get_message(settings.games_message_id)
             await msg.edit(embed=embed)
         except discord.NotFound:
             msg = await ctx.send(embed=embed)
 
-        for reaction in letters[:len(letters)]:
+        for reaction in letters[:len(str(msg.embeds[0].description).split("\n"))]:
+            await msg.add_reaction(reaction)
+
+        await ctx.message.delete()
+
+    @client.command()
+    @commands.has_role(settings.admin_role_name)
+    async def groups(self, ctx):
+        letters = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲']
+
+        embed = discord.Embed(color=settings.embed_color, title="Games:",
+                              description='🇦 Code Tester\n'
+                                          '🇧 Poker\n'
+                                          '🇨 Snowboarding\n'
+                              )
+
+        try:
+            msg = await ctx.channel.get_message(settings.groups_message_id)
+            await msg.edit(embed=embed)
+        except discord.NotFound:
+            msg = await ctx.send(embed=embed)
+
+        for reaction in letters[:len(str(msg.embeds[0].description).split("\n"))]:
             await msg.add_reaction(reaction)
 
         await ctx.message.delete()
