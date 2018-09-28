@@ -16,7 +16,7 @@ class Accept:
 
     print("Loading Accept...")
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def decline(self, ctx):
         channel = self.client.get_channel(id=settings.notification_channel)
         await channel.send("<@{}> typed `.decline` and was kicked LUL".format(ctx.message.author.id))
@@ -26,7 +26,7 @@ class Accept:
         await ctx.message.author.send("Here's an invite if you change your mind!\n{}".format(invite.url))
         await ctx.message.author.kick()
 
-    @commands.command()
+    @commands.command(hidden=True)
     async def accept(self, ctx):
         member_role = discord.utils.get(ctx.guild.roles, name=settings.member_role_name)
         if member_role is None:
