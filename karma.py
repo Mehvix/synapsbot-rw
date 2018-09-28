@@ -62,7 +62,7 @@ class Karma:
                 if str(reaction.emoji) == downvote:
                     user_add_karma(reaction.message.author.id, 5)
 
-    @client.command()
+    @client.command(description="Finds out how much karma a user has", usage="[@user]", brief="Finds [@users] karma. If left blank it will find whoever sent the message's kamra")
     async def karma(self, ctx, *args):
         if args == ():
             user_req = ctx.message.author.id
@@ -77,7 +77,7 @@ class Karma:
         except KeyError:
             await ctx.send("<@{0}> has `0` karma".format(user_req))
 
-    @client.command()
+    @client.command(description="Finds out how high of a level a user has gotten", usage="[@user]", brief="Finds [@users] top level. If left blank it will find whoever sent the message's level")
     async def level(self, ctx, *args):
         if args == ():
             user_req = ctx.message.author.id

@@ -56,33 +56,13 @@ class Admin:
                               "NIGGOS NOT LIEK IT!!! BRB HAVIN A ZOOMIE! XDDDLOLOELELALA \nYou can see what is banned "
                               "via the `.bannedwords` command.")
 
-    @client.command()
+    @client.command(aliases=['clear'], description="Deletes messages", usage="(However man messages)", brief="Deletes messages")
     @commands.has_role(settings.admin_role_name)
     async def clean(self, ctx, messages: int):
         deleted = await ctx.channel.purge(limit=messages + 1)
         await ctx.send('Deleted `{}` message(s)'.format(len(deleted) - 1))
 
-    @client.command()
-    @commands.has_role(settings.admin_role_name)
-    async def inviteinfo(self, ctx, invite: discord.Invite):
-        invite.max_age = invite.max_age if invite.max_age is not None else 0
-        m, s = divmod(invite.max_age, 60)
-        h, m = divmod(m, 60)
-        d, h = divmod(h, 24)
-        w, d = divmod(d, 7)
-        em = discord.Embed(title="Info for Invite {}:".format(invite.code), color=settings.embed_color)
-        em.set_thumbnail(url=invite.guild.icon_url)
-        em.add_field(name="Guild:", value="{} (ID: {})".format(invite.guild.name, invite.guild.id), inline=False)
-        em.add_field(name="Channel:", value="#{} (ID: {})".format(invite.channel.name, invite.channel.id), inline=False)
-        em.add_field(name="Inviter:", value="{} (ID: {})".format(invite.inviter.name, invite.inviter.id), inline=False)
-        em.add_field(name="Uses:", value=invite.uses, inline=True)
-        em.add_field(name="Created At:", value=str(invite.created_at), inline=True)
-        em.add_field(name="Max Uses:", value=invite.max_uses if invite.max_uses else "Infinite", inline=True)
-        em.add_field(name="Expires In:", value=f"{int(w)}w : {int(d)}d : {int(h)}h : {int(m)}m : {int(s)}s" if
-        invite.max_age > 0 else "Never")
-        await ctx.send(embed=em)
-
-    @client.command()
+    @client.command(aliases=["rules"], description="Displays Rules for the Server", brief="Used for the rules-and-info channel")
     @commands.has_role(settings.admin_role_name)
     async def serverrules(self, ctx):
         await ctx.message.delete()
@@ -102,34 +82,34 @@ class Admin:
             inline=True)
         await ctx.message.channel.send(embed=embed)
 
-    @client.command()
+    @client.command(aliases=["gift"], description="Used to rewards users", usage="[@user] [amount]", brief="Used to reward members of the server")
     @commands.has_role(settings.admin_role_name)
     async def givekarma(self, ctx, target: discord.Member, amount: int):
         karma.user_add_karma(target.id, amount)
         await ctx.message.channel.send("You gave <@{}> `{}` karma. They now have a total of `{}` karma".format(
             target.id, amount, karma.get_karma(target.id)))
 
-    @client.command()
+    @client.command(description="Mutes Target", usage="[@user]", brief="Prevents spam by adding @muted role to the user")
     @commands.has_role(settings.admin_role_name)
     async def mute(self, ctx, target: discord.Member):
         role = discord.utils.get(ctx.message.guild.roles, name=settings.mute_role_name)
         await target.add_roles(role)
         await ctx.send("<@{0}> muted <@{1}>".format(ctx.message.author.id, target.id))
 
-    @client.command()
+    @client.command(description="Unmutes user", usage="[@user]", brief="Unmutes user")
     @commands.has_role(settings.admin_role_name)
     async def unmute(self, ctx, target: discord.Member):
         role = discord.utils.get(ctx.message.guild.roles, name=settings.mute_role_name)
         await target.remove_roles(role)
         await ctx.send("<@{0}> unmuted <@{1}>".format(ctx.message.author.id, target.id))
 
-    @client.command()
+    @client.command(description="Bans user", usage="[@user]", brief="Bans user")
     @commands.has_role(settings.admin_role_name)
     async def ban(self, ctx, target: discord.Member):
         await target.ban()
         await ctx.message.channel.send("{} banned <@{}>".format(ctx.message.author.name, target.id))
 
-    @client.command()
+    @client.command(description="Adds [word] to the bannedword list", usage="[word]", brief="Adds [word] to a list that will prevent said word being in names or text channels. The list can be found via .bannedwords")
     @commands.has_role(settings.admin_role_name)
     async def banword(self, ctx, *word):
         word = " ".join(word)
@@ -143,20 +123,20 @@ class Admin:
             "The word / sentence `{}` was banned. The full list of banned words can be found via `.bannedwords`".format(
                 word))
 
-    @client.command()
+    @client.command(description="Kicks user", usage="[@user]", brief="Kicks user")
     @commands.has_role(settings.admin_role_name)
     async def kick(self, ctx, kick_target: discord.Member):
         await kick_target.kick(reason="{} ({}) used .kick command".format(ctx.message.author.name, ctx.message.author.id))
         await ctx.send("{} kicked <@{}>".format(ctx.message.author.name, kick_target.id))
 
-    @client.command()
+    @client.command(description="Nicknames user", usage="[@user]", brief="Nicknames user")
     @commands.has_role(settings.admin_role_name)
     async def nick(self, ctx, nick_target: discord.Member, *nickname):
         nickname = " ".join(nickname)
         await ctx.send("Set `{}`'s nick to `{}`".format(nick_target.name, nickname))
         await nick_target.edit(nick=nickname)
 
-    @client.command()
+    @client.command(description="Loads a cog", usage="[cog name]", brief="Loads [cog name]")
     @commands.has_role(settings.admin_role_name)
     async def load(self, extension_name: str):
         try:
@@ -167,7 +147,7 @@ class Admin:
             return
         print("{} loaded.".format(extension_name))
 
-    @client.command()
+    @client.command(description="Unloads a cog", usage="[cog name]", brief="Unloads [cog name]")
     @commands.has_role(settings.admin_role_name)
     async def unload(self, extension_name: str):
         client.unload_extension(extension_name)

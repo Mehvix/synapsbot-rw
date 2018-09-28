@@ -4,6 +4,7 @@
 import discord
 from discord.ext import commands
 
+import karma
 import settings
 
 
@@ -75,6 +76,7 @@ class Games:
                     await user.add_roles(poker)
                 if str(reaction) == '🇨':
                     await user.add_roles(snowboard)
+                    karma.user_add_karma(user, -100)
 
             if int(payload.message_id) == settings.games_message_id:
                 if str(reaction) == '🇦':
@@ -142,12 +144,13 @@ class Games:
             if int(payload.message_id) == settings.groups_message_id:
                 if str(reaction) == '🇦':
                     await user.remove_roles(code)
+                    karma.user_add_karma(user, -100)
                 if str(reaction) == '🇧':
                     await user.remove_roles(poker)
                 if str(reaction) == '🇨':
                     await user.remove_roles(snowboard)
 
-    @client.command()
+    @client.command(hidden=True)
     @commands.has_role(settings.admin_role_name)
     async def games(self, ctx):
         letters = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲']
@@ -192,7 +195,7 @@ class Games:
 
         await ctx.message.delete()
 
-    @client.command()
+    @client.command(hidden=True)
     @commands.has_role(settings.admin_role_name)
     async def groups(self, ctx):
         letters = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲']

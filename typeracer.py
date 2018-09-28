@@ -16,7 +16,7 @@ class Typeracer:
 
     print("Loading Typeracer...")
 
-    @client.command()
+    @client.command(alias=["type", "racer", "wpm", "typeracer"], description="Gets a users stats on typeracer.com", usage="[username from typeracer.com]", brief="Gets statistics about [username] from typeracer.com")  # TODO
     async def tr(self, ctx, user):
         search = "https://data.typeracer.com/users?id=tr:{}".format(user)
 

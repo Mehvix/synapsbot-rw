@@ -21,10 +21,6 @@ class Forwarding:
 
     print("Loading Forwarding...")
 
-    @client.command()
-    async def dmme(self, ctx):
-        await ctx.message.author.send("DM!")
-
     async def on_message(self, message):
         my_id = 196355904503939073
 

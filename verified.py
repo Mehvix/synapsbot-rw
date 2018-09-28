@@ -27,7 +27,7 @@ class Verified:
 
     print("Loading Verified...")
 
-    @client.command()
+    @client.command(aliases=["urban", "dictionary", "definition", "define"], description="Finds the Urban Dictionary definition/example of a word", usage="[word]", brief="Gets the Urban Dictionary definition and examples of a [word]")
     @commands.has_role(settings.verified_role_name)
     async def ud(self, ctx, *word: str):
         term = " ".join(word)
@@ -58,7 +58,8 @@ class Verified:
                                                "https://www.urbandictionary.com/add.php?word={}".
                                                format(error, term_link))
 
-    @client.command()
+    '''
+    @client.command(description="TODO", usage="[]", brief="TODO")
     @commands.has_role(settings.verified_role_name)
     async def profile(self, ctx):
         search = "https://discordapp.com/users/{}/profile".format(ctx.message.author.id)
@@ -68,21 +69,22 @@ class Verified:
                 if r.status == 200:
                     result = await r.json(content_type='application/json')
                     await ctx.message.channel.send(result)
+    '''
 
-    @client.command()
+    @client.command(description="Makes text look whack", usage="[word/sentence]", brief="Adds zalgo effect to [word/sentecne]")
     @commands.has_role(settings.verified_role_name)
     async def zalgo(self, ctx, *target):
         target = " ".join(target)
         intensity = {"up": 5, "mid": 5, "down": 5}
         await ctx.message.channel.send(zalgo.zalgo(target, intensity))
 
-    @client.command()
+    @client.command(aliases=["up"], description="Returns how long the bot has been live", brief="Returns how long the bot has been live")
     @commands.has_role(settings.verified_role_name)
     async def uptime(self, ctx):
         await ctx.message.channel.send("The bot has been live for `{}` {}".format(curtime.uptime(),
                                                                                   settings.random_clock()))
 
-    @client.command()
+    @client.command(description="Used to DM everyone in a role", usage="[role] [message]", brief="Sends everyone who has [role] the [message]. This should be used for game night/etc.")
     @commands.has_role(settings.verified_role_name)
     async def announce(self, ctx, role: discord.Role, *message: str):
         print(role.members, message)
@@ -94,31 +96,31 @@ class Verified:
                     ctx.message.author.name, len(role.members), role.name), icon_url=ctx.message.author.avatar_url)
             await member.send(embed=embed)
 
-    @client.command()
+    @client.command(description="Gets a random Sammy pic", brief="Gets a random Sammy pic")
     @commands.has_role(settings.verified_role_name)
     async def sam(self, ctx):
         fp = random.choice(os.listdir("media/sams"))
         await ctx.message.channel.send(file=discord.File("media/sams/{}".format(fp)))
 
-    @client.command()
+    @client.command(description="Gets a random picture of Aidan", brief="Gets a random picture of Aidan")
     @commands.has_role(settings.verified_role_name)
     async def aidan(self, ctx):
         fp = random.choice(os.listdir("media/aidans"))
         await ctx.message.channel.send(file=discord.File("media/aidans/{}".format(fp)))
 
-    @client.command()
+    @client.command(description="Gets a random Apu", brief="Gets a random Apu")
     @commands.has_role(settings.verified_role_name)
     async def apu(self, ctx):
         fp = random.choice(os.listdir("media/apus"))
         await ctx.message.channel.send(file=discord.File("media/apus/{}".format(fp)))
 
-    @client.command()
+    @client.command(description="Gets a random Bear gif", brief="Gets a random Bear gif")
     @commands.has_role(settings.verified_role_name)
     async def bear(self, ctx):
         fp = random.choice(os.listdir("media/bears"))
         await ctx.message.channel.send(file=discord.File("media/bears/{}".format(fp)))
 
-    @client.command()
+    @client.command(description="Gets a random Cat picture", brief="Gets a random Cat picture")
     @commands.has_role(settings.verified_role_name)
     async def cat(self, ctx):
         search = "https://nekos.life/api/v2/img/meow"
@@ -129,7 +131,7 @@ class Verified:
                     result = await r.json(content_type='application/json')
                     await ctx.message.channel.send(result['url'])
 
-    @client.command()
+    @client.command(description="Gets a random Dog picture", brief="Gets a random Dog picture")
     @commands.has_role(settings.verified_role_name)
     async def dog(self, ctx):
         search = "https://dog.ceo/api/breeds/image/random"
@@ -140,7 +142,7 @@ class Verified:
                     result = await r.json(content_type='application/json')
                     await ctx.message.channel.send(result['message'])
 
-    @client.command()
+    @client.command(description="Gets Information about the server", usage="[]", brief="")
     @commands.has_role(settings.verified_role_name)
     async def serverinfo(self, ctx):  # make this admin
         online = 0
@@ -174,19 +176,18 @@ class Verified:
         em.set_author(name="\u200b")
         await ctx.message.channel.send(embed=em)
 
-    @client.command()
+    @client.command(aliases=["emojis", "emotelist", "emojilist"], description="Returns all emotes in the server", brief="Returns all emotes in the server")
     @commands.has_role(settings.verified_role_name)
     async def emotes(self, ctx):
         emojis = [str(x) for x in ctx.message.guild.emojis]
         await ctx.message.channel.send(" ".join(emojis))
 
-    @client.command()
+    @client.command(description="Asks access to testing server", brief="Asks access to testing server")
     @commands.has_role(settings.verified_role_name)
     async def beta(self, ctx):
         user = self.client.get_user(196355904503939073)
         user.send("Hey <@!196355904503939073>, <@{}> wants beta access.\nType `.allow` to send them an invite".format(
             ctx.author.id))
-
         x = 0
         while x != 1:
             msg = await self.client.wait_for("message")
@@ -203,7 +204,7 @@ class Verified:
             "<@{}> was accepted into the beta testing server! :tada:\nYou can apply via the `.beta` command.".format(
                 ctx.message.author.id))
 
-    @client.command()
+    @client.command(description="Random copypasta", brief="Gets a random post from /r/copypastas")
     @commands.has_role(settings.verified_role_name)
     async def copypasta(self, ctx):
         search = "https://www.reddit.com/r/copypasta/random/.json?limit=1"
@@ -232,7 +233,48 @@ class Verified:
 
         await ctx.message.channel.send(embed=embed)
 
-    @client.command()
+    @client.command(description="Info about an invite", usage="[invite URL]", brief="Info about an invite")
+    @commands.has_role(settings.verified_role_name)
+    async def inviteinfo(self, ctx, invite: discord.Invite):
+        invite.max_age = invite.max_age if invite.max_age is not None else 0
+        m, s = divmod(invite.max_age, 60)
+        h, m = divmod(m, 60)
+        d, h = divmod(h, 24)
+        w, d = divmod(d, 7)
+        em = discord.Embed(title="Info for Invite {}:".format(invite.code), color=settings.embed_color)
+        try:
+            em.set_thumbnail(url=invite.guild.icon_url)
+        except AttributeError:
+            pass
+        em.add_field(name="Server:", value="{} (ID: {})".format(invite.guild.name, invite.guild.id), inline=False)
+        em.add_field(name="Channel:", value="#{} (ID: {})".format(invite.channel.name, invite.channel.id), inline=False)
+        em.add_field(name="Inviter:", value="{} (ID: {})".format(invite.inviter.name, invite.inviter.id), inline=False)
+        em.add_field(name="Created At:", value=str(invite.created_at), inline=True)
+        em.add_field(name="Temporary?:", value=str(invite.temporary), inline=True)
+        em.add_field(name="Uses:", value=invite.uses, inline=True)
+        em.add_field(name="Max Uses:", value=invite.max_uses if invite.max_uses else "Infinite", inline=True)
+        em.add_field(name="Expires In:", value=f"{int(w)}w : {int(d)}d : {int(h)}h : {int(m)}m : {int(s)}s" if
+        invite.max_age > 0 else "Never")
+        await ctx.send(embed=em)
+
+    @client.command(aliases=["transfer"], description="Lets users to give others karma", usage="[@user] [amount]", brief="Gives [@user] [amount] of karma from your account")
+    @commands.has_role(settings.verified_role_name)
+    async def tradekarma(self, ctx, target: discord.Member, amount: int):
+        if amount < 0:
+            await ctx.send("You cannot give negative karma")
+            return
+
+        if amount > karma.get_karma(ctx.author.id):
+            await ctx.send("You cannot trade more karma than you have")
+            return
+
+        karma.user_add_karma(target.id, amount)
+        karma.user_add_karma(ctx.author.id, -amount)
+        await ctx.message.channel.send(
+            "You traded <@{}> `{}` karma. They now have a total of `{}` karma and you have `{}`".format(
+                target.id, amount, karma.get_karma(target.id), karma.get_karma(ctx.author.id)))
+
+    @client.command(description="Random emojipasta", brief="Gets a random post from /r/emojipastas")
     @commands.has_role(settings.verified_role_name)
     async def emojipasta(self, ctx):
         search = "https://www.reddit.com/r/emojipasta/random/.json?limit=1"
@@ -270,7 +312,7 @@ class Verified:
 
         await ctx.message.channel.send(embed=embed)
 
-    @client.command()
+    @client.command(description="Random coaxed", brief="Gets a random post from /r/caoxedintoasnafu")
     @commands.has_role(settings.verified_role_name)
     async def coaxed(self, ctx):
         search = "https://www.reddit.com/r/coaxedintoasnafu/random/.json?limit=1"
@@ -307,7 +349,7 @@ class Verified:
 
         await ctx.message.channel.send(embed=embed)
 
-    @client.command()
+    @client.command(aliases=["hmm", "hmmmm"], description="Random hmmm", brief="Gets a random post from /r/hmmm")
     @commands.has_role(settings.verified_role_name)
     async def hmmm(self, ctx):
         search = "https://www.reddit.com/r/hmmm/random/.json?limit=1"
@@ -344,7 +386,7 @@ class Verified:
 
         await ctx.message.channel.send(embed=embed)
 
-    @client.command()
+    @client.command(aliases=["user", "profile"], description="Gives info about a user", usage="[@user]", brief="Gives info about [@user]")
     @commands.has_role(settings.verified_role_name)
     async def whois(self, ctx, user: discord.Member):
         full_user_name = "{}#{}".format(user.name, user.discriminator)
@@ -364,11 +406,6 @@ class Verified:
         embed.add_field(name="User Game:", value=user.game)
         embed.add_field(name="User Custom Name:", value=user.nick)
         embed.add_field(name="User Role Color:", value=user.color)
-
-        # profile = await self.client.get_user_profile(user.id)
-        # print(profile.premium)
-
-        embed.add_field(name="User Role Color:", value=user.color)
         if len(user.roles) > 1:  # TIL @everyone is a role that is assigned to everyone but hidden
             embed.add_field(name="User Top Role (Level):", value=user.top_role)
         else:
@@ -377,7 +414,7 @@ class Verified:
         embed.set_thumbnail(url=user.avatar_url)
         await ctx.message.channel.send(embed=embed)
 
-    @client.command()  # TODO add bot emote to this
+    @client.command(aliases=["bans", "banslist"], description="Lists everyone banned from the server", brief="Lists everyone banned from the server")  # TODO add bot emote to this
     @commands.has_role(settings.verified_role_name)
     async def banlist(self, ctx):
         bans = await ctx.message.guild.bans()
@@ -389,7 +426,7 @@ class Verified:
             embed = discord.Embed(color=settings.embed_color, title="Ban List", description="\n".join(pretty_list))
             await ctx.message.channel.send(embed=embed)
 
-    @client.command()
+    @client.command(aliases=["invite"], description="Creates an invite for the server", brief="Creates an invite for the server")
     @commands.has_role(settings.verified_role_name)
     async def createinvite(self, ctx):
         invite = await ctx.channel.create_invite(
@@ -397,7 +434,7 @@ class Verified:
                 ctx.message.author.name, ctx.message.author.id))
         await ctx.message.channel.send(invite.url)  # TODO add more info to this
 
-    @client.command()
+    @client.command(aliases=["8ball"], description="Answers questions 110% accurately", usage="[question]", brief="Answers [questions]")
     @commands.has_role(settings.verified_role_name)
     async def oujia(self, ctx, *question):
         question = "".join(question)
@@ -423,7 +460,7 @@ class Verified:
                 while times != 1:  # fake hardsolving
                     bleh.insert(position, "".join(random.choices(letters)))
                     bleh.pop(position + 1)
-                    times = random.randint(1, 2)  # this could be at '1,5' or high but discord rate limits are very restrictive
+                    times = random.randint(1, 2)  # this could be at '(1,5)' or high but discord rate limits are very restrictive
                     await msg.edit(content="".join(bleh))
                 bleh.insert(position, str(choice)[position])
                 bleh.pop(position + 1)
@@ -431,26 +468,14 @@ class Verified:
         else:
             await ctx.send("You need a question!")
 
-    @client.command()
+
+    # TODO test this stuff and work on help
+    @client.command(aliases=["gamble", "r", "roulete", "roullete"], description="Too much to say, do .roulette help", usage="[odd/even/zero] [amount of karma < 250 and > 10]", brief="Lets you bet [amount of karma] on an outcome, [odd/even/zero] ")
     @commands.has_role(settings.verified_role_name)
-    async def roulette(self, ctx, *args: str):
-        try:
-            args = " ".join(args)
-            args = args.split(" ")
-            outcome = str(args[0]).lower()
-        except (IndexError, ValueError, AttributeError):
-            await ctx.message.channel.send(
-                "You need to format your message such as \n`.roulette [odd/even/zero] [amount of karma <250 and > 10]`")
-            return
+    async def roulette(self, ctx, outcome: str, *amount: int):
+        outcome = "".join(outcome)
 
-        print(outcome)
-
-        if "help" in outcome:  # TODO update this to make it look/read better
-            embed = discord.Embed(title="Roulette Help:", description="Type ", color=settings.embed_color)
-            await ctx.message.channel.send(embed=embed)
-            return
-
-        if "outcome" in outcome:
+        if "outcome" in outcome:  # TODO make this a seperate command?
             with open('roulette_outcomes.json', 'r') as fp:
                 outcomes = json.load(fp)
             odd_total = outcomes['odd']
@@ -470,16 +495,16 @@ class Verified:
             await ctx.message.channel.send(embed=embed)
             return
 
-        amount = int(args[1])
+        amount = "".join(amount)
 
-        outcomes = ['odd', 'even', 'zero']  # TODO add more outcome options
+        outcomes = ['odd', 'even', 'zero']
         if outcome not in outcomes:
             print("1" + outcome)
             await ctx.message.channel.send(
                 "You need to format your message such as \n`.roulette [odd/even/zero] [amount of karma <250 and > 10]`")
             return
 
-        if 10 > amount > 250:  # TODO fix this becuase it doesn't
+        if 10 > amount > 250:  # TODO fix this because it doesn't
             print('2')
             await ctx.message.channel.send(
                 "You need to format your message such as \n`.roulette [odd/even/zero] [amount of karma < 250 and > 10]`")
@@ -531,7 +556,7 @@ class Verified:
             await ctx.message.channel.send("You lost!\nYour new karma total is `{}`".format(
                 karma.get_karma(ctx.message.author.id)))
 
-    @client.command()
+    @client.command(aliases=["bannedword", "bannedwordlist"], description="Lists all banned words/terms", brief="Lists all banned words/terms")
     @commands.has_role(settings.verified_role_name)
     async def bannedwords(self, ctx):
         banned_words = settings.get_json("banned_words.json")
@@ -539,23 +564,22 @@ class Verified:
 
         await ctx.message.channel.send("**Banned Words List:** \n• {}".format("\n• ".join(lower)))
 
+    '''
     @client.command()
     @commands.has_role(settings.verified_role_name)
     async def jpeg(self, ctx, *args):
         pass
+    '''
 
-    @client.command()
+    @client.command(description="👏 Makes 👏 this 👏 text 👏 with 👏 any 👏 emote 👏", usage="[emote] [text]", brief="Replaces all spaces in [text] with 2 spaces and emote between them")
     @commands.has_role(settings.verified_role_name)
-    async def generate(self, ctx, *args):
-        args = " ".join(args)
-        emote = args[0]
-        emote = " ".join(emote)
-        text = args[1:]
-        text = "".join(text)
+    async def generate(self, ctx, emote: str, *text):
+        emote = emote
+        text = " ".join(text)
 
         await ctx.send(str(text).replace(" ", " " + emote) + " " + emote)
 
-    @client.command()
+    @client.command(description="Displays who has the highest karam/level", usage="[kind] (karam/level)", brief="Displays who has the highest [kind]")
     @commands.has_role(settings.verified_role_name)
     async def leaderboard(self, ctx, *kind):
         kind = " ".join(kind)
@@ -576,7 +600,7 @@ class Verified:
                 number + 1, file[user]['name'], word, file[user].get(type_new, 0), type_new)
         await ctx.send(msg)
 
-    @client.command()
+    @client.command(description="Lists all invites to the server", brief="Lists all invites to the serve")
     @commands.has_role(settings.verified_role_name)
     async def invites(self, ctx):
         server = ctx.message.guild
@@ -601,7 +625,7 @@ class Verified:
             embed.add_field(name='Revoked Invites ({})'.format(len(revoked_invites)), value='\n'.join(revoked_invites))
         await ctx.send(embed=embed)
 
-    @client.command()
+    @client.command(aliases=["roast"], description="Insults a user", usage="[@user]", brief="Roasts [@user] with one of 180+ insults")
     @commands.has_role(settings.verified_role_name)
     async def insult(self, ctx, user: discord.Member):
         insults = settings.get_json("insults.json")

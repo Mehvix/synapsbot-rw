@@ -21,7 +21,7 @@ class Basic:
 
     print("Loading Basic...")
 
-    @client.command()
+    @client.command(aliases=["botinfo", "bot", "creator"], description="Gives info about bot", brief="Gives info about bot.")
     async def about(self, ctx):
         info = await self.client.application_info()
         embed = discord.Embed(
@@ -36,19 +36,19 @@ class Basic:
         embed.set_thumbnail(url=self.client.user.avatar_url)
         await ctx.send(embed=embed)
 
-    @client.command()
+    @client.command(aliases=["idea", "suggest"], description="Link to Trello", brief="Trello")
     async def trello(self, ctx):
         await ctx.send("Trello Link:\nhttps://trello.com/b/CQBT9vag/synapsbot")
 
-    @client.command()
+    @client.command(aliases=["now"], description="Gets the time", brief="Gets the time")
     async def time(self, ctx):
         await ctx.send("It's `{0}".format(str(datetime.now()).split(" ")[1]).split(".")[0] + "`")
 
-    @client.command()
+    @client.command(aliases=["bug", "broken", "error"], description="Link to report issues", brief="Link to report issues")
     async def issue(self, ctx):
         await ctx.send("Please report the issue here:\nhttps://github.com/Mehvix/synapsBotRW/issues")
 
-    @client.command(case_insensitive=True)
+    @client.command(aliases=["lag", "latency"], description="Gets the bots ping", brief="Gets the bots ping")
     async def ping(self, ctx):
         await ctx.send("I have a latency of `{}` ms".format(str(float(self.client.latency)*1000)[:2]))
 
