@@ -148,7 +148,7 @@ async def on_command_error(ctx, error):
         await ctx.send("Sorry. You don't have permission to use this command.")
 
     elif isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("Missing an argument: {}".format(commands.MissingRequiredArgument.param))
+        await ctx.send("You are missing a parameter. Do `.help [command name]` for more info")
 
     elif isinstance(error, commands.NotOwner):
         await ctx.send("Only the bot owner can use this command")
