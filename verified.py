@@ -414,7 +414,7 @@ class Verified:
         embed.set_thumbnail(url=user.avatar_url)
         await ctx.message.channel.send(embed=embed)
 
-    @client.command(aliases=["bans", "banslist"], description="Lists everyone banned from the server", brief="Lists everyone banned from the server")  # TODO add bot emote to this
+    @client.command(aliases=["bans", "banslist"], description="Lists everyone banned from the server", brief="Lists everyone banned from the server")
     @commands.has_role(settings.verified_role_name)
     async def banlist(self, ctx):
         bans = await ctx.message.guild.bans()
@@ -422,8 +422,18 @@ class Verified:
             embed = discord.Embed(title="Ban List", description="This server doesn't have anyone banned (yet)", color=settings.embed_color)
             await ctx.message.channel.send(embed=embed)
         else:
-            pretty_list = ["• <@{0.id}> ({0.name}#{0.discriminator})".format(entry.user) for entry in bans]
-            embed = discord.Embed(color=settings.embed_color, title="Ban List", description="\n".join(pretty_list))
+            #pretty_list = []
+            bot_acc = []
+
+            embed = discord.Embed(title="🔨 Ban List:", color=settings.embed_color)
+            for entry in bans:  # TODO add bot emote to this
+                bot_acc.append("bot yes" if entry.user.bot is True else "bot no")
+                embed.add_field(name="{}{}#{} [{}]".format("🤖 " if entry.user.bot is True else None,entry.user.name, entry.user.discriminator, entry.user.id), value="Reason: {}".format(entry.reason), inline=False)
+
+            #    pretty_list.append("• <@{}> ({}#{})".format(entry.user.id, entry.user.name, entry.user.discriminator))
+            print(bot_acc)
+            print(bot_acc)
+            #embed = discord.Embed(color=settings.embed_color, title="Ban List", description="\n".join(pretty_list))
             await ctx.message.channel.send(embed=embed)
 
     @client.command(aliases=["invite"], description="Creates an invite for the server", brief="Creates an invite for the server")
@@ -468,14 +478,32 @@ class Verified:
         else:
             await ctx.send("You need a question!")
 
-
-    # TODO test this stuff and work on help
-    @client.command(aliases=["gamble", "r", "roulete", "roullete"], description="Too much to say, do .roulette help", usage="[odd/even/zero] [amount of karma < 250 and > 10]", brief="Lets you bet [amount of karma] on an outcome, [odd/even/zero] ")
+    @client.command(aliases=["outcomes"], description="Roulette outcomes", brief="Roulette outcomes")
     @commands.has_role(settings.verified_role_name)
-    async def roulette(self, ctx, outcome: str, *amount: int):
-        outcome = "".join(outcome)
+    async def roulette_outcomes(self, ctx):
+        with open('roulette_outcomes.json', 'r') as fp:
+            outcomes = json.load(fp)
 
-        if "outcome" in outcome:  # TODO make this a seperate command?
+        odd_total = outcomes['odd']
+        even_total = outcomes['even']
+        zero_total = outcomes['zero']
+        total_total = outcomes['total']
+
+        outcomes_list = [odd_total, even_total, zero_total]
+        total = sum(outcomes_list)
+        embed = discord.Embed(title="\u200b", color=settings.embed_color)
+        embed.set_author(name="Roulette Outcomes 📊")
+        embed.add_field(name="Total number of times 'spun'", value=total, inline=True)
+        embed.add_field(name="Total Karma Bet", value=total_total, inline=False)
+        embed.add_field(name="Odd", value=odd_total, inline=True)
+        embed.add_field(name="Even", value=even_total, inline=True)
+        embed.add_field(name="Zero", value=zero_total, inline=True)
+        await ctx.message.channel.send(embed=embed)
+
+    @client.command(aliases=["r", "roulete", "roullete", "bet"], description="Too much to say, do .roulette help", usage="[odd/even/zero] [amount of karma < 250 and > 10]", brief="Lets you bet [amount of karma] on an outcome, [odd/even/zero] ")
+    @commands.has_role(settings.verified_role_name)
+    async def roulette(self, ctx, outcome: str, *amount):
+        if "outcome" in outcome:
             with open('roulette_outcomes.json', 'r') as fp:
                 outcomes = json.load(fp)
             odd_total = outcomes['odd']
@@ -485,7 +513,7 @@ class Verified:
 
             outcomes_list = [odd_total, even_total, zero_total]
             total = sum(outcomes_list)
-            embed = discord.Embed(title="\u200b", color=settings.embed_color)
+            embed = discord.Embed(color=settings.embed_color)
             embed.set_author(name="Roulette Outcomes 📊")
             embed.add_field(name="Total number of times 'spun'", value=total, inline=True)
             embed.add_field(name="Total Karma Bet", value=total_total, inline=False)
@@ -495,24 +523,26 @@ class Verified:
             await ctx.message.channel.send(embed=embed)
             return
 
-        amount = "".join(amount)
-
         outcomes = ['odd', 'even', 'zero']
         if outcome not in outcomes:
             print("1" + outcome)
             await ctx.message.channel.send(
-                "You need to format your message such as \n`.roulette [odd/even/zero] [amount of karma <250 and > 10]`")
+                "You need to format your message such as \n`.roulette [odd/even/zero] [amount of karma between 10 and 250]`")
             return
-
-        if 10 > amount > 250:  # TODO fix this because it doesn't
-            print('2')
+        try:
+            amount = int("".join(amount))
+        except ValueError:
             await ctx.message.channel.send(
-                "You need to format your message such as \n`.roulette [odd/even/zero] [amount of karma < 250 and > 10]`")
+                "You need to format your message such as \n`.roulette [odd/even/zero] [amount of karma 10 and 250]`")
+
+        if 10 > amount or 250 < amount:
+            await ctx.message.channel.send(
+                "You need to format your message such as \n`.roulette [odd/even/zero] [amount of karma 10 and 250]`")
             return
 
         if amount > karma.get_karma(ctx.message.author.id):
             await ctx.message.channel.send(
-                "You only have `{}` karma, which isn't enough to bet that much".format(karma.get_karma(ctx.message.author.id)))
+                "You only have `{}` karma available to bet".format(karma.get_karma(ctx.message.author.id)))
             return
 
         with open('roulette_outcomes.json', 'r') as fp:
