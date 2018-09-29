@@ -80,15 +80,18 @@ class Games:
 
             if int(payload.message_id) == settings.games_message_id:
                 if str(reaction) == '🇦':
-                    await user.add_roles(league)  # TODO blacklist cam from this
+                    if user != 262677178590822400:
+                        await user.add_roles(league)
                 if str(reaction) == '🇧':
-                    await user.add_roles(hs)
+                    if user != 262677178590822400:
+                        await user.add_roles(hs)
                 if str(reaction) == '🇨':
                     await user.add_roles(fortnite)
                 if str(reaction) == '🇩':
                     await user.add_roles(pubg)
                 if str(reaction) == '🇪':
-                    await user.add_roles(tf2)
+                    if user != 262677178590822400:
+                        await user.add_roles(tf2)
                 if str(reaction) == '🇫':
                     await user.add_roles(gta)
                 if str(reaction) == '🇬':
@@ -96,13 +99,17 @@ class Games:
                 if str(reaction) == '🇭':
                     await user.add_roles(cs)
                 if str(reaction) == '🇮':
-                    await user.add_roles(aoe)
+                    if user != 262677178590822400:
+                        await user.add_roles(aoe)
                 if str(reaction) == '🇯':
-                    await user.add_roles(civ)
+                    if user != 262677178590822400:
+                        await user.add_roles(civ)
                 if str(reaction) == '🇰':
-                    await user.add_roles(rainbow)
+                    if user != 262677178590822400:
+                        await user.add_roles(rainbow)
                 if str(reaction) == '🇱':
-                    await user.add_roles(brawl)
+                    if user != 262677178590822400:
+                        await user.add_roles(brawl)
                 if str(reaction) == '🇲':
                     await user.add_roles(ratz)
 
