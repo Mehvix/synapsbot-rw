@@ -29,12 +29,13 @@ class Accept:
     @commands.command(hidden=True)
     async def accept(self, ctx):
         member_role = discord.utils.get(ctx.guild.roles, name=settings.member_role_name)
-        if member_role is None:
+        if member_role is None:  # If server doesn't have member role
             try:
                 member_role = await ctx.guild.create_role(name=member_role_name, color=discord.Color(0x939393))
             except discord.Forbidden:
                 await ctx.guild.owner.send(
                     "I tried to create a roll called `{}` in `{}` but don't have the permission to!".format(member_role_name, ctx.guild.name))
+
         if member_role in ctx.author.roles:
             return  # User already has the role
         else:
@@ -44,23 +45,24 @@ class Accept:
 
     @client.event
     async def on_message(self, message):
-        if message.channel.id == settings.accept_channel and message.author.id != self.client.user.id:
-            level_role = discord.utils.get(message.guild.roles, id=settings.level_role)
-            if level_role and level_role not in member.roles:
-                roles_role = discord.utils.get(message.guild.roles, id=settings.roles_role)
-                groups_role = discord.utils.get(message.guild.roles, id=settings.groups_role)
-                games_role = discord.utils.get(message.guild.roles, id=settings.games_role)
-                restriction_role = discord.utils.get(message.guild.roles, id=settings.restriction_role)
-                level1_role = discord.utils.get(message.guild.roles, name="Level 1")
+        #if message.channel.id == settings.accept_channel and message.author.id != self.client.user.id:
+        level_role = discord.utils.get(message.guild.roles, id=settings.level_role)
+        if level_role and level_role not in message.author.roles:
+            roles_role = discord.utils.get(message.guild.roles, id=settings.roles_role)
+            groups_role = discord.utils.get(message.guild.roles, id=settings.groups_role)
+            games_role = discord.utils.get(message.guild.roles, id=settings.games_role)
+            restriction_role = discord.utils.get(message.guild.roles, id=settings.restriction_role)
+            level1_role = discord.utils.get(message.guild.roles, name="Level 1")
 
-                await member.add_roles(level_role, roles_role, groups_role, games_role, restriction_role, level1_role,
-                                       reason="Added notation roles")
-            await asyncio.sleep(1)
-
-            try:
-                await message.delete()
-            except discord.NotFound:
-                pass  # message already gone (deleted)
+            await message.author.add_roles(level_role, roles_role, groups_role, games_role, restriction_role, level1_role,
+                                   reason="Added notation roles")
+        await asyncio.sleep(1)
+        """
+        try:
+            await message.delete()
+        except discord.NotFound:
+            pass  # message already gone (deleted)
+        """
 
 
 def setup(client):
