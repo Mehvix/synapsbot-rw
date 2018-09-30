@@ -16,7 +16,7 @@ class QR:
 
     print("Loading QR...")
 
-    @commands.command()
+    @commands.command(aliases=["createqr", "qrcode"], usage="[data]", description="Creates an QR code", brief="Creates a QR code that links to [data]")
     async def qr(self, ctx, data):
         url = pyqrcode.create(data)
         with open('code.png', 'wb') as fstream:
