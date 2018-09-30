@@ -60,7 +60,7 @@ class Admin:
     @commands.has_role(settings.admin_role_name)
     async def clean(self, ctx, messages: int):
         deleted = await ctx.channel.purge(limit=messages + 1)
-        await ctx.send('Deleted `{}` message(s)'.format(len(deleted) - 1))
+        await ctx.send('`{}` deleted `{}` message(s)'.format(ctx.message.author.name, len(deleted) - 1))
 
     @client.command(aliases=["rules"], description="Displays Rules for the Server", brief="Used for the rules-and-info channel")
     @commands.has_role(settings.admin_role_name)
