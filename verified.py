@@ -388,7 +388,7 @@ class Verified:
 
         await ctx.message.channel.send(embed=embed)
 
-    @client.command(aliases=["user", "profile"], description="Gives info about a user", usage="[@user]", brief="Gives info about [@user]")
+    @client.command(aliases=["user", "info", "profile"], description="Gives info about a user", usage="[@user]", brief="Gives info about [@user]")
     @commands.has_role(settings.verified_role_name)
     async def whois(self, ctx, user: discord.Member):
         full_user_name = "{}#{}".format(user.name, user.discriminator)
@@ -403,11 +403,11 @@ class Verified:
         embed.add_field(name="User ID:", value=user.id)
         embed.add_field(name="Joined the server on:", value=user_join_date[:10])
         embed.add_field(name="Account Created on:", value=user_created_at_date[:10])
-        embed.add_field(name="Top Role:", value=user.top_role)
-        embed.add_field(name="User Status:", value=str(user.status).title())
-        embed.add_field(name="User Game:", value=user.game)
-        embed.add_field(name="User Custom Name:", value=user.nick)
-        embed.add_field(name="User Role Color:", value=user.color)
+        embed.add_field(name="Highest Role:", value=user.top_role)
+        embed.add_field(name="Status:", value=str(user.status).title())
+        embed.add_field(name="Game/Activity:", value=user.activity.name)
+        embed.add_field(name="Custom Name:", value=user.nick)
+        embed.add_field(name="Role Color:", value=user.color)
         if len(user.roles) > 1:  # TIL @everyone is a role that is assigned to everyone but hidden
             embed.add_field(name="User Top Role (Level):", value=user.top_role)
         else:
