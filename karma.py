@@ -148,6 +148,8 @@ class Karma:
                 await message.channel.send("Congrats, <@{0}>! You're now level `{1}` :tada: ".format(user_id, new_level))
 
             await message.author.remove_roles(old_level_role)
+            level1_role = discord.utils.get(message.guild.roles, name="Level 1")
+            await message.author.remove_roles(level1_role)
 
 
 def user_add_karma(user_id: int, karma: int):
