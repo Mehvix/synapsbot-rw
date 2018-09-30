@@ -30,7 +30,7 @@ def set_server(server):
         mute_role_name, embed_color, accept_channel, canvas_channel, level_role, roles_role, groups_role, games_role, \
         restriction_role, game_channel, league_role, hs_role, fortnite_role, pubg_role, tf2_role, gta_role, \
         chiv_role, cs_role, aoe_role, civ_role, rainbow_role, brawl_role, ratz_role, code_role, boof_role, max_role, \
-        path_role, poker_role, dj_role, snowboard_role, groups_message_id, games_message_id
+        path_role, poker_role, dj_role, snowboard_role, groups_message_id, games_message_id, skribble_role
     embed_color = 0x593595
 
     if server == "test":
@@ -66,7 +66,6 @@ def set_server(server):
         groups_role = None
         games_role = None
         restriction_role = None
-        ratz_role = None
         return
 
     if server == "main":
@@ -119,6 +118,7 @@ def set_server(server):
         rainbow_role = 421846788534697984
         brawl_role = 488201787468414976
         ratz_role = 491388165618270218
+        skribble_role = 495794541262143488
 
         # Group Roles (games.py)
         groups_message_id = 495070906906050560
@@ -129,7 +129,6 @@ def set_server(server):
         poker_role = 442837936552017930
         dj_role = 397440571293040641
         snowboard_role = 378342844282306581
-
         return
     else:
         sys.exit("No Server (main/test)")
