@@ -422,18 +422,14 @@ class Verified:
             embed = discord.Embed(title="Ban List", description="This server doesn't have anyone banned (yet)", color=settings.embed_color)
             await ctx.message.channel.send(embed=embed)
         else:
-            #pretty_list = []
-            bot_acc = []
-
             embed = discord.Embed(title="🔨 Ban List:", color=settings.embed_color)
-            for entry in bans:  # TODO add bot emote to this
-                bot_acc.append("bot yes" if entry.user.bot is True else "bot no")
-                embed.add_field(name="{}{}#{} [{}]".format("🤖 " if entry.user.bot is True else None,entry.user.name, entry.user.discriminator, entry.user.id), value="Reason: {}".format(entry.reason), inline=False)
+            await ctx.message.channel.send(embed=embed)
+            for entry in bans:
+                embed = discord.Embed(color=settings.embed_color)
+                embed.set_thumbnail(url=entry.user.avatar_url)
+                embed.add_field(name="{}{}#{} [{}]".format("🤖 " if entry.user.bot is True else "",entry.user.name, entry.user.discriminator, entry.user.id), value="Reason: {}".format(entry.reason), inline=False)
+                await ctx.message.channel.send(embed=embed)
 
-            #    pretty_list.append("• <@{}> ({}#{})".format(entry.user.id, entry.user.name, entry.user.discriminator))
-            print(bot_acc)
-            print(bot_acc)
-            #embed = discord.Embed(color=settings.embed_color, title="Ban List", description="\n".join(pretty_list))
             await ctx.message.channel.send(embed=embed)
 
     @client.command(aliases=["invite"], description="Creates an invite for the server", brief="Creates an invite for the server")
@@ -442,7 +438,7 @@ class Verified:
         invite = await ctx.channel.create_invite(
             temporary=True, unique=True, reason="{} ({}) created this invite via .createinvite".format(
                 ctx.message.author.name, ctx.message.author.id))
-        await ctx.message.channel.send(invite.url)  # TODO add more info to this
+        await ctx.message.channel.send(invite.url)
 
     @client.command(aliases=["8ball"], description="Answers questions 110% accurately", usage="[question]", brief="Answers [questions]")
     @commands.has_role(settings.verified_role_name)

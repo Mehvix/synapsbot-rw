@@ -16,7 +16,7 @@ class Typeracer:
 
     print("Loading Typeracer...")
 
-    @client.command(alias=["type", "racer", "wpm", "typeracer"], description="Gets a users stats on typeracer.com", usage="[username from typeracer.com]", brief="Gets statistics about [username] from typeracer.com")  # TODO
+    @client.command(alias=["type", "racer", "wpm", "typeracer"], description="Gets a users stats on typeracer.com", usage="[username from typeracer.com]", brief="Gets statistics about [username] from typeracer.com")
     async def tr(self, ctx, user):
         search = "https://data.typeracer.com/users?id=tr:{}".format(user)
 
@@ -33,7 +33,7 @@ class Typeracer:
                                         "".format(user), color=settings.embed_color)
                         embed.set_author(name="{}'s Type Racer Stats:".format(user))
                         embed.add_field(name="Name:", value=result["name"] + " " + result["lastName"], inline=True)
-                        embed.add_field(name="Country:", value=str(result["country"]).upper(), inline=True)  # TODO add flags
+                        embed.add_field(name="Country:", value=str(result["country"]).upper(), inline=True)
                         embed.add_field(name="Points:", value=str(result["tstats"]["points"])[:10], inline=True)
                         embed.add_field(name="Level:", value=result["tstats"]["level"], inline=True)
                         embed.add_field(name="Games Won:", value=result["tstats"]["gamesWon"], inline=True)
