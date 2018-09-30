@@ -62,7 +62,7 @@ class Games:
             dj = discord.utils.get(guild.roles, id=settings.dj_role)
             snowboard = discord.utils.get(guild.roles, id=settings.snowboard_role)
 
-    @client.event  # TODO make cam blacklisted
+    @client.event
     async def on_raw_reaction_add(self, payload):
         if int(payload.channel_id) == settings.game_channel:
             guild = self.client.get_guild(payload.guild_id)
@@ -80,17 +80,17 @@ class Games:
 
             if int(payload.message_id) == settings.games_message_id:
                 if str(reaction) == '🇦':
-                    if user != 262677178590822400:
+                    if payload.user_id != 262677178590822400:
                         await user.add_roles(league)
                 if str(reaction) == '🇧':
-                    if user != 262677178590822400:
+                    if payload.user_id != 262677178590822400:
                         await user.add_roles(hs)
                 if str(reaction) == '🇨':
                     await user.add_roles(fortnite)
                 if str(reaction) == '🇩':
                     await user.add_roles(pubg)
                 if str(reaction) == '🇪':
-                    if user != 262677178590822400:
+                    if payload.user_id != 262677178590822400:
                         await user.add_roles(tf2)
                 if str(reaction) == '🇫':
                     await user.add_roles(gta)
@@ -99,16 +99,16 @@ class Games:
                 if str(reaction) == '🇭':
                     await user.add_roles(cs)
                 if str(reaction) == '🇮':
-                    if user != 262677178590822400:
+                    if payload.user_id != 262677178590822400:
                         await user.add_roles(aoe)
                 if str(reaction) == '🇯':
-                    if user != 262677178590822400:
+                    if payload.user_id != 262677178590822400:
                         await user.add_roles(civ)
                 if str(reaction) == '🇰':
-                    if user != 262677178590822400:
+                    if payload.user_id != 262677178590822400:
                         await user.add_roles(rainbow)
                 if str(reaction) == '🇱':
-                    if user != 262677178590822400:
+                    if payload.user_id != 262677178590822400:
                         await user.add_roles(brawl)
                 if str(reaction) == '🇲':
                     await user.add_roles(ratz)
