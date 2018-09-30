@@ -13,7 +13,7 @@ class Cogname:
 
     print("Loading Cogname...")
 
-    @commands.command()
+    @commands.command(aliases=[""], usage="[usage]", description="Desc", brief="What it does")
     async def tester(self, ctx):
         print("TESTER ACTIVATED")
 
