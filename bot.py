@@ -56,29 +56,25 @@ def get_json(file_path):
 async def timer():
     await client.wait_until_ready()
     global seconds
-    seconds = 0
     while True:
-        await asyncio.sleep(1)
-        seconds += 1
-        if seconds == 60:
-            seconds = 0
+        await asyncio.sleep(60)
 
-            # Presence stuff
-            flairs = ['Created by Mehvix#7172',
-                      'Online for {0}'.format(curtime.uptime()),
-                      'Running Version {}'.format(settings.get_version())]  # TODO add more of these
-            await client.change_presence(
-                activity=discord.Streaming(name="".join(random.choice(flairs)), url='https://twitch.tv/mehvix',
-                                           twitch_name="Mehvix"))
+        # Presence stuff
+        flairs = ['Created by Mehvix#7172',
+                  'Online for {0}'.format(curtime.uptime()),
+                  'Running Version {}'.format(settings.get_version())]  # TODO add more of these
+        await client.change_presence(
+            activity=discord.Streaming(name="".join(random.choice(flairs)), url='https://twitch.tv/mehvix',
+                                       twitch_name="Mehvix"))
 
-            fp = random.choice(os.listdir("media/avatars"))
-            with open('media/avatars/{}'.format(fp), 'rb') as f:
-                try:
-                    await client.user.edit(avatar=f.read())
-                except discord.HTTPException:
-                    pass  # Sometimes discord gets angry when the profile pic is changed a lot
+        fp = random.choice(os.listdir("media/avatars"))
+        with open('media/avatars/{}'.format(fp), 'rb') as f:
+            try:
+                await client.user.edit(avatar=f.read())
+            except discord.HTTPException:
+                pass  # Sometimes discord gets angry when the profile pic is changed a lot
         # Comic Code
-        if str(str(str(datetime.now()).split(" ")[1]).split(".")[0]) == "01:00:00":  # TODO change this
+        if str(str(str(datetime.now()).split(" ")[1]).split(".")[0])[:5] == "07:00":  # TODO change this
             date = datetime.today().strftime('%Y/%m/%d')
             search = "https://www.gocomics.com/calvinandhobbes/{}".format(date)
             print(search)

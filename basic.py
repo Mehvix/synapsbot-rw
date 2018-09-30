@@ -42,13 +42,14 @@ class Basic:
 
     @client.command(aliases=["now"], description="Gets the time", brief="Gets the time")
     async def time(self, ctx):
-        await ctx.send("It's `{0}".format(str(datetime.now()).split(" ")[1]).split(".")[0] + "`")
+        time = str(str(str(datetime.now()).split(" ")[1]).split(".")[0])[:5]
+        await ctx.send("It's `{}`".format(time))
 
     @client.command(aliases=["bug", "broken", "error"], description="Link to report issues", brief="Link to report issues")
     async def issue(self, ctx):
         await ctx.send("Please report the issue here:\nhttps://github.com/Mehvix/synapsBotRW/issues")
 
-    @client.command(aliases=["lag", "latency"], description="Gets the bots ping", brief="Gets the bots ping")
+    @client.command(aliases=["lag", "latency"], description="Gets the bots ping", brief="Gets the bots ping"  )
     async def ping(self, ctx):
         await ctx.send("I have a latency of `{}` ms".format(str(float(self.client.latency)*1000)[:2]))
 
