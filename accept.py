@@ -45,24 +45,22 @@ class Accept:
 
     @client.event
     async def on_message(self, message):
-        #if message.channel.id == settings.accept_channel and message.author.id != self.client.user.id:
-        level_role = discord.utils.get(message.guild.roles, id=settings.level_role)
-        if level_role and level_role not in message.author.roles:
-            roles_role = discord.utils.get(message.guild.roles, id=settings.roles_role)
-            groups_role = discord.utils.get(message.guild.roles, id=settings.groups_role)
-            games_role = discord.utils.get(message.guild.roles, id=settings.games_role)
-            restriction_role = discord.utils.get(message.guild.roles, id=settings.restriction_role)
-            level1_role = discord.utils.get(message.guild.roles, name="Level 1")
+        if message.channel.id == settings.accept_channel and message.author.id != self.client.user.id:
+            level_role = discord.utils.get(message.guild.roles, id=settings.level_role)
+            if level_role and level_role not in message.author.roles:
+                roles_role = discord.utils.get(message.guild.roles, id=settings.roles_role)
+                groups_role = discord.utils.get(message.guild.roles, id=settings.groups_role)
+                games_role = discord.utils.get(message.guild.roles, id=settings.games_role)
+                restriction_role = discord.utils.get(message.guild.roles, id=settings.restriction_role)
+                level1_role = discord.utils.get(message.guild.roles, name="Level 1")
 
-            await message.author.add_roles(level_role, roles_role, groups_role, games_role, restriction_role, level1_role,
-                                   reason="Added notation roles")
-        await asyncio.sleep(1)
-        """
-        try:
-            await message.delete()
-        except discord.NotFound:
-            pass  # message already gone (deleted)
-        """
+                await message.author.add_roles(level_role, roles_role, groups_role, games_role, restriction_role, level1_role,
+                                       reason="Added notation roles")
+            await asyncio.sleep(1)
+            try:
+                await message.delete()
+            except discord.NotFound:
+                pass  # message already gone (deleted)
 
 
 def setup(client):
