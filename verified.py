@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import json
+import io
 import os
+import json
 import random
 import string
+import pyqrcode
 
 import aiohttp
 import discord
@@ -439,6 +441,16 @@ class Verified:
             temporary=True, unique=True, reason="{} ({}) created this invite via .createinvite".format(
                 ctx.message.author.name, ctx.message.author.id))
         await ctx.message.channel.send(invite.url)
+
+        # QR code
+        url = pyqrcode.create(invite.url)
+        with open('invite.png', 'wb') as fstream:
+            url.png(fstream, scale=3)
+
+        buffer = io.BytesIO()
+        url.png(buffer)
+
+        await ctx.send(file=discord.File("invite.png"))
 
     @client.command(aliases=["8ball"], description="Answers questions 110% accurately", usage="[question]", brief="Answers [questions]")
     @commands.has_role(settings.verified_role_name)

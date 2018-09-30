@@ -25,7 +25,7 @@ import settings
 
 # Cogs being used
 extensions = ['accept', 'admin', 'basic', 'canvas', 'forwarding', 'karma', 'typeracer', 'notifications', 'games',
-              'verified', 'reddit']
+              'verified', 'reddit', 'qr']
 
 settings.set_server("main")  # make sure this is test or main
 
