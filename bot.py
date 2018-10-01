@@ -57,7 +57,8 @@ async def timer():
     await client.wait_until_ready()
     global seconds
     while True:
-        await asyncio.sleep(60)
+        print(str(str(str(datetime.now()).split(" ")[1]).split(".")[0])[:5])
+        await asyncio.sleep(59)
 
         # Presence stuff
         flairs = ['Created by Mehvix#7172',
