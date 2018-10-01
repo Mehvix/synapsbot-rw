@@ -652,7 +652,7 @@ class Verified:
                            active_invites if x.max_age != 0 and x not in revoked_invites]
 
         embed = discord.Embed(title='__Invite links for {0.name}__'.format(server),
-                              color=ctx.message.author.color)
+                              color=settings.embed_color)
         if unlimited_invites:
             embed.add_field(name='Unlimited Invites ({})'.format(len(unlimited_invites)),
                             value='\n'.join(unlimited_invites[:5]))

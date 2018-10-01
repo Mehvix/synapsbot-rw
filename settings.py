@@ -66,6 +66,41 @@ def set_server(server):
         groups_role = None
         games_role = None
         restriction_role = None
+
+        # Notation Roles
+        level_role = None
+        roles_role = None
+        groups_role = None
+        games_role = None
+        restriction_role = None
+
+        # Game Roles (games.py)
+        games_message_id = None
+        game_channel = None
+        league_role = None
+        hs_role = None
+        fortnite_role = None
+        pubg_role = None
+        tf2_role = None
+        gta_role = None
+        chiv_role = None
+        cs_role = None
+        aoe_role = None
+        civ_role = None
+        rainbow_role = None
+        brawl_role = None
+        ratz_role = None
+        skribble_role = None
+
+        # Group Roles (games.py)
+        groups_message_id = None
+        code_role = None
+        boof_role = None
+        max_role = None
+        path_role = None
+        poker_role = None
+        dj_role = None
+        snowboard_role = None
         return
 
     if server == "main":
