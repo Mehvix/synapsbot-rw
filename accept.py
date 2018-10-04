@@ -14,10 +14,6 @@ class Accept:
     def __init__(self, client):
         self.client = client
 
-        global before_invites, after_invites
-        before_invites = []
-        after_invites = []
-
     print("Loading Accept...")
 
     @commands.command(hidden=True)
@@ -46,35 +42,6 @@ class Accept:
             await ctx.message.author.add_roles(member_role, reason="User typed `.accept` in {}".format(ctx.channel))
             channel = self.client.get_channel(id=settings.notification_channel)
             await channel.send("<@{}> typed `.accept` :ok_hand:".format(ctx.author.id))
-
-    @client.event
-    async def on_ready(self):
-        for guild in self.client.guilds:
-            for invite in await guild.invites():
-                x = [invite.url, invite.uses, invite.inviter.id]
-                before_invites.append(x)
-            print(before_invites)
-
-    @client.event
-    async def on_member_join(self, member):
-        for guild in self.client.guilds:
-            for invite in await guild.invites():
-                x = [invite.url, invite.uses, invite.inviter.id]
-                after_invites.append(x)
-            print("--")
-            print(before_invites)
-            print(after_invites)
-            print("--")
-
-            await asyncio.sleep(1)
-
-            def diff(first, second):
-                second = list(second)
-                return [item for item in first if item not in second]
-
-            invite_used = diff(after_invites, before_invites)
-            invite_user = self.client.get_user(invite_used[0][2])
-            print("{} was invited by {}".format(member.name, invite_user.name))
 
     @client.event
     async def on_message(self, message):

@@ -20,6 +20,7 @@ from datetime import datetime
 import discord
 from discord.ext import commands
 
+import karma
 import curtime
 import settings
 
@@ -29,14 +30,21 @@ extensions = ['accept', 'admin', 'basic', 'canvas', 'forwarding', 'karma', 'type
 
 settings.set_server("main")  # make sure this is test or main
 
-
-# Resets uptime settings
 seconds = 0
-minutes = 0
-hours = 0
-days = 0
-
 ban_message = 0
+users = 0
+
+global before_invites, after_invites
+before_invites = []
+after_invites = []
+
+
+def flair(num_of_users):
+    flairs = ['Created by Mehvix#7172',
+              'Running Version {}'.format(settings.get_version()),
+              "Used by {} users!".format(num_of_users)
+              ]
+    return random.choice(flairs)
 
 
 # Defines Client
@@ -57,15 +65,19 @@ async def timer():
     await client.wait_until_ready()
     global seconds
     while True:
-        print(str(str(str(datetime.now()).split(" ")[1]).split(".")[0])[:5])
-        await asyncio.sleep(59)
+        # "Who invited" code
+        for guild in client.guilds:
+            for invite in await guild.invites():
+                x = [invite.url, invite.uses, invite.inviter.id]
+                before_invites.append(x)
+            print(before_invites)
 
-        # Presence stuff
-        flairs = ['Created by Mehvix#7172',
-                  'Online for {0}'.format(curtime.uptime()),
-                  'Running Version {}'.format(settings.get_version())]  # TODO add more of these
+        await asyncio.sleep(59)  # sometimes this skips if it's on 60?
+        print(str(str(str(datetime.now()).split(" ")[1]).split(".")[0])[:5])
+
+        # Presence
         await client.change_presence(
-            activity=discord.Streaming(name="".join(random.choice(flairs)), url='https://twitch.tv/mehvix',
+            activity=discord.Streaming(name=flair(users), url='https://twitch.tv/mehvix',
                                        twitch_name="Mehvix"))
 
         fp = random.choice(os.listdir("media/avatars"))
@@ -74,8 +86,9 @@ async def timer():
                 await client.user.edit(avatar=f.read())
             except discord.HTTPException:
                 pass  # Sometimes discord gets angry when the profile pic is changed a lot
+
         # Comic Code
-        if str(str(str(datetime.now()).split(" ")[1]).split(".")[0])[:5] == "07:00":  # TODO change this
+        if str(str(str(datetime.now()).split(" ")[1]).split(".")[0])[:5] == "07:00":
             date = datetime.today().strftime('%Y/%m/%d')
             search = "https://www.gocomics.com/calvinandhobbes/{}".format(date)
             print(search)
@@ -85,20 +98,40 @@ async def timer():
 
 
 @client.event
+async def on_member_join(member):
+    for guild in client.guilds:
+        for invite in await guild.invites():
+            x = [invite.url, invite.uses, invite.inviter.id]
+            after_invites.append(x)
+        print("--")
+        print(before_invites)
+        print(after_invites)
+        print("--")
+
+        await asyncio.sleep(1)
+
+        def diff(first, second):
+            second = list(second)
+            return [item for item in first if item not in second]
+
+        invite_used = diff(after_invites, before_invites)
+        invite_user = client.get_user(invite_used[0][2])
+
+        channel = client.get_channel(id=settings.notification_channel)
+        karma.user_add_karma(invite_user.id, 75)
+        await channel.send("<@{}> used an invited created by <@{}> which gave them `75` karma".format(member.id, invite_user.id))
+
+
+@client.event
 async def on_connect():
     print("Connected!")
 
 
 @client.event
 async def on_ready():
+    global users
     users = len(set(client.get_all_members()))
     channels = len([c for c in client.get_all_channels()])
-
-    flairs = ['Created by Mehvix#7172', 'Running Version {}'.format(settings.get_version())]
-    await client.change_presence(
-        activity=discord.Streaming(name="".join(random.choice(flairs)), url='https://twitch.tv/mehvix',
-                                   twitch_name="Mehvix"))  # TODO add more presences
-
     server_list = list(client.guilds)
     dirpath = os.getcwd()
 
@@ -124,7 +157,11 @@ async def on_ready():
     print("=========================================================================")
 
     if len(client.guilds) > 1:
-        print("ISSUE: It's not recommended to have more than one server being hosted at the same time...")
+        print("ISSUE: It's not recommended to have more than one server being hosted at the same time.")
+
+    await client.change_presence(
+        activity=discord.Streaming(name=flair(users), url='https://twitch.tv/mehvix',
+                                   twitch_name="Mehvix"))  # TODO add more presences
 
 
 @client.event
