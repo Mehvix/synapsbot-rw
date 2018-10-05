@@ -31,7 +31,8 @@ def set_server(server):
         restriction_role, game_channel, league_role, hs_role, fortnite_role, pubg_role, tf2_role, gta_role, \
         chiv_role, cs_role, aoe_role, civ_role, rainbow_role, brawl_role, ratz_role, code_role, boof_role, max_role, \
         path_role, poker_role, dj_role, snowboard_role, groups_message_id, games_message_id, skribble_role, \
-        lobby_one_vc_id, lobby_two_vc_id, lobby_one_role_id, lobby_two_role_id
+        lobby_one_vc_id, lobby_two_vc_id, lobby_one_role_id, lobby_two_role_id, hidden_cat_id, main_cat_id, \
+        lobby_one_text_id, lobby_two_text_id
     embed_color = 0x593595
 
     if server == "test":
@@ -172,11 +173,18 @@ def set_server(server):
         dj_role = 397440571293040641
         snowboard_role = 378342844282306581
 
+        # lobbytext.py
         lobby_one_vc_id = 358766565941837829
         lobby_two_vc_id = 441444115444400139
 
         lobby_one_role_id = 497234318830338049
         lobby_two_role_id = 497234329215434765
+
+        hidden_cat_id = 497894067561299983
+        main_cat_id = 412360523959631873
+
+        lobby_one_text_id = 497235184693805056
+        lobby_two_text_id = 497235830234939394
 
         return
     else:
