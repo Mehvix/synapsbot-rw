@@ -13,7 +13,7 @@ class lobbytext:
     def __init__(self, client):
         self.client = client
 
-    print("Loading Lobbytext...")
+    print("Loading Lobby Text...")
 
     @client.event
     async def on_voice_state_update(self, member, before, after):
@@ -31,38 +31,31 @@ class lobbytext:
         await member.remove_roles(role1, role2)
 
         if after.channel is None:
-            print("user dc'd")
+            pass  # user DC'd
 
         if after.channel == lobby1voice:
-            print("user moved into lobby 1")
             await lobby1text.edit(category=main_group, position=2)
             await member.add_roles(role1)
 
         if after.channel == lobby2voice:
-            print("user moved into lobby 2")
             await lobby1text.edit(category=main_group, position=2)
             await member.add_roles(role2)
 
         if lobby1voice.members and lobby2voice.members:
-            print("pll are in lobby 1 and 2")
             await lobby1text.edit(category=main_group, position=1)
             await lobby2text.edit(category=main_group, position=2)
-
             return
 
         if lobby1voice.members:
-            print("pll are in lobby 1, {}".format(len(lobby1voice.members)))
             await lobby2text.edit(category=hidden_group, position=2)
             return
 
         if lobby2voice.members:
-            print("pll are in lobby 2, {}".format(len(lobby2voice.members)))
             await lobby1text.edit(category=hidden_group, position=1)
             return
 
         await lobby1text.edit(category=hidden_group, position=1)
         await lobby2text.edit(category=hidden_group, position=2)
-        print(after.channel.members)
 
 
 def setup(client):
