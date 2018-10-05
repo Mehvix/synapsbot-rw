@@ -26,7 +26,7 @@ import settings
 
 # Cogs being used
 extensions = ['accept', 'admin', 'basic', 'canvas', 'forwarding', 'karma', 'typeracer', 'notifications', 'games',
-              'verified', 'reddit', 'qr']
+              'verified', 'reddit', 'qr', 'lobbytext']
 
 settings.set_server("main")  # make sure this is test or main
 
@@ -39,10 +39,12 @@ before_invites = []
 after_invites = []
 
 
-def flair(num_of_users):
+def flair(num_of_users):  # todo: add more flairs
     flairs = ['Created by Mehvix#7172',
               'Running Version {}'.format(settings.get_version()),
-              "Used by {} users!".format(num_of_users)
+              'Used by {} users!'.format(num_of_users),
+              'Try .github for code',
+              'Try .trello for upcoming stuff'
               ]
     return random.choice(flairs)
 
@@ -70,10 +72,8 @@ async def timer():
             for invite in await guild.invites():
                 x = [invite.url, invite.uses, invite.inviter.id]
                 before_invites.append(x)
-            print(before_invites)
 
         await asyncio.sleep(59)  # sometimes this skips if it's on 60?
-        print(str(str(str(datetime.now()).split(" ")[1]).split(".")[0])[:5])
 
         # Presence
         await client.change_presence(
@@ -103,10 +103,6 @@ async def on_member_join(member):
         for invite in await guild.invites():
             x = [invite.url, invite.uses, invite.inviter.id]
             after_invites.append(x)
-        print("--")
-        print(before_invites)
-        print(after_invites)
-        print("--")
 
         await asyncio.sleep(1)
 
@@ -117,9 +113,11 @@ async def on_member_join(member):
         invite_used = diff(after_invites, before_invites)
         invite_user = client.get_user(invite_used[0][2])
 
-        channel = client.get_channel(id=settings.notification_channel)
-        karma.user_add_karma(invite_user.id, 75)
-        await channel.send("<@{}> used an invited created by <@{}> which gave them `75` karma".format(member.id, invite_user.id))
+        if member.guild.name != "Bot Test":
+            karma.user_add_karma(invite_user.id, 75)
+            channel = client.get_channel(id=settings.notification_channel)
+            await channel.send("<@{}> used an invited created by <@{}> which gave the invite creator `75` karma".
+                               format(member.id, invite_user.id))
 
 
 @client.event
