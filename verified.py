@@ -110,7 +110,7 @@ class Verified:
         fp = random.choice(os.listdir("media/aidans"))
         await ctx.message.channel.send(file=discord.File("media/aidans/{}".format(fp)))
 
-    @client.command(description="Gets a random Apu", brief="Gets a random Apu")
+    @client.command(aliases=["fren", "frens"],description="Gets a random Apu", brief="Gets a random Apu")
     @commands.has_role(settings.verified_role_name)
     async def apu(self, ctx):
         fp = random.choice(os.listdir("media/apus"))
@@ -144,7 +144,7 @@ class Verified:
                     result = await r.json(content_type='application/json')
                     await ctx.message.channel.send(result['message'])
 
-    @client.command(description="Gets Information about the server", usage="[]", brief="")
+    @client.command(description="Gets Information about the server", brief="")
     @commands.has_role(settings.verified_role_name)
     async def serverinfo(self, ctx):  # make this admin
         online = 0
