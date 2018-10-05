@@ -148,12 +148,25 @@ class Admin:
         reason = " ".join(reason)
         for target in targets:
             if reason != "()":
-                await target.ban(reason="{} ({}) used .kick command with the reason {}".format(ctx.message.author.name,
+                await target.ban(reason="{} ({}) used .ban command with the reason {}".format(ctx.message.author.name,
                                                                                                 ctx.message.author.id,
                                                                                                 reason))
             else:
                 await target.ban(
-                    reason="{} ({}) used .kick command".format(ctx.message.author.name, ctx.message.author.id))
+                    reason="{} ({}) used .ban command".format(ctx.message.author.name, ctx.message.author.id))
+
+    @client.command(description="Bans user", usage="[@user]", brief="Bans user(s)")
+    @commands.has_role(settings.admin_role_name)
+    async def unban(self, ctx, targets: commands.Greedy[discord.Member], *reason: str):
+        reason = " ".join(reason)
+        for target in targets:
+            if reason != "()":
+                await target.unban(reason="{} ({}) used .unban command with the reason {}".format(ctx.message.author.name,
+                                                                                                ctx.message.author.id,
+                                                                                                reason))
+            else:
+                await target.unban(
+                    reason="{} ({}) used .unban command".format(ctx.message.author.name, ctx.message.author.id))
 
     @client.event
     async def on_member_remove(self, member):
