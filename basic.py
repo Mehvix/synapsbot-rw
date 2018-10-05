@@ -38,7 +38,13 @@ class Basic:
 
     @client.command(aliases=["idea", "suggest"], description="Link to Trello", brief="Trello")
     async def trello(self, ctx):
-        await ctx.send("Trello Link:\nhttps://trello.com/b/CQBT9vag/synapsbot")
+        embed = discord.Embed(description="[Trello Page](https://trello.com/b/CQBT9vag/synapsbot)", color=settings.embed_color)
+        await ctx.send(embed=embed)
+
+    @client.command(aliases=["code", "source"], description="Link to Github", brief="Github")
+    async def github(self, ctx):
+        embed = discord.Embed(description="[Github Page](https://github.com/Mehvix/synapsBotRW)", color=settings.embed_color)
+        await ctx.send(embed=embed)
 
     @client.command(aliases=["now"], description="Gets the time", brief="Gets the time")
     async def time(self, ctx):
