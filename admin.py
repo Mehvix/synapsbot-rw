@@ -4,12 +4,15 @@ import os
 import sys
 import json
 import time
+import asyncio
+from datetime import datetime, timedelta
+
 import karma
 import curtime
-import discord
 import settings
+
+import discord
 from discord.ext import commands
-from datetime import datetime, timedelta
 
 
 class Admin:
@@ -17,6 +20,7 @@ class Admin:
 
     def __init__(self, client):
         self.client = client
+        self.bannedusers = {}
 
     print("Loading Admin...")
 
@@ -103,12 +107,6 @@ class Admin:
         await target.remove_roles(role)
         await ctx.send("<@{0}> unmuted <@{1}>".format(ctx.message.author.id, target.id))
 
-    @client.command(description="Bans user", usage="[@user]", brief="Bans user")
-    @commands.has_role(settings.admin_role_name)
-    async def ban(self, ctx, target: discord.Member):
-        await target.ban()
-        await ctx.message.channel.send("{} banned <@{}>".format(ctx.message.author.name, target.id))
-
     @client.command(description="Adds [word] to the bannedword list", usage="[word]", brief="Adds [word] to a list that will prevent said word being in names or text channels. The list can be found via .bannedwords")
     @commands.has_role(settings.admin_role_name)
     async def banword(self, ctx, *word):
@@ -123,18 +121,130 @@ class Admin:
             "The word / sentence `{}` was banned. The full list of banned words can be found via `.bannedwords`".format(
                 word))
 
-    @client.command(description="Kicks user", usage="[@user]", brief="Kicks user")
-    @commands.has_role(settings.admin_role_name)
-    async def kick(self, ctx, kick_target: discord.Member):
-        await kick_target.kick(reason="{} ({}) used .kick command".format(ctx.message.author.name, ctx.message.author.id))
-        await ctx.send("{} kicked <@{}>".format(ctx.message.author.name, kick_target.id))
-
     @client.command(description="Nicknames user", usage="[@user]", brief="Nicknames user")
     @commands.has_role(settings.admin_role_name)
     async def nick(self, ctx, nick_target: discord.Member, *nickname):
         nickname = " ".join(nickname)
         await ctx.send("Set `{}`'s nick to `{}`".format(nick_target.name, nickname))
         await nick_target.edit(nick=nickname)
+
+    # Kick and Ban commands / events
+    @client.command(description="Kicks user", usage="[@user(s)]", brief="Kicks user(s)")
+    @commands.has_role(settings.admin_role_name)
+    async def kick(self, ctx, targets: commands.Greedy[discord.Member], *reason: str):
+        reason = " ".join(reason)
+        for target in targets:
+            if reason != "()":
+                await target.kick(reason="{} ({}) used .kick command with the reason {}".format(ctx.message.author.name,
+                                                                                                ctx.message.author.id,
+                                                                                                reason))
+            else:
+                await target.kick(
+                    reason="{} ({}) used .kick command".format(ctx.message.author.name, ctx.message.author.id))
+
+    @client.command(description="Bans user", usage="[@user]", brief="Bans user(s)")
+    @commands.has_role(settings.admin_role_name)
+    async def ban(self, ctx, targets: commands.Greedy[discord.Member], *reason: str):
+        reason = " ".join(reason)
+        for target in targets:
+            if reason != "()":
+                await target.ban(reason="{} ({}) used .ban command with the reason {}".format(ctx.message.author.name,
+                                                                                                ctx.message.author.id,
+                                                                                                reason))
+            else:
+                await target.ban(
+                    reason="{} ({}) used .ban command".format(ctx.message.author.name, ctx.message.author.id))
+
+    @client.command(description="Bans user", usage="[@user]", brief="Bans user(s)")
+    @commands.has_role(settings.admin_role_name)
+    async def unban(self, ctx, targets: commands.Greedy[discord.Member], *reason: str):
+        reason = " ".join(reason)
+        for target in targets:
+            if reason != "()":
+                await target.unban(reason="{} ({}) used .unban command with the reason {}".format(ctx.message.author.name,
+                                                                                                ctx.message.author.id,
+                                                                                                reason))
+            else:
+                await target.unban(
+                    reason="{} ({}) used .unban command".format(ctx.message.author.name, ctx.message.author.id))
+
+    @client.event
+    async def on_member_remove(self, member):
+        guild = member.guild
+        event = await guild.audit_logs(limit=1).flatten()
+
+        print(event)
+        print(event == discord.AuditLogAction.kick)
+
+        user_was_kicked = False
+        reason = ""
+        kicker = ""
+        event = event[0]
+
+        if event.target == member:
+            user_was_kicked = True
+            reason = event.reason
+            kicker = event.user
+
+        # Wait for the ban event to fire (if at all)
+        await asyncio.sleep(0.25)
+        if member.guild.id in self.bannedusers and \
+                member.id == self.bannedusers[member.guild.id]:
+            del self.bannedusers[member.guild.id]
+            return
+
+        member_created_at_date = str(member.created_at).split('.', 1)[0]
+        avatar = member.avatar_url if member.avatar else member.default_avatar_url
+
+        embed = discord.Embed(color=settings.embed_color)
+        if user_was_kicked is True:
+            embed.add_field(name="Kicker:", value=kicker, inline=False)
+            embed.add_field(name="Reason:", value=reason, inline=False)
+            embed.set_author(name="{} was kicked from the server 👋".format(member.name))  # todo replace this with boot emoji once it comes out
+        else:
+            embed.set_author(name="{} left the server 🙁".format(member.name))
+        embed.add_field(name="Username:", value="{}#{}".format(member.name, member.discriminator), inline=False)
+        embed.add_field(name="Time Left:", value=curtime.get_time(), inline=False)
+        embed.add_field(name="Account Created at:", value=member_created_at_date, inline=False)
+        embed.add_field(name="User Avatar URL:", value=member.avatar_url)
+        embed.set_thumbnail(url=avatar)
+        embed.set_footer(text="We now have {} members".format(member.guild.member_count))
+        channel = self.client.get_channel(id=settings.notification_channel)
+        await channel.send(embed=embed)
+
+    @client.event
+    async def on_member_ban(self, guild, member):
+        self.bannedusers[guild.id] = member.id
+
+        event = await guild.audit_logs(action=discord.AuditLogAction.ban, limit=1).flatten()
+        event = event[0]
+        reason = event.reason
+
+        member_created_at_date = str(member.created_at).split('.', 1)[0]
+        avatar = member.avatar_url if member.avatar else member.default_avatar_url
+
+        embed = discord.Embed(color=settings.embed_color)
+        embed.set_author(name="{} was banned from the server 🔨".format(member.name))
+        embed.add_field(name="Username:", value="{}#{}".format(member.name, member.discriminator), inline=False)
+        embed.add_field(name="Time Banned:", value=curtime.get_time(), inline=False)
+        embed.add_field(name="Account Created at:", value=member_created_at_date, inline=False)
+        embed.add_field(name="Banner:", value="{}#{}".format(event.user.name, event.user.discriminator), inline=False)
+        embed.add_field(name="Reason:", value=reason, inline=False)
+        embed.add_field(name="Ban ID:", value=event.id, inline=False)
+        embed.add_field(name="User Avatar URL:", value=member.avatar_url)
+        embed.set_thumbnail(url=avatar)
+        embed.set_footer(text="We now have {} members".format(member.guild.member_count))
+
+        channel = self.client.get_channel(id=settings.notification_channel)
+        await channel.send(embed=embed)
+
+    @client.event
+    async def on_member_unban(self, guild, member):
+        channel = self.client.get_channel(id=settings.notification_channel)
+        await channel.send('{} (`{}`) was unbanned from the server :unlock:'.format(member.mention, member))
+
+    # Cog Commands
+    # todo: add disable commands here
 
     @client.command(description="Loads a cog", usage="[cog name]", brief="Loads [cog name]")
     @commands.has_role(settings.admin_role_name)
