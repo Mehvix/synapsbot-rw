@@ -49,7 +49,7 @@ class Basic:
     async def issue(self, ctx):
         await ctx.send("Please report the issue here:\nhttps://github.com/Mehvix/synapsBotRW/issues")
 
-    @client.command(aliases=["lag", "latency"], description="Gets the bots ping", brief="Gets the bots ping"  )
+    @client.command(aliases=["lag", "latency"], description="Gets the bots ping", brief="Gets the bots ping")
     async def ping(self, ctx):
         await ctx.send("I have a latency of `{}` ms".format(str(float(self.client.latency)*1000)[:2]))
 
