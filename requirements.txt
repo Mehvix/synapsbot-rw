@@ -1,3 +1,4 @@
+hearthstone
 pyqrcode
 django-qrcode
 beautifulsoup4
