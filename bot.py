@@ -26,7 +26,7 @@ import settings
 
 # Cogs being used
 extensions = ['accept', 'admin', 'basic', 'canvas', 'forwarding', 'karma', 'typeracer', 'notifications', 'games',
-              'verified', 'reddit', 'qr', 'lobbytext']
+              'verified', 'reddit', 'qr', 'lobby_text', 'hearthstone_decode']
 
 settings.set_server("main")  # make sure this is test or main
 
