@@ -1,21 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import io
 import os
 import json
 import random
 import string
-import pyqrcode
-
 import aiohttp
-import discord
-from discord.ext import commands
+import pyqrcode
 from urbandictionary_top import udtop
 
-import curtime
-import karma
-import settings
+import discord
+from discord.ext import commands
+
 import zalgo
+import karma
+import curtime
+import settings
+
 
 image_files = ['.ras', '.xwd', '.bmp', '.jpe', '.jpg', '.jpeg', '.xpm', '.ief', '.pbm', '.tif', '.gif',
                '.ppm', '.xbm', '.tiff', '.rgb', '.pgm', '.png', '.pnm']
@@ -429,7 +431,11 @@ class Verified:
             for entry in bans:
                 embed = discord.Embed(color=settings.embed_color)
                 embed.set_thumbnail(url=entry.user.avatar_url)
-                embed.add_field(name="{}{}#{} [{}]".format("🤖 " if entry.user.bot is True else "",entry.user.name, entry.user.discriminator, entry.user.id), value="Reason: {}".format(entry.reason), inline=False)
+                embed.add_field(name="{}{}#{} [{}]".format("🤖 " if entry.user.bot is True else "",
+                                                           entry.user.name,
+                                                           entry.user.discriminator,
+                                                           entry.user.id),
+                                value="Reason: {}".format(entry.reason), inline=False)
                 await ctx.message.channel.send(embed=embed)
 
             await ctx.message.channel.send(embed=embed)
@@ -438,7 +444,7 @@ class Verified:
     @commands.has_role(settings.verified_role_name)
     async def createinvite(self, ctx):
         invite = await ctx.channel.create_invite(
-            temporary=True, unique=True, reason="{} ({}) created this invite via .createinvite".format(
+            temporary=True, reason="{} ({}) created this invite via .createinvite".format(
                 ctx.message.author.name, ctx.message.author.id))
         await ctx.message.channel.send(invite.url)
 
