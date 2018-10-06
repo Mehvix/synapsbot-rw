@@ -24,25 +24,7 @@ class decode:
 
     @commands.command(aliases=["hs", "decode"], usage="[deckstring]", description="Decodes HS deckstring", brief="Decode [deckstring]")
     async def deck(self, ctx, target: str):
-        deck = ""
-        if target == "druid":
-            deck = Deck.from_deckstring("AAECAZICApnTAvX8Ag5AX/0C5gXkCJvLAqDNAofOAo7QApjSAp7SAtvTAtfvAuL4AgA=")
-        if target == "hunter":
-            deck = Deck.from_deckstring("AAECAR8I+AjtCdPFAobTApziArbqAsvsAoDzAguNAZcIq8IC2MICnM0C3dICi+EC4eMC8vECufgC4vgCAA==")
-        if target == "mage":
-            deck = Deck.from_deckstring("AAECAf0EBHHtBaLTAu72Ag27ApUDqwS0BOYElgXsBcHBApjEAo/TAvvsApX/Arn/AgA=")
-        if target == "pali":
-            deck = Deck.from_deckstring("AAECAZ8FBK8EpwXxBZ74Ag1G9QX5CpvCAuvCAoPHArjHAuPLApXOAvvTAtHhAtblArXmAgA=")
-        if target == "priest":
-            deck = Deck.from_deckstring("AAECAa0GCgm0A+0F0wrXCr7IAubMAsLOAqCAA42CAwqXAqEE0cEC2MEC5cwCtM4C8M8C6NAC4+kCn+sCAA==")
-        if target == "rogue":
-            deck = Deck.from_deckstring("AAECAaIHBK8E/eoCnvgC5/oCDYwCywPUBfMF9QXdCIHCAp/CAuvCAtHhAovlAqbvAuL4AgA=")
-        if target == "shaman":
-            deck = Deck.from_deckstring("AAECAaoICP8F08UCnOICq+cCw+oCp+4C7/cCmfsCC4EE9QTeBf4Fsgb7DJfBAsfBApvLAvPnAu/xAgA=")
-        if target == "warlock":
-            deck = Deck.from_deckstring("AAECAf0GApziAo+CAw4whAH3BM4Hwgj3DJvLAp/OAvLQAtHhAofoAu/xAvT3AtP4AgA=")
-        if target == "warrior":
-            deck = Deck.from_deckstring("AAECAQcG+QzTxQLPxwKS+AKe+AKggAMMS6ICogTeBf8Hm8ICoscCyucC4vgCg/sCjvsCnvsCAA==")
+        deck = Deck.from_deckstring(target)
 
         image = ""
         hero = deck.heroes[0]
@@ -74,8 +56,6 @@ class decode:
             hero = "Paladin"
             image = "https://d1u5p3l4wpay3k.cloudfront.net/hearthstone_gamepedia/7/7b/Icon_Paladin_64.png?version=2a4e7cdbb3b5402f3e8a34ea156f9cf1"
 
-        print(deck.cards)
-
         embed = discord.Embed(title="{}'s Deck 🃏".format(ctx.author.name),
                               description="Deckcode being used:\n`{}`".format(deck.as_deckstring),
                               color=settings.embed_color)
@@ -83,7 +63,11 @@ class decode:
         embed.add_field(name="Format:", value=str(str(deck.format)[14:]).title(), inline=True)
         embed.add_field(name="Class:", value=hero, inline=True)
 
+        num_of_spells = 0
+        num_of_minions = 0
+
         fulldeck = []
+        total_cost = 0
         for card in deck.cards:
             num_of_cards = card[1]
             card = card[0]
@@ -98,19 +82,28 @@ class decode:
                         if z == card:
                             # todo: add rarity, total cost, hsreplay link/data, etc.
                             types_of_rarity = ["🏛️", "💿", "💙", "💜", "💛"]  # free, common, rare, epic, legendary
-                            total_cost = 0
 
                             name = result[x]["name"]
                             cost = result[x]["cost"]
                             rarity = result[x]["rarity"]
 
+                            if result[x]["type"] == "SPELL":
+                                num_of_spells += (1 * num_of_cards)
+
+                            if result[x]["type"] == "MINION":
+                                num_of_minions += (1 * num_of_cards)
+
                             if rarity == "LEGENDARY":
+                                total_cost += 1600
                                 rarity = types_of_rarity[4]
                             if rarity == "EPIC":
+                                total_cost += 400
                                 rarity = types_of_rarity[3]
                             if rarity == "RARE":
+                                total_cost += 100
                                 rarity = types_of_rarity[2]
                             if rarity == "COMMON":
+                                total_cost += 40
                                 rarity = types_of_rarity[1]
                             if rarity == "FREE":
                                 rarity = types_of_rarity[0]
@@ -121,13 +114,18 @@ class decode:
                         else:
                             x += 1
 
-        print("=============================================")
-
         def getcost(elem):
             return elem[-1]
 
         fulldeck.sort(key=getcost, reverse=True)
 
+        embed.add_field(name="Cost:", value=str(total_cost), inline=True)
+        if "0." in str(num_of_spells/num_of_minions):
+            embed.add_field(name="Spells:Minions Ration:", value="{} : 1".format(str(num_of_minions/num_of_spells)[:5]), inline=True)
+        else:
+            embed.add_field(name="Minions:Spell Ration:", value="{} : 1".format(str(num_of_spells/num_of_minions)[:5]), inline=True)
+        embed.add_field(name="# of Spells:", value=str(num_of_spells), inline=True)
+        embed.add_field(name="# of Minions:", value=str(num_of_minions), inline=True)
         embed.add_field(name="Cards:", value='\n'.join(' '.join(elems[:-1]) for elems in fulldeck), inline=True)
         await ctx.send(embed=embed)
 
