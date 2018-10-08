@@ -28,34 +28,33 @@ class lobbytext:
 
         hidden_group = discord.utils.get(member.guild.categories, id=settings.hidden_cat_id)
         main_group = discord.utils.get(member.guild.categories, id=settings.main_cat_id)
-        await member.remove_roles(role1, role2)
 
         if after.channel is None:
             pass  # user DC'd
 
-        if after.channel == lobby1voice:
-            await lobby1text.edit(category=main_group, position=2)
-            await member.add_roles(role1)
-
         if after.channel == lobby2voice:
-            await lobby1text.edit(category=main_group, position=2)
+            await member.remove_roles(role1)
             await member.add_roles(role2)
 
-        if lobby1voice.members and lobby2voice.members:
-            await lobby1text.edit(category=main_group, position=1)
-            await lobby2text.edit(category=main_group, position=2)
-            return
+        if after.channel == lobby1voice:
+            await member.remove_roles(role2)
+            await member.add_roles(role1)
 
-        if lobby1voice.members:
-            await lobby2text.edit(category=hidden_group, position=2)
+        if lobby1voice.members and lobby2voice.members:
+            await lobby1text.edit(category=main_group, position=6)
+            await lobby2text.edit(category=main_group, position=7)
             return
 
         if lobby2voice.members:
-            await lobby1text.edit(category=hidden_group, position=1)
+            await lobby1text.edit(category=hidden_group, position=6)
             return
 
-        await lobby1text.edit(category=hidden_group, position=1)
-        await lobby2text.edit(category=hidden_group, position=2)
+        if lobby1voice.members:
+            await lobby2text.edit(category=hidden_group, position=6)
+            return
+
+        await lobby1text.edit(category=hidden_group, position=20)
+        await lobby2text.edit(category=hidden_group, position=21)
 
 
 def setup(client):

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import random
 import sys
+import random
 from datetime import datetime
 
 import aiohttp
@@ -39,7 +39,10 @@ class Basic:
     @client.command(aliases=["idea", "suggest"], description="Link to Trello", brief="Trello")
     async def trello(self, ctx):
         embed = discord.Embed(description="[Trello Page](https://trello.com/b/CQBT9vag/synapsbot)", color=settings.embed_color)
-        await ctx.send(embed=embed)
+
+    @client.command()
+    async def pos(self, ctx, channel: discord.TextChannel):
+        await ctx.send(str(channel.position))
 
     @client.command(aliases=["code", "source"], description="Link to Github", brief="Github")
     async def github(self, ctx):
