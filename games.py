@@ -37,7 +37,7 @@ class Games:
         for guild in self.client.guilds:
 
             # Game Roles
-            global league, hs, fortnite, pubg, tf2, gta, chiv, cs, aoe, civ, rainbow, brawl, ratz, skribble
+            global league, hs, fortnite, pubg, tf2, gta, chiv, cs, aoe, civ, rainbow, brawl, ratz, skribble, gmod
             league = discord.utils.get(guild.roles, id=settings.league_role)
             hs = discord.utils.get(guild.roles, id=settings.hs_role)
             fortnite = discord.utils.get(guild.roles, id=settings.fortnite_role)
@@ -52,6 +52,7 @@ class Games:
             brawl = discord.utils.get(guild.roles, id=settings.brawl_role)
             ratz = discord.utils.get(guild.roles, id=settings.ratz_role)
             skribble = discord.utils.get(guild.roles, id=settings.skribble_role)
+            gmod = discord.utils.get(guild.roles, id=settings.gmod_role)
 
             # Group Roles
             global code, boof, max_role, path, poker, dj, snowboard
@@ -115,6 +116,8 @@ class Games:
                     await user.add_roles(ratz)
                 if str(reaction) == '🇳':
                     await user.add_roles(skribble)
+                if str(reaction) == '🇴':
+                    await user.add_roles(gmod)
 
     @client.event
     async def on_raw_reaction_remove(self, payload):
@@ -152,6 +155,8 @@ class Games:
                     await user.remove_roles(ratz)
                 if str(reaction) == '🇳':
                     await user.remove_roles(skribble)
+                if str(reaction) == '🇴':
+                    await user.remove_roles(gmod)
 
             if int(payload.message_id) == settings.groups_message_id:
                 if str(reaction) == '🇦':
@@ -165,7 +170,7 @@ class Games:
     @client.command(hidden=True)
     @commands.has_role(settings.admin_role_name)
     async def games(self, ctx):
-        letters = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳']
+        letters = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴']
 
         embed = discord.Embed(color=settings.embed_color, title="Games:",
                               description='🇦 League\n'
@@ -182,7 +187,7 @@ class Games:
                                           '🇱 Brawlhalla\n'
                                           '🇲 Ratz Instagib\n'
                                           '🇳 Skribble.io\n'
-                                          # '🇴'
+                                          '🇴 G-Mod'
                                           # '🇵'
                                           # '🇶'
                                           # '🇷'
