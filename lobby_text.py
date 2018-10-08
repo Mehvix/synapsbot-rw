@@ -46,15 +46,17 @@ class lobbytext:
             return
 
         if lobby2voice.members:
-            await lobby1text.edit(category=hidden_group, position=6)
+            await lobby2text.edit(category=main_group, position=7)
+            await lobby1text.edit(category=hidden_group, position=1)
             return
 
         if lobby1voice.members:
-            await lobby2text.edit(category=hidden_group, position=6)
+            await lobby1text.edit(category=main_group, position=6)
+            await lobby2text.edit(category=hidden_group, position=2)
             return
 
-        await lobby1text.edit(category=hidden_group, position=20)
-        await lobby2text.edit(category=hidden_group, position=21)
+        await lobby1text.edit(category=hidden_group, position=1)
+        await lobby2text.edit(category=hidden_group, position=2)
 
 
 def setup(client):
