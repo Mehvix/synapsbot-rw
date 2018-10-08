@@ -6,6 +6,8 @@ import hashlib
 import aiohttp
 import asyncio
 import hearthstone
+
+from bs4 import BeautifulSoup
 from hearthstone.deckstrings import Deck
 from hearthstone.enums import FormatType
 
@@ -21,7 +23,7 @@ class decode:
     def __init__(self, client):
         self.client = client
 
-    print("Loading decode...")
+    print("Loading Decoder...")
 
     @commands.command(aliases=["hs", "decode"], usage="[deckstring]", description="Decodes HS deckstring", brief="Decode [deckstring]")
     async def deck(self, ctx, target: str):
@@ -57,13 +59,7 @@ class decode:
             hero = "Paladin"
             image = "https://d1u5p3l4wpay3k.cloudfront.net/hearthstone_gamepedia/7/7b/Icon_Paladin_64.png?version=2a4e7cdbb3b5402f3e8a34ea156f9cf1"
 
-        embed = discord.Embed(title="{}'s Deck 🃏".format(ctx.author.name),
-                              description="Deckcode being used:\n`{}`".format(deck.as_deckstring),
-                              color=settings.embed_color)
-        embed.set_thumbnail(url=image)
-        embed.add_field(name="Format:", value=str(str(deck.format)[14:]).title(), inline=True)
-        embed.add_field(name="Class:", value=hero, inline=True)
-
+        embed = discord.Embed()
         num_of_spells = 0
         num_of_minions = 0
 
@@ -87,7 +83,6 @@ class decode:
                             for _ in range(num_of_cards):
                                 deckids.append(str(result[x]["id"]))
 
-
                             types_of_rarity = ["🏛️", "💿", "💙", "💜", "💛"]  # free, common, rare, epic, legendary
 
                             name = result[x]["name"]
@@ -101,16 +96,16 @@ class decode:
                                 num_of_minions += (1 * num_of_cards)
 
                             if rarity == "LEGENDARY":
-                                total_cost += 1600
+                                total_cost += 1600 * int(num_of_cards)
                                 rarity = types_of_rarity[4]
                             if rarity == "EPIC":
-                                total_cost += 400
+                                total_cost += 400 * int(num_of_cards)
                                 rarity = types_of_rarity[3]
                             if rarity == "RARE":
-                                total_cost += 100
+                                total_cost += 100 * int(num_of_cards)
                                 rarity = types_of_rarity[2]
                             if rarity == "COMMON":
-                                total_cost += 40
+                                total_cost += 40 * int(num_of_cards)
                                 rarity = types_of_rarity[1]
                             if rarity == "FREE":
                                 rarity = types_of_rarity[0]
@@ -125,17 +120,6 @@ class decode:
             return elem[-1]
 
         fulldeck.sort(key=getcost, reverse=True)
-
-        embed.add_field(name="Cost:", value=str(total_cost), inline=True)
-        if "0." in str(num_of_spells/num_of_minions):
-            embed.add_field(name="Spells:Minions Ration:", value="{} : 1".format(str(num_of_minions/num_of_spells)[:5]), inline=True)
-        else:
-            embed.add_field(name="Minions:Spell Ration:", value="{} : 1".format(str(num_of_spells/num_of_minions)[:5]), inline=True)
-
-        embed.add_field(name="# of Spells:", value=str(num_of_spells), inline=True)
-        embed.add_field(name="# of Minions:", value=str(num_of_minions), inline=True)
-        embed.add_field(name="Cards:", value='\n'.join(' '.join(elems[:-1]) for elems in fulldeck), inline=True)
-        await ctx.send(embed=embed)
 
         ALPHABET = string.ascii_letters + string.digits
 
@@ -164,7 +148,40 @@ class decode:
         card_ids = deckids
         digest = generate_digest_from_deck_list(card_ids)
         shortid = int_to_string(int(digest, 16), ALPHABET)
-        await ctx.send("https://hsreplay.net/decks/%s/" % shortid)
+
+        embed = discord.Embed(title="{}'s Deck 🃏".format(ctx.author.name),
+                              description="• Deckcode being used:\n`{}`"
+                                          "\n[• View deck stats on HSReplay](https://hsreplay.net/decks/{}/)"
+                              .format(deck.as_deckstring, shortid),
+                              color=settings.embed_color)
+        embed.add_field(name="Format:", value=str(str(deck.format)[14:]).title(), inline=True)
+        embed.add_field(name="Cost:", value=str(total_cost), inline=True)
+        if "0." in str(num_of_spells / num_of_minions):
+            embed.add_field(name="Spells:Minions Ration:",
+                            value="{} : 1".format(str(num_of_minions / num_of_spells)[:5]), inline=True)
+        else:
+            embed.add_field(name="Minions:Spell Ration:",
+                            value="{} : 1".format(str(num_of_spells / num_of_minions)[:5]), inline=True)
+        embed.set_thumbnail(url=image)
+        embed.add_field(name="# of Spells:", value=str(num_of_spells), inline=True)
+        embed.add_field(name="# of Minions:", value=str(num_of_minions), inline=True)
+        embed.add_field(name="Cards:", value='\n'.join(' '.join(elems[:-1]) for elems in fulldeck), inline=True)
+        await asyncio.sleep(1)
+        await ctx.send(embed=embed)
+
+        search = "https://hsreplay.net/decks/{}/#tab=overview".format(shortid)
+        async with aiohttp.ClientSession() as session:
+            async with session.get(search) as r:
+                print(search)
+                text = await r.read()
+
+                await asyncio.sleep(1)
+                soup = BeautifulSoup(text.decode('utf-8'), 'html5lib')
+
+                print(soup)
+
+                data = soup.find('span', attrs={'class': 'infobox-value'})
+                print(data)
 
 
 def setup(client):
