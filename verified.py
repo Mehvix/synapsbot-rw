@@ -466,7 +466,7 @@ class Verified:
             outcomes = ["Odds aren't that good" "It is certain.", "It is decidedly so.", "Without a doubt.",
                         "Yes - definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.",
                         "Yes.", "Signs point to yes.", "Don't count on it.", "My reply is no.", "My sources say no",
-                        "Outlook not so good.", "Very doubtful."]
+                        "Outlook not so good.", "Very doubtful." , "Yummy."]
             letters = list(string.printable)
             choice = "".join(random.choices(outcomes))
             nums = len(choice)
@@ -514,7 +514,7 @@ class Verified:
         embed.add_field(name="Zero", value=zero_total, inline=True)
         await ctx.message.channel.send(embed=embed)
 
-    @client.command(aliases=["r", "roulete", "roullete", "bet"], description="Too much to say, do .roulette help", usage="[odd/even/zero] [amount of karma < 250 and > 10]", brief="Lets you bet [amount of karma] on an outcome, [odd/even/zero] ")
+    @client.command(aliases=["r", "roulete", "roullete", "bet"], description="There is little time, do .roulette help", usage="[odd/even/zero] [amount of karma < 250 and > 10]", brief="Lets you bet [amount of karma] on an outcome, [odd/even/zero] ")
     @commands.has_role(settings.verified_role_name)
     async def roulette(self, ctx, outcome: str, *amount):
         if "outcome" in outcome:
@@ -556,7 +556,7 @@ class Verified:
 
         if amount > karma.get_karma(ctx.message.author.id):
             await ctx.message.channel.send(
-                "You only have `{}` karma available to bet".format(karma.get_karma(ctx.message.author.id)))
+                "You only have `{}` karma available for betting".format(karma.get_karma(ctx.message.author.id)))
             return
 
         with open('roulette_outcomes.json', 'r') as fp:
@@ -678,8 +678,8 @@ class Verified:
             await ctx.message.channel.send(
                 "How original. No one else had thought of trying to get the bot to insult itself. I applaud your "
                 "creativity. Yawn. Perhaps this is why you don't have friends. You don't add anything new to any "
-                "conversation. You are more of a bot than me, predictable answers, and absolutely dull to have an "
-                "actual conversation with.")
+                "conversation. You are more of a bot than I, predictable answers, and absolutely dull to converse "
+                "with.")
             return
         await ctx.message.channel.send("<@{}>, {}".format(user.id, random.choice(insults)))
 
