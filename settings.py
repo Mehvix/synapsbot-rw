@@ -32,7 +32,7 @@ def set_server(server):
         chiv_role, cs_role, aoe_role, civ_role, rainbow_role, brawl_role, ratz_role, code_role, boof_role, max_role, \
         path_role, poker_role, dj_role, snowboard_role, groups_message_id, games_message_id, skribble_role, \
         lobby_one_vc_id, lobby_two_vc_id, lobby_one_role_id, lobby_two_role_id, hidden_cat_id, main_cat_id, \
-        lobby_one_text_id, lobby_two_text_id, gmod_role
+        lobby_one_text_id, lobby_two_text_id, gmod_role, emote_channel
     embed_color = 0x593595
 
     if server == "test":
@@ -187,6 +187,8 @@ def set_server(server):
 
         lobby_one_text_id = 497235184693805056
         lobby_two_text_id = 497235830234939394
+
+        emote_channel = 499755365806768139
 
         return
     else:
