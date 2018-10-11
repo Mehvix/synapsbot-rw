@@ -125,7 +125,7 @@ class decode:
 
         # The following is yoinked from here:
         # https://github.com/HearthSim/HSReplay.net/blob/54a5e372e6ddd870fa102c7e827c359c28b81187/scripts/generating_deck_ids_example.py
-        def int_to_string(number, alphabet, padding=None):
+        def int_to_string(self, number, alphabet, padding=None):
             """
             Convert a number to a string, using the given alphabet.
             """
