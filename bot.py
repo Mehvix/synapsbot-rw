@@ -50,7 +50,7 @@ def flair(num_of_users):  # todo: add more flairs
 
 
 # Defines Client
-client = commands.Bot(description="synapsBot",
+client = commands.Bot(description="If you have any issues please contact @Mehvix#7172",
                       command_prefix='.',
                       owner_id="196355904503939073",
                       case_insensitive=True)
@@ -88,7 +88,7 @@ async def timer():
                 pass  # Sometimes discord gets angry when the profile pic is changed a lot
 
         # Comic Code
-        if str(str(str(datetime.now()).split(" ")[1]).split(".")[0])[:5] == "07:00":
+        if str(str(str(datetime.now()).split(" ")[1]).split(".")[0])[:5] == "09:00":
             date = datetime.today().strftime('%Y/%m/%d')
             search = "https://www.gocomics.com/calvinandhobbes/{}".format(date)
             print(search)
@@ -192,6 +192,9 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.MissingPermissions):
         await ctx.send("You need special permissions to use that command: \n{}".format(
             "\n ".join(commands.MissingPermissions.missing_perms)))
+
+    elif isinstance(error, commands.BadArgument):
+        await ctx.send(error)
 
     elif isinstance(error, commands.TooManyArguments):
         await ctx.send("You have too many arguments")
