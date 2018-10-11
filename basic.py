@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import sys
 import random
-from emoji import UNICODE_EMOJI
 from datetime import datetime
+from emoji import UNICODE_EMOJI
 
 import aiohttp
 import discord

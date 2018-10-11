@@ -1,3 +1,4 @@
+emoji
 hearthstone
 pyqrcode
 django-qrcode
