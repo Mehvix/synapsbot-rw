@@ -38,7 +38,7 @@ class Notifications:
 
         await member.send(
             "Thank you for joining the server! **After reading the rules** in <#{}> type `.accept` in the channel to "
-            "gain access to other channels, or `.decline` if you don't agree with the terms".format(
+            "gain access to other channels, or `.decline` if you didn't agree with the terms".format(
                 settings.accept_channel))
 
 
