@@ -1,5 +1,6 @@
 # synapsBot RW
 This is a WIP project for my Discord Server. This is the up-to-date version that will be using rewrite.
+You can see what I plan on working on [Trello Board.](https://trello.com/b/CQBT9vag/synapsbot)
 
 If you keep getting an error code when trying to write to the `users.json` file it's probably because you have multiple versions of the same bot running at the same time.
 
