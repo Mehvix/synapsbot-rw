@@ -18,6 +18,7 @@ class Typeracer:
 
     @client.command(alias=["type", "racer", "wpm", "typeracer"], description="Gets a users stats on typeracer.com", usage="[username from typeracer.com]", brief="Gets statistics about [username] from typeracer.com")
     async def tr(self, ctx, user):
+        user = str(user).lower
         search = "https://data.typeracer.com/users?id=tr:{}".format(user)
 
         async with aiohttp.ClientSession() as session:
