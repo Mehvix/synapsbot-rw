@@ -1,64 +1,69 @@
 {
     "117069824986841094": {
-        "karma": 2228,
-        "level": 22,
+        "karma": 2365,
+        "level": 23,
         "name": "Osmiley"
     },
     "188877019738537984": {
-        "karma": 1189,
+        "karma": 1977,
         "level": 23,
         "name": "euviac"
     },
     "191010877275635713": {
-        "karma": 5774,
-        "level": 57,
+        "karma": 6393,
+        "level": 63,
         "name": "Nadia"
     },
     "193033478101532672": {
-        "karma": 2633,
-        "level": 26,
+        "karma": 3039,
+        "level": 30,
         "name": "RobotsUnited"
     },
     "196355904503939073": {
-        "karma": 10535,
-        "level": 105,
+        "karma": 11177,
+        "level": 111,
         "name": "Mehvix"
     },
     "214191740607922176": {
-        "karma": 11
+        "karma": 42,
+        "name": "Squallems"
     },
     "217341034298867712": {
-        "karma": 3006,
-        "level": 29,
+        "karma": 3389,
+        "level": 33,
         "name": "Iconic"
     },
     "219284565141749760": {
-        "karma": 3347,
+        "karma": 3361,
         "level": 33,
         "name": "SmooP"
     },
     "219626173167042570": {
-        "karma": 1134,
+        "karma": 1135,
         "level": 11,
         "name": "Xwarmeous"
     },
     "225718109099655168": {
-        "karma": 354,
+        "karma": 365,
         "level": 3,
         "name": "\u0192rick"
     },
     "235088799074484224": {
-        "karma": 3283,
-        "level": 32,
+        "karma": 3321,
+        "level": 33,
         "name": "Rythm"
     },
     "240608458888445953": {
-        "karma": 4313,
+        "karma": 4501,
         "level": 60,
         "name": "xpoes"
     },
+    "247041277508452352": {
+        "karma": 48
+    },
     "247059077098766346": {
-        "karma": 2230,
+        "karma": 2254,
+
         "level": 22,
         "name": "seeb=weeb"
     },
@@ -68,12 +73,12 @@
         "name": "Dad Bot"
     },
     "262677178590822400": {
-        "karma": 6150,
-        "level": 61,
+        "karma": 6264,
+        "level": 62,
         "name": "wala cam"
     },
     "263807825996677120": {
-        "karma": 1601,
+        "karma": 1632,
         "level": 16,
         "name": "jeremy"
     },
@@ -99,12 +104,12 @@
         "name": "Pok\u00e9cord"
     },
     "385183226420920322": {
-        "karma": 2589,
-        "level": 23,
+        "karma": 2611,
+        "level": 26,
         "name": "boompig"
     },
     "414674255402237964": {
-        "karma": 36779,
+        "karma": 37054,
         "level": 89,
         "name": "SynapsBot"
     },
@@ -112,6 +117,9 @@
         "karma": 15146,
         "level": 19,
         "name": "synapsBotTester"
+    },
+    "441029080695963648": {
+        "karma": 12
     },
     "455204812259196928": {
         "karma": 41,
@@ -126,11 +134,5 @@
         "karma": 124,
         "level": 1,
         "name": "mehvix3"
-    },
-    "wala cam#9845": {
-        "karma": -200
-    },
-    "xpoes#9244": {
-        "karma": -200
     }
 }
