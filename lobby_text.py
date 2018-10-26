@@ -40,9 +40,13 @@ class lobbytext:
             await member.remove_roles(role2)
             await member.add_roles(role1)
 
+        if after.channel != lobby1voice and after.channel != lobby2voice:
+            await member.remove_roles(role1)
+            await member.remove_roles(role2)
+
         if lobby1voice.members and lobby2voice.members:
             await lobby1text.edit(category=main_group, position=6)
-            await lobby2text.edit(category=main_group, position=7)
+            await lobby2text.edit(category=main_group, position=6)
             return
 
         if lobby2voice.members:
