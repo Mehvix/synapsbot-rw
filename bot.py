@@ -12,6 +12,7 @@
 
 '''''''''''''''''''''''''''''''''''''''''' """
 
+import json
 import asyncio
 import os
 import random
@@ -81,12 +82,15 @@ async def timer():
             activity=discord.Streaming(name=flair(users), url='https://twitch.tv/mehvix',
                                        twitch_name="Mehvix"))
 
-        fp = random.choice(os.listdir("media/avatars"))
-        with open('media/avatars/{}'.format(fp), 'rb') as f:
-            try:
-                await client.user.edit(avatar=f.read())
-            except discord.HTTPException:
-                pass  # Sometimes discord gets angry when the profile pic is changed a lot
+        try:
+            fp = random.choice(os.listdir("media/avatars"))
+            with open('media/avatars/{}'.format(fp), 'rb') as f:
+                try:
+                    await client.user.edit(avatar=f.read())
+                except discord.HTTPException:
+                    pass  # Sometimes discord gets angry when the profile pic is changed a lot
+        except FileNotFoundError:
+            pass  # you dont have any avatars!
 
         # Comic Code
         if str(str(str(datetime.now()).split(" ")[1]).split(".")[0])[:5] == "09:00":
