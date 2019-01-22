@@ -216,7 +216,7 @@ class Admin:
     async def on_member_ban(self, guild, member):
         self.bannedusers[guild.id] = member.id
 
-        event = await guild.audit_logs(action=discord.AuditLogAction.ban, limit=1).flatten()
+        event = await guild.audit_logs(action=discord.AuditLogAction.ban).flatten()
         event = event[0]
         reason = event.reason
 

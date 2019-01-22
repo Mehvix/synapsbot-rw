@@ -623,7 +623,7 @@ class Verified:
 
         await ctx.send(str(text).replace(" ", " " + emote) + " " + emote)
 
-    @client.command(description="Displays who has the highest karam/level", usage="[kind] (karam/level)", brief="Displays who has the highest [kind]")
+    @client.command(description="Displays who has the highest karam/level", usage="[kind] (karma/level)", brief="Displays who has the highest [kind]")
     @commands.has_role(settings.verified_role_name)
     async def leaderboard(self, ctx, *kind):
         kind = " ".join(kind)
@@ -640,8 +640,19 @@ class Verified:
         karma_leaderboard = sorted(file, key=lambda x: file[x].get(type_new, 0), reverse=True)
         msg = ''
         for number, user in enumerate(karma_leaderboard):
+            try:
+                name = file[user]['name']
+            except KeyError:
+                name = await self.client.get_user_info(file[user])
+                karma.set_name(name)
+
+            try:
+                value = file[user].get(type_new, 0)
+            except KeyError:
+                value = 0
+
             msg += '__{}__. **{}** {} `{}` {} \n'.format(
-                number + 1, file[user]['name'], word, file[user].get(type_new, 0), type_new)
+                number + 1, name, word, value, type_new)
         await ctx.send(msg)
 
     @client.command(description="Lists all invites to the server", brief="Lists all invites to the serve")

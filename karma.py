@@ -137,15 +137,20 @@ class Karma:
             set_level(user_id, new_level)
 
             if not level_role:
-                role = await message.guild.create_role(name="Level {}".format(new_level))
+                try:
+                    role = await message.guild.create_role(name="Level {}".format(new_level))
+                except discord.HTTPException:
+                    print("You have to many roles (>250)")
                 await message.author.add_roles(role)
                 await message.guild.owner.send("The bot manually created a role for <@{}> when they leveled up".format(user_id))
 
             level_role = discord.utils.get(message.guild.roles, name="Level {}".format(new_level))
             await message.author.add_roles(level_role)
 
+            '''
             if message.channel.id != settings.canvas_channel or user_id != self.client.user.id:
                 await message.channel.send("Congrats, <@{0}>! You're now level `{1}` :tada: ".format(user_id, new_level))
+            '''
 
             await message.author.remove_roles(old_level_role)
             level1_role = discord.utils.get(message.guild.roles, name="Level 1")
@@ -171,7 +176,7 @@ def user_add_karma(user_id: int, karma: int):
                     json.dump(users, fp, sort_keys=True, indent=4)
             except Exception as e:
                 exc = '{}: {}'.format(type(e).__name__, e)
-                print('Failed to load extension {}\n{}'.format(extension, exc))
+                print('Failed to load extension {}\n{}'.format(e, exc))
 
     else:
         users = {user_id: {}}
