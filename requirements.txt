@@ -1,6 +1,3 @@
-emoji
-hearthstone
-pyqrcode
 django-qrcode
 beautifulsoup4
 html5lib

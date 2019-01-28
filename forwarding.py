@@ -28,19 +28,21 @@ class Forwarding:
             return
 
         embed = discord.Embed(color=settings.embed_color)
-        if message.author == self.client.user:
+        if not message.author == self.client.user:
+            '''
             embed.set_author(
                 name='I sent a PM to {}#{} ({}).'.format(
                     message.channel.recipient.name, message.channel.recipient.discriminator, message.channel.recipient.id),
                 icon_url=message.author.avatar_url or message.author.default_avatar_url)
-        else:
+            '''
             embed.set_author(name='{} ({}) messaged me:'.format(message.channel.recipient.name, message.channel.recipient.id),
                              icon_url=message.author.avatar_url or message.author.default_avatar_url)
-        embed.description = "{}".format(message.clean_content)
-        embed.timestamp = message.created_at
 
-        user = await self.client.get_user_info(196355904503939073)
-        await user.send(embed=embed)
+            embed.description = "{}".format(message.clean_content)
+            embed.timestamp = message.created_at
+
+            user = await self.client.get_user_info(196355904503939073)
+            await user.send(embed=embed)
 
 
 def setup(client):

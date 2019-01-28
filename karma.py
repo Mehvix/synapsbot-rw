@@ -140,6 +140,7 @@ class Karma:
                 try:
                     role = await message.guild.create_role(name="Level {}".format(new_level))
                 except discord.HTTPException:
+                    role = None
                     print("You have to many roles (>250)")
                 await message.author.add_roles(role)
                 await message.guild.owner.send("The bot manually created a role for <@{}> when they leveled up".format(user_id))

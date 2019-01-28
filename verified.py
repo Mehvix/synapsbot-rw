@@ -96,8 +96,8 @@ class Verified:
         for member in role.members:
             embed = discord.Embed(
                 color=settings.embed_color, description=message)
-            embed.set_author(name="{} sent an announcement to {} others in {}".format(
-                    ctx.message.author.name, len(role.members), role.name), icon_url=ctx.message.author.avatar_url)
+            embed.set_author(name="{} sent an announcement to you because you are a member of the group '{}''".format(
+                    ctx.message.author.name, role.name), icon_url=ctx.message.author.avatar_url)
             await member.send(embed=embed)
 
     @client.command(description="Gets a random Sammy pic", brief="Gets a random Sammy pic")

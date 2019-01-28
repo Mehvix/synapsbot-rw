@@ -212,6 +212,11 @@ class Admin:
         channel = self.client.get_channel(id=settings.notification_channel)
         await channel.send(embed=embed)
 
+    @client.command(description="DM's a user", usage="[text]", brief="DM's user [text]")
+    @commands.has_role(settings.admin_role_name)
+    async def dm(self, user: discord.Member, msg: str):
+        await user.send(msg)
+
     @client.event
     async def on_member_ban(self, guild, member):
         self.bannedusers[guild.id] = member.id
