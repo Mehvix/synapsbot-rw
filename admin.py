@@ -60,7 +60,7 @@ class Admin:
                               "NIGGOS NOT LIEK IT!!! BRB HAVIN A ZOOMIE! XDDDLOLOELELALA \nYou can see what is banned "
                               "via the `.bannedwords` command.")
 
-    @client.command(aliases=['clear'], description="Deletes messages", usage="(However man messages)", brief="Deletes messages")
+    @client.command(aliases=['clear', 'snap'], description="Deletes messages", usage="(However man messages)", brief="Deletes messages")
     @commands.has_role(settings.admin_role_name)
     async def clean(self, ctx, messages: int):
         deleted = await ctx.channel.purge(limit=messages + 1)
