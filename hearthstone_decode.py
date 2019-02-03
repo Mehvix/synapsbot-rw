@@ -125,7 +125,7 @@ class decode:
 
         # The following is yoinked from here:
         # https://github.com/HearthSim/HSReplay.net/blob/54a5e372e6ddd870fa102c7e827c359c28b81187/scripts/generating_deck_ids_example.py
-        def int_to_string(self, number, alphabet, padding=None):
+        def int_to_string(number, alphabet, padding=None):
             """
             Convert a number to a string, using the given alphabet.
             """
@@ -149,7 +149,7 @@ class decode:
         digest = generate_digest_from_deck_list(card_ids)
         shortid = int_to_string(int(digest, 16), ALPHABET)
 
-        embed = discord.Embed(title="{}'s Deck 🃏".format(ctx.author.name),
+        embed = discord.Embed(title="{}'s Deck".format(ctx.author.name),
                               description="• Deckcode being used:\n`{}`"
                                           "\n[• View deck stats on HSReplay](https://hsreplay.net/decks/{}/)"
                               .format(deck.as_deckstring, shortid),
@@ -172,16 +172,10 @@ class decode:
         search = "https://hsreplay.net/decks/{}/#tab=overview".format(shortid)
         async with aiohttp.ClientSession() as session:
             async with session.get(search) as r:
-                print(search)
                 text = await r.read()
-
                 await asyncio.sleep(1)
                 soup = BeautifulSoup(text.decode('utf-8'), 'html5lib')
-
-                print(soup)
-
                 data = soup.find('span', attrs={'class': 'infobox-value'})
-                print(data)
 
 
 def setup(client):
