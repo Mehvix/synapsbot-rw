@@ -148,7 +148,7 @@ class Verified:
 
     @client.command(description="Gets Information about the server", brief="")
     @commands.has_role(settings.verified_role_name)
-    async def serverinfo(self, ctx):  # make this admin
+    async def serverinfo(self, ctx):
         online = 0
         for i in ctx.message.guild.members:
             if str(i.status) == "online" or str(i.status) == "idle" or str(i.status) == "dnd":
@@ -165,7 +165,7 @@ class Verified:
         em.add_field(name="Members Online:", value=online)
         em.add_field(name="Region:", value=ctx.message.guild.region)
         em.add_field(name="Verification Level:", value=str(ctx.message.guild.verification_level).capitalize())
-        em.add_field(name="Highest Ranking Role:", value=ctx.message.guild.role_hierarchy[0])
+        # em.add_field(name="Highest Ranking Role:", value=ctx.message.guild.role_hierarchy[0])
         em.add_field(name="Number of Roles:", value=str(len(ctx.message.guild.roles)))
         em.add_field(name="Number of Channels:", value=str(len(ctx.message.guild.channels)))
         em.add_field(name="Number of Text Channels:", value=str(len(ctx.message.guild.text_channels)))
