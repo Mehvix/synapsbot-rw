@@ -42,7 +42,7 @@ after_invites = []
 
 
 def flair(num_of_users):  # todo: add more flairs
-    flairs = ['Created by Mehvix#7172',
+    flairs = ['Created by Mehvix#7966',
               'Running Version {}'.format(settings.get_version()),
               'Used by {} users!'.format(num_of_users),
               'Try .github for code',
