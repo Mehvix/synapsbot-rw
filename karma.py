@@ -128,6 +128,7 @@ class Karma:
         except TypeError:
             return  # webhook was sent
 
+        """
         if author_karma >= 100 * new_level:
             if user_id == self.client.user.id:
                 return
@@ -138,7 +139,8 @@ class Karma:
 
             if not level_role:
                 try:
-                    role = await message.guild.create_role(name="Level {}".format(new_level))
+                    pass  # I've anything past 100 shouldn't be counted
+                    # role = await message.guild.create_role(name="Level {}".format(new_level))
                 except discord.HTTPException:
                     role = None
                     print("You have to many roles (>250)")
@@ -156,6 +158,7 @@ class Karma:
             await message.author.remove_roles(old_level_role)
             level1_role = discord.utils.get(message.guild.roles, name="Level 1")
             await message.author.remove_roles(level1_role)
+        """
 
 
 def user_add_karma(user_id: int, karma: int):
