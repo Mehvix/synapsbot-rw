@@ -26,7 +26,7 @@ class Reddit:
         if "http" and "reddit.com/r/" in message.content:  # TODO make this work for subreddits
             url = [s for s in str(message.content).split(" ") if "reddit.com/r/" in s]
             url = str("".join(url)).split("/")
-            if "?utm_" in url[-1]:
+            if "?utm_" or "?st=" in url[-1]:
                 url = "/".join(url[:-1])
             else:
                 url = "/".join(url)
@@ -34,7 +34,10 @@ class Reddit:
 
             async with aiohttp.ClientSession() as session:
                 async with session.get(url) as r:
-                    result = await r.json(content_type='application/json')
+                    try:
+                        result = await r.json(content_type='application/json')
+                    except aiohttp.client_exceptions.ContentTypeError:
+                        result = await r.json(content_type='text/html')
 
             embed = discord.Embed(
                 title=str(result[0]['data']['children'][0]['data']['title'])[:256],
