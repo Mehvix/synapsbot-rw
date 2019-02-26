@@ -32,7 +32,7 @@ def set_server(server):
         chiv_role, cs_role, aoe_role, civ_role, rainbow_role, brawl_role, ratz_role, code_role, boof_role, max_role, \
         path_role, poker_role, dj_role, snowboard_role, groups_message_id, games_message_id, skribble_role, \
         lobby_one_vc_id, lobby_two_vc_id, lobby_one_role_id, lobby_two_role_id, hidden_cat_id, main_cat_id, \
-        lobby_one_text_id, lobby_two_text_id, gmod_role, emote_channel
+        lobby_one_text_id, lobby_two_text_id, gmod_role, emote_channel, apex_role
     embed_color = 0x593595
 
     if server == "test":
@@ -94,6 +94,7 @@ def set_server(server):
         ratz_role = None
         skribble_role = None
         gmod_role = None
+        apex_role = None
 
         # Group Roles (games.py)
         groups_message_id = None
@@ -164,6 +165,7 @@ def set_server(server):
         ratz_role = 491388165618270218
         skribble_role = 495794541262143488
         gmod_role = 498645082745077770
+        apex_role = 549115001302941727
 
         # Group Roles (games.py)
         groups_message_id = 495070906906050560
