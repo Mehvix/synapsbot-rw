@@ -8,7 +8,7 @@ import karma
 import settings
 
 
-class Games:
+class Games(commands.Cog):
     client = commands.Bot(command_prefix='.')
 
     def __init__(self, client):

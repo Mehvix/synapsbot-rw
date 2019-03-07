@@ -8,7 +8,7 @@ import settings
 vote_phase = 0
 
 
-class Poll:
+class Poll(commands.Cog):
     client = commands.Bot(command_prefix='.')
 
     def __init__(self, client):

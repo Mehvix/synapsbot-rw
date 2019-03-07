@@ -8,7 +8,7 @@ import settings
 from discord.ext import commands
 
 
-class Accept:
+class Accept(commands.Cog):
     client = commands.Bot(command_prefix='.')
 
     def __init__(self, client):

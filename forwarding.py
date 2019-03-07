@@ -13,7 +13,7 @@ from discord.ext import commands
 import settings
 
 
-class Forwarding:
+class Forwarding(commands.Cog):
     client = commands.Bot(command_prefix='.')
 
     def __init__(self, client):

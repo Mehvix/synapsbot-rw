@@ -23,7 +23,7 @@ image_files = ['.ras', '.xwd', '.bmp', '.jpe', '.jpg', '.jpeg', '.xpm', '.ief', 
                '.ppm', '.xbm', '.tiff', '.rgb', '.pgm', '.png', '.pnm']
 
 
-class Verified:
+class Verified(commands.Cog):
     client = commands.Bot(command_prefix='.')
 
     def __init__(self, client):

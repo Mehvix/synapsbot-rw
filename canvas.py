@@ -4,6 +4,7 @@
 import asyncio
 import json
 
+from discord.ext import commands
 import discord
 
 import settings
@@ -19,7 +20,7 @@ white = ":white:481329771700289538"
 black = ":black:484770699790254091"
 
 
-class Canvas:
+class Canvas(commands.Cog):
     def __init__(self, client):
         self.client = client
 

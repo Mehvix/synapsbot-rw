@@ -99,7 +99,7 @@ async def timer():
             print(search)
             channel = client.get_channel(settings.notification_channel)
             await channel.send(search)
-            await channel.send("https://imgs.xkcd.com/comics/sharing_options.png")
+            await channel.send("https://xkcd.com/")
 
 
 @client.event

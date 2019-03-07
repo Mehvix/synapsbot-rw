@@ -14,7 +14,7 @@ import curtime
 import settings
 
 
-class Basic:
+class Basic(commands.Cog):
     client = commands.Bot(command_prefix='.')
 
     def __init__(self, client):

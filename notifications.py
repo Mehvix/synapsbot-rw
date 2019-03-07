@@ -10,7 +10,7 @@ import settings
 ban_message = 0
 
 
-class Notifications:
+class Notifications(commands.Cog):
     client = commands.Bot(command_prefix='.')
 
     def __init__(self, client):

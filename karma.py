@@ -12,7 +12,7 @@ from discord.ext import commands
 import settings
 
 
-class Karma:
+class Karma(commands.Cog):
     client = commands.Bot(command_prefix='.')
 
     def __init__(self, client):

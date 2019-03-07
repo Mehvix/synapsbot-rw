@@ -8,7 +8,7 @@ from discord.ext import commands
 import settings
 
 
-class Typeracer:
+class Typeracer(commands.Cog):
     client = commands.Bot(command_prefix='.')
 
     def __init__(self, client):

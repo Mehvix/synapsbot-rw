@@ -15,7 +15,7 @@ import discord
 from discord.ext import commands
 
 
-class Admin:
+class Admin(commands.Cog):
     client = commands.Bot(command_prefix='.')
 
     def __init__(self, client):
