@@ -12,6 +12,7 @@
 
 '''''''''''''''''''''''''''''''''''''''''' """
 
+import websockets
 import json
 import asyncio
 import os
@@ -78,9 +79,12 @@ async def timer():
         await asyncio.sleep(59)  # sometimes this skips if it's on 60?
 
         # Presence
-        await client.change_presence(
-            activity=discord.Streaming(name=flair(users), url='https://twitch.tv/mehvix',
-                                       twitch_name="Mehvix"))
+        try:
+            await client.change_presence(
+                activity=discord.Streaming(name=flair(users), url='https://twitch.tv/mehvix',
+                                           twitch_name="Mehvix"))
+        except websockets.exceptions.ConnectionClosed:
+            pass  # Random error (I think?)
 
         try:
             fp = random.choice(os.listdir("media/avatars"))
