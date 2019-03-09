@@ -91,7 +91,6 @@ class Karma(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        print("alsdkfjsl;dfkjasd;flk")
         if message.webhook_id:
             return
 
