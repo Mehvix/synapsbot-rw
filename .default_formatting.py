@@ -17,7 +17,7 @@ class Cogname(commands.Cog):
     async def tester(self, ctx):
         print("TESTER ACTIVATED")
 
-    @client.event
+    @commands.Cog.listener()
     async def on_message(self, message):
         if message.content == "live?":
             print("LIVE")

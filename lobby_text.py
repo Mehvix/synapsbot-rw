@@ -15,7 +15,7 @@ class lobbytext(commands.Cog):
 
     print("Loading Lobby Text...")
 
-    @client.event
+    @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
         role1 = discord.utils.get(member.guild.roles, id=settings.lobby_one_role_id)
         role2 = discord.utils.get(member.guild.roles, id=settings.lobby_two_role_id)

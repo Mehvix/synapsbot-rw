@@ -16,7 +16,7 @@ class Games(commands.Cog):
 
     print("Loading Games...")
 
-    @client.event
+    @commands.Cog.listener()
     async def on_member_update(self, before, after):
         if list(set(after.roles) - set(before.roles)):
             new_role = list(set(after.roles) - set(before.roles))
@@ -32,7 +32,7 @@ class Games(commands.Cog):
         except UnboundLocalError:
             pass  # If user is updated but a role isn't add/removed
 
-    @client.event
+    @commands.Cog.listener()
     async def on_ready(self):
         for guild in self.client.guilds:
 
@@ -65,7 +65,7 @@ class Games(commands.Cog):
             dj = discord.utils.get(guild.roles, id=settings.dj_role)
             snowboard = discord.utils.get(guild.roles, id=settings.snowboard_role)
 
-    @client.event
+    @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
         if int(payload.channel_id) == settings.game_channel:
             guild = self.client.get_guild(payload.guild_id)
@@ -122,7 +122,7 @@ class Games(commands.Cog):
                 if str(reaction) == '🇵':
                     await user.add_roles(apex)
 
-    @client.event
+    @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
         if int(payload.channel_id) == settings.game_channel:
             guild = self.client.get_guild(payload.guild_id)

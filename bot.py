@@ -106,7 +106,7 @@ async def timer():
             await channel.send("https://xkcd.com/")
 
 
-@client.event
+@commands.Cog.listener()
 async def on_member_join(member):
     for guild in client.guilds:
         for invite in await guild.invites():

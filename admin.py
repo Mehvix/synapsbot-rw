@@ -24,7 +24,7 @@ class Admin(commands.Cog):
 
     print("Loading Admin...")
 
-    @client.event
+    @commands.Cog.listener()
     async def on_message_edit(self, before, after):
         banned_words = settings.get_json("banned_words.json")
 
@@ -36,7 +36,7 @@ class Admin(commands.Cog):
 
             await after.delete()
 
-    @client.event
+    @commands.Cog.listener()
     async def on_message(self, message):
         banned_words = settings.get_json("banned_words.json")
 
@@ -48,7 +48,7 @@ class Admin(commands.Cog):
 
             await message.delete()
 
-    @client.event
+    @commands.Cog.listener()
     async def on_member_update(self, before, after):
         # Banned Words
         banned_words = settings.get_json("banned_words.json")
@@ -168,7 +168,7 @@ class Admin(commands.Cog):
                 await target.unban(
                     reason="{} ({}) used .unban command".format(ctx.message.author.name, ctx.message.author.id))
 
-    @client.event
+    @commands.Cog.listener()
     async def on_member_remove(self, member):
         guild = member.guild
         event = await guild.audit_logs(limit=1).flatten()
@@ -217,7 +217,7 @@ class Admin(commands.Cog):
     async def dm(self, user: discord.Member, msg: str):
         await user.send(msg)
 
-    @client.event
+    @commands.Cog.listener()
     async def on_member_ban(self, guild, member):
         self.bannedusers[guild.id] = member.id
 
@@ -243,7 +243,7 @@ class Admin(commands.Cog):
         channel = self.client.get_channel(id=settings.notification_channel)
         await channel.send(embed=embed)
 
-    @client.event
+    @commands.Cog.listener()
     async def on_member_unban(self, guild, member):
         channel = self.client.get_channel(id=settings.notification_channel)
         await channel.send('{} (`{}`) was unbanned from the server :unlock:'.format(member.mention, member))

@@ -16,11 +16,12 @@ class Karma(commands.Cog):
     client = commands.Bot(command_prefix='.')
 
     def __init__(self, client):
-        self.client = client
+        super().__init__()
+        self.client = discord.client
 
     print("Loading Karma...")
 
-    @client.event
+    @commands.Cog.listener()
     async def on_ready(self):
         while self.client:
             await asyncio.sleep(180)
@@ -34,8 +35,8 @@ class Karma(commands.Cog):
                         and not member.voice.afk:
                     user_add_karma(member.id, 1)
 
-    @client.event  # todo make raw
-    async def on_reaction_add(self, reaction, user):
+    @commands.Cog.listener()
+    async def on_reaction_add(self, reaction, user):  # todo make raw
         upvote = "<{}>".format(settings.upvote_emoji)
         downvote = "<{}>".format(settings.downvote_emoji)
 
@@ -46,7 +47,7 @@ class Karma(commands.Cog):
                 if str(reaction.emoji) == downvote:
                     user_add_karma(reaction.message.author.id, -5)
 
-    @client.event
+    @commands.Cog.listener()
     async def on_reaction_remove(self, reaction, user):
         upvote = "<{}>".format(settings.upvote_emoji)
         downvote = "<{}>".format(settings.downvote_emoji)
@@ -88,14 +89,14 @@ class Karma(commands.Cog):
         except KeyError:
             await ctx.send("<@{0}> is level `0`".format(user_req))
 
-    @client.event
+    @commands.Cog.listener()
     async def on_message(self, message):
+        print("alsdkfjsl;dfkjasd;flk")
         if message.webhook_id:
             return
 
-        set_name(message.author.id, str(message.author.name).replace('"', "'"))
-
         # Message author variables
+        set_name(message.author.id, str(message.author.name).replace('"', "'"))  # TODO This needs to be fixed/updated
         user_id = message.author.id
         user_name = message.author
 

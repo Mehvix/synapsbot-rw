@@ -43,7 +43,7 @@ class Accept(commands.Cog):
             channel = self.client.get_channel(id=settings.notification_channel)
             await channel.send("<@{}> typed `.accept` :ok_hand:".format(ctx.author.id))
 
-    @client.event
+    @commands.Cog.listener()
     async def on_message(self, message):
         if message.channel.id == settings.accept_channel and message.author.id != self.client.user.id:
             level_role = discord.utils.get(message.guild.roles, id=settings.level_role)

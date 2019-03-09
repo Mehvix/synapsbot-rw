@@ -18,7 +18,7 @@ class Notifications(commands.Cog):
 
     print("Loading Notifications...")
 
-    @client.event
+    @commands.Cog.listener()
     async def on_member_join(self, member):
         karma.user_add_karma(member.id, 1)
 

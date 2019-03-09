@@ -84,7 +84,7 @@ class Basic(commands.Cog):
                 print("Added Notation Roles")
     '''
 
-    @client.event
+    @commands.Cog.listener()
     async def on_message(self, message):
         if message.author.id != self.client.user.id:
             channel = message.channel
