@@ -17,23 +17,24 @@ class Karma(commands.Cog):
 
     def __init__(self, client):
         super().__init__()
-        self.client = discord.client
+        self.client = client
 
     print("Loading Karma...")
 
     @commands.Cog.listener()
     async def on_ready(self):
         while self.client:
+            for guild in self.client.guilds:
+                for member in guild.members:
+                    if \
+                            member.voice \
+                            and not member.voice.deaf \
+                            and not member.voice.mute \
+                            and not member.voice.self_deaf \
+                            and not member.voice.self_mute \
+                            and not member.voice.afk:
+                        user_add_karma(member.id, 1)
             await asyncio.sleep(180)
-            for member in self.client.get_all_members():
-                if \
-                        member.voice \
-                        and not member.voice.deaf \
-                        and not member.voice.mute \
-                        and not member.voice.self_deaf \
-                        and not member.voice.self_mute \
-                        and not member.voice.afk:
-                    user_add_karma(member.id, 1)
 
     @commands.Cog.listener()
     async def on_reaction_add(self, reaction, user):  # todo make raw
