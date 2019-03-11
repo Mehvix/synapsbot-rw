@@ -24,8 +24,16 @@ class Reddit(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         if "http" and "reddit.com/r/" in message.content:  # TODO make this work for subreddits
-            url = [s for s in str(message.content).split(" ") if "reddit.com/r/" in s]
+            url = str(message.content)
+            formatting_chars = ['<', '>', "*", "_"]
+
+            url = [s for s in str(url).split(" ") if "reddit.com/r/" in s]
             url = str("".join(url)).split("/")
+
+            for x in formatting_chars:
+                if x in url[0]:
+                    url[0] = url[0].replace(x, "")
+
             if "?utm_" or "?st=" in url[-1]:
                 url = "/".join(url[:-1])
             else:
