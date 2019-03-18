@@ -25,15 +25,29 @@ def get_version():
 
 
 def set_server(server):
-    global token, upvote_emoji, downvote_emoji, notification_channel, member_role_id, member_role_name, shut_up_role, \
-        admin_role_name, verified_role_id, admin_role_id, verified_role_name, pokemon_channel, mute_role_id, \
-        mute_role_name, embed_color, accept_channel, canvas_channel, level_role, roles_role, groups_role, games_role, \
-        restriction_role, game_channel, league_role, hs_role, fortnite_role, pubg_role, tf2_role, gta_role, \
-        chiv_role, cs_role, aoe_role, civ_role, rainbow_role, brawl_role, ratz_role, code_role, boof_role, max_role, \
-        path_role, poker_role, dj_role, snowboard_role, groups_message_id, games_message_id, skribble_role, \
-        lobby_one_vc_id, lobby_two_vc_id, lobby_one_role_id, lobby_two_role_id, hidden_cat_id, main_cat_id, \
-        lobby_one_text_id, lobby_two_text_id, gmod_role, emote_channel, apex_role
+    global token, embed_color
+    global upvote_emoji, downvote_emoji
+    global notification_channel, accept_channel, canvas_channel, pokemon_channel, game_channel
+    global member_role_name, admin_role_name, verified_role_id, \
+        verified_role_name
+    global level_role, roles_role, groups_role, games_role, restriction_role
+    global league_role, hs_role, fortnite_role, pubg_role, tf2_role, gta_role, \
+        chiv_role, cs_role, aoe_role, civ_role, rainbow_role, brawl_role, ratz_role, \
+        path_role, skribble_role, gmod_role, apex_role, mc_role
+    global snowboard_role, code_role, poker_role
+    global lobby_one_vc_id, lobby_two_vc_id, lobby_one_role_id, lobby_two_role_id, hidden_chat_id, main_cat_id, \
+        lobby_one_text_id, lobby_two_text_id
+    global groups_message_id, games_message_id
+
     embed_color = 0x593595
+
+    global game_roles
+    game_roles = [league_role, hs_role, fortnite_role, pubg_role, tf2_role, gta_role, chiv_role, cs_role, aoe_role,
+                  civ_role, rainbow_role, brawl_role, ratz_role, path_role, skribble_role, gmod_role, apex_role,
+                  mc_role]
+
+    global group_roles
+    group_roles = [snowboard_role, code_role, poker_role]
 
     if server == "test":
         print("Using TEST account")
@@ -46,72 +60,14 @@ def set_server(server):
         notification_channel = 414197286596247556
 
         member_role_name = "Member 🔸"
-        member_role_id = 414683704737267712
         admin_role_name = "Admin 💠"
-        shut_up_role = 414237651504332800
         verified_role_name = "Verified 🔰"
-        admin_role_id = 439175903600181269
 
         verified_role_id = 439191092991229992
         pokemon_channel = 439198154324181002
 
-        mute_role_name = "Text Muted"
-        mute_role_id = 445059188973109259
-
         accept_channel = 414974032048553984
         canvas_channel = 486702610745917460
-
-        games_message_id = None
-        groups_message_id = None
-        level_role = None
-        roles_role = None
-        groups_role = None
-        games_role = None
-        restriction_role = None
-
-        # Notation Roles
-        level_role = None
-        roles_role = None
-        groups_role = None
-        games_role = None
-        restriction_role = None
-
-        # Game Roles (games.py)
-        games_message_id = None
-        game_channel = None
-        league_role = None
-        hs_role = None
-        fortnite_role = None
-        pubg_role = None
-        tf2_role = None
-        gta_role = None
-        chiv_role = None
-        cs_role = None
-        aoe_role = None
-        civ_role = None
-        rainbow_role = None
-        brawl_role = None
-        ratz_role = None
-        skribble_role = None
-        gmod_role = None
-        apex_role = None
-
-        # Group Roles (games.py)
-        groups_message_id = None
-        code_role = None
-        boof_role = None
-        max_role = None
-        path_role = None
-        poker_role = None
-        dj_role = None
-        snowboard_role = None
-
-        lobby_one_vc_id = None
-        lobby_two_vc_id = None
-
-        lobby_one_role_id = None
-        lobby_two_role_id = None
-        return
 
     if server == "main":
         print("Using MAIN account")
@@ -124,10 +80,8 @@ def set_server(server):
         notification_channel = 412075980094570506
 
         member_role_name = "Member 🔸"
-        member_role_id = 312693233329373194
 
         admin_role_name = "Admin 💠"
-        admin_role_id = 266701171002048513
 
         verified_role_name = "Verified 🔰"
         verified_role_id = 366739104203014145
@@ -135,10 +89,6 @@ def set_server(server):
         pokemon_channel = 439198154324181002
         accept_channel = 356456207185215491
         canvas_channel = 482084251702132746
-
-        mute_role_id = 363900817805148160
-        mute_role_name = "Text Muted"
-        shut_up_role = 414245504537591810
 
         # Notation Roles
         level_role = 490738787140370472
@@ -166,15 +116,13 @@ def set_server(server):
         skribble_role = 495794541262143488
         gmod_role = 498645082745077770
         apex_role = 549115001302941727
+        mc_role = 554822553885999110
 
         # Group Roles (games.py)
         groups_message_id = 495070906906050560
         code_role = 494998056794849290
-        boof_role = 370723456607715330
-        max_role = 420706263895375892
         path_role = 491707496767946753
         poker_role = 442837936552017930
-        dj_role = 397440571293040641
         snowboard_role = 378342844282306581
 
         # lobbytext.py
@@ -184,14 +132,11 @@ def set_server(server):
         lobby_one_role_id = 497234318830338049
         lobby_two_role_id = 497234329215434765
 
-        hidden_cat_id = 497894067561299983
+        hidden_chat_id = 497894067561299983
         main_cat_id = 412360523959631873
 
         lobby_one_text_id = 497235184693805056
         lobby_two_text_id = 497235830234939394
-
-        emote_channel = 499755365806768139
-
         return
     else:
         sys.exit("No Server (main/test)")
