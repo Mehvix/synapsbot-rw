@@ -19,6 +19,7 @@ import os
 import random
 import sys
 from datetime import datetime
+from mcstatus import MinecraftServer
 
 import discord
 from discord.ext import commands
@@ -69,14 +70,13 @@ def get_json(file_path):
 async def timer():
     await client.wait_until_ready()
     global seconds
+    oldstatus = "0"
     while True:
         # "Who invited" code
         for guild in client.guilds:
             for invite in await guild.invites():
                 x = [invite.url, invite.uses, invite.inviter.id]
                 before_invites.append(x)
-
-        await asyncio.sleep(59)  # sometimes this skips if it's on 60?
 
         # Presence
         try:
@@ -104,6 +104,19 @@ async def timer():
             channel = client.get_channel(settings.notification_channel)
             await channel.send(search)
             await channel.send("https://xkcd.com/")
+
+        chnl = client.get_channel(settings.mc_data_channel)
+        server = MinecraftServer.lookup("216.165.133.205")
+        status = server.status()
+
+        if str(status.players) == oldstatus:
+            pass
+        else:
+            oldstatus = str(status.players)
+            await chnl.edit(name="{} / 20 Online".format(status.players.online))
+
+        await asyncio.sleep(59)  # sometimes this skips if it's on 60?
+
 
 
 @commands.Cog.listener()
