@@ -1,3 +1,5 @@
+pyqrcode
+mcstatus
 django-qrcode
 beautifulsoup4
 html5lib
