@@ -8,6 +8,7 @@ import random
 import string
 import aiohttp
 import pyqrcode
+from mcstatus import MinecraftServer
 from urbandictionary_top import udtop
 
 import discord
@@ -693,6 +694,15 @@ class Verified(commands.Cog):
                 "with.")
             return
         await ctx.message.channel.send("<@{}>, {}".format(user.id, random.choice(insults)))
+
+    @client.command(aliases=["minecraft", "server", "status"], description="Sees if Aidan's MC server is up",
+                    brief="Sees if Aidan's MC server is up")
+    @commands.has_role(settings.mc_role)
+    async def mc(self, ctx):
+        server = MinecraftServer.lookup("216.165.133.205")
+        status = server.status()
+        await ctx.message.channel.send("The server has `{0}` players and replied in `{1}` ms".format(
+            status.players.online, status.latency))
 
 
 def setup(client):
