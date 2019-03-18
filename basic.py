@@ -89,25 +89,6 @@ class Basic(commands.Cog):
         if message.author.id != self.client.user.id:
             channel = message.channel
 
-            if message.channel.id == settings.emote_channel:
-                x = str(message.content).count(":")
-                x %= 2
-                if isinstance(x, int):
-                    split = str(message.content).split(":")
-                    if "<" == str(split[0]):
-                        if ">" or "<" == str(split[2])[-1]:
-                            return
-
-                count = 0
-                for emoji in UNICODE_EMOJI:
-                    count += str(message.content).count(emoji)
-                    if count > 1:
-                        return False
-                if bool(count):
-                    return
-
-                await message.delete()
-
             if "BAD BOT" in message.content.upper():
                 await channel.send("Bad Human.")
 
