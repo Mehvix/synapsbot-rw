@@ -42,12 +42,7 @@ def set_server(server):
     embed_color = 0x593595
 
     global game_roles
-    game_roles = [league_role, hs_role, fortnite_role, pubg_role, tf2_role, gta_role, chiv_role, cs_role, aoe_role,
-                  civ_role, rainbow_role, brawl_role, ratz_role, path_role, skribble_role, gmod_role, apex_role,
-                  mc_role]
-
     global group_roles
-    group_roles = [snowboard_role, code_role, poker_role]
 
     if server == "test":
         print("Using TEST account")
@@ -137,6 +132,10 @@ def set_server(server):
 
         lobby_one_text_id = 497235184693805056
         lobby_two_text_id = 497235830234939394
+        group_roles = [code_role, poker_role, snowboard_role]
+        game_roles = [league_role, hs_role, fortnite_role, pubg_role, tf2_role, gta_role, chiv_role, cs_role, aoe_role,
+                      civ_role, rainbow_role, brawl_role, ratz_role, skribble_role, gmod_role, apex_role, mc_role]
+
         return
     else:
         sys.exit("No Server (main/test)")
