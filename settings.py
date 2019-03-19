@@ -33,7 +33,7 @@ def set_server(server):
     global level_role, roles_role, groups_role, games_role, restriction_role
     global league_role, hs_role, fortnite_role, pubg_role, tf2_role, gta_role, \
         chiv_role, cs_role, aoe_role, civ_role, rainbow_role, brawl_role, ratz_role, \
-        path_role, skribble_role, gmod_role, apex_role, mc_role
+        path_role, skribble_role, gmod_role, apex_role, mc_role, ll_blaze
     global snowboard_role, code_role, poker_role
     global lobby_one_vc_id, lobby_two_vc_id, lobby_one_role_id, lobby_two_role_id, hidden_chat_id, main_cat_id, \
         lobby_one_text_id, lobby_two_text_id
@@ -112,6 +112,7 @@ def set_server(server):
         gmod_role = 498645082745077770
         apex_role = 549115001302941727
         mc_role = 554822553885999110
+        ll_blaze = 513838239031754763
 
         # Group Roles (games.py)
         groups_message_id = 495070906906050560
@@ -137,7 +138,8 @@ def set_server(server):
 
         group_roles = [code_role, poker_role, snowboard_role]
         game_roles = [league_role, hs_role, fortnite_role, pubg_role, tf2_role, gta_role, chiv_role, cs_role, aoe_role,
-                      civ_role, rainbow_role, brawl_role, ratz_role, skribble_role, gmod_role, apex_role, mc_role]
+                      civ_role, rainbow_role, brawl_role, ratz_role, skribble_role, gmod_role, apex_role, mc_role,
+                      ll_blaze]
 
         return
     else:
