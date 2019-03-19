@@ -26,7 +26,7 @@ class lobbytext(commands.Cog):
         lobby1voice = discord.utils.get(member.guild.voice_channels, id=settings.lobby_one_vc_id)
         lobby2voice = discord.utils.get(member.guild.voice_channels, id=settings.lobby_two_vc_id)
 
-        hidden_group = discord.utils.get(member.guild.categories, id=settings.hidden_cat_id)
+        hidden_group = discord.utils.get(member.guild.categories, id=settings.hidden_chat_id)
         main_group = discord.utils.get(member.guild.categories, id=settings.main_cat_id)
 
         if after.channel is None:
