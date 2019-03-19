@@ -12,6 +12,7 @@
 
 '''''''''''''''''''''''''''''''''''''''''' """
 
+import socket
 import websockets
 import json
 import asyncio
@@ -107,16 +108,14 @@ async def timer():
 
         chnl = client.get_channel(settings.mc_data_channel)
         server = MinecraftServer.lookup("216.165.133.205")
-        status = server.status()
-
-        if str(status.players) == oldstatus:
-            pass
-        else:
-            oldstatus = str(status.players)
+        try:
+            status = server.status()
             await chnl.edit(name="{} / 20 Online".format(status.players.online))
 
-        await asyncio.sleep(59)  # sometimes this skips if it's on 60?
+        except (AttributeError, socket.timeout):
+            await chnl.edit(name="Server Offline")
 
+        await asyncio.sleep(59)  # sometimes this skips if it's on 60?
 
 
 @commands.Cog.listener()
