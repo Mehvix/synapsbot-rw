@@ -30,7 +30,7 @@ import curtime
 import settings
 
 # Cogs being used
-extensions = ['accept', 'admin', 'basic', 'canvas', 'forwarding', 'karma', 'typeracer', 'notifications', 'games',
+extensions = ['accept', 'admin', 'basic', 'forwarding', 'karma', 'typeracer', 'notifications', 'games',
               'verified', 'reddit', 'qr', 'lobby_text', 'hearthstone_decode']
 
 settings.set_server("main")  # make sure this is test or main
@@ -107,7 +107,7 @@ async def timer():
             await channel.send("https://xkcd.com/")
 
         chnl = client.get_channel(settings.mc_data_channel)
-        server = MinecraftServer.lookup("216.165.133.205")
+        server = MinecraftServer.lookup(":25565")
         try:
             status = server.status()
             await chnl.edit(name="{} / 20 Online".format(status.players.online))
