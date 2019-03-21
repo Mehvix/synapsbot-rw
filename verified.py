@@ -2,14 +2,19 @@
 # -*- coding: utf-8 -*-
 
 import io
+import re
 import os
 import json
 import random
 import string
+import socket
 import aiohttp
 import pyqrcode
 from mcstatus import MinecraftServer
 from urbandictionary_top import udtop
+
+import requests
+from bs4 import BeautifulSoup
 
 import discord
 from discord.ext import commands
@@ -696,13 +701,73 @@ class Verified(commands.Cog):
         await ctx.message.channel.send("<@{}>, {}".format(user.id, random.choice(insults)))
 
     @client.command(aliases=["minecraft", "server", "status"], description="Sees if Aidan's MC server is up",
-                    brief="Sees if Aidan's MC server is up")
+                    brief="Sees if MC server is up")
     @commands.has_role(settings.mc_role)
     async def mc(self, ctx):
-        server = MinecraftServer.lookup("216.165.133.205")
-        status = server.status()
-        await ctx.message.channel.send("The server has `{0}` players and replied in `{1}` ms".format(
-            status.players.online, status.latency))
+        chnl = self.client.get_channel(settings.mc_data_channel)
+        server = MinecraftServer.lookup(":25565")
+
+        try:
+            status = server.status()
+            online = str(status.players.online)
+            info = "The server has `{0}` players and replied in `{1}` ms".format(online, status.latency)
+            channel = "{}/20 Online".format(online)
+
+        except (AttributeError, socket.timeout):
+            info = "Sever Offline"
+            channel = "Sever Offline"
+        except ConnectionRefusedError:  # Server started
+            info = "`ConnectionRefusedError`"
+            channel = "Sever Offline"
+
+        await chnl.edit(name=channel)
+        await ctx.send(info)
+
+    @client.command(aliases=["whitelist"], description="Add's your username to the server whitelist")
+    @commands.has_role(settings.mc_role)
+    async def wl(self, ctx, username):
+        search = "https://mcuuid.net/?q={}".format(username)
+        location = r"C:\Users\Max\Desktop\server\whitelist.json"
+
+        with open(location) as f:
+            data = json.load(f)
+            for value in data:
+                if username == value["name"]:
+                    await ctx.send("You're already whitelisted in the server!")
+                    users = []
+                    with open(location) as f:
+                        data = json.load(f)
+                        for value in data:
+                            users.append(value["name"])
+                    await ctx.send("The current whitelist contains: \n`• {}`".format("\n• ".join(users)))
+                    return
+
+        async with aiohttp.ClientSession() as session:
+            async with session.get(search) as r:
+                text = await r.read()
+                soup = BeautifulSoup(text.decode('utf-8'), 'html5lib')
+
+                uuid = soup.find('input', attrs={'readonly': 'readonly'})
+                uuid = str(uuid).split('"')
+                uuid = uuid[9]
+                # await ctx.send(uuid)
+
+        entry = {"name": username, "uuid": uuid}
+
+        with open(location) as f:
+            data = json.load(f)
+
+        data.append(entry)
+
+        with open(location, 'w') as f:
+            json.dump(data, f, sort_keys=True, indent=4)
+
+        users = []
+        with open(location) as f:
+            data = json.load(f)
+            for value in data:
+                users.append(value["name"])
+        await ctx.send("The current whitelist contains: \n`• {}`".format("\n• ".join(users)))
 
 
 def setup(client):
