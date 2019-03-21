@@ -25,7 +25,7 @@ def get_version():
 
 
 def set_server(server):
-    global token, embed_color
+    global token, embed_color, server_id
     global upvote_emoji, downvote_emoji
     global notification_channel, accept_channel, canvas_channel, pokemon_channel, game_channel, mc_data_channel
     global member_role_name, admin_role_name, verified_role_id, \
@@ -37,7 +37,7 @@ def set_server(server):
     global snowboard_role, code_role, poker_role
     global lobby_one_vc_id, lobby_two_vc_id, lobby_one_role_id, lobby_two_role_id, hidden_chat_id, main_cat_id, \
         lobby_one_text_id, lobby_two_text_id
-    global groups_message_id, games_message_id
+    global groups_message_id, games_message_id, games_channel_id
 
     embed_color = 0x593595
 
@@ -121,6 +121,8 @@ def set_server(server):
         poker_role = 442837936552017930
         snowboard_role = 378342844282306581
 
+        games_channel_id = 490741754262192129
+
         # lobbytext.py
         lobby_one_vc_id = 358766565941837829
         lobby_two_vc_id = 441444115444400139
@@ -135,6 +137,8 @@ def set_server(server):
         lobby_two_text_id = 497235830234939394
 
         mc_data_channel = 557049387310645248
+
+        server_id = 236258442233380874
 
         group_roles = [code_role, poker_role, snowboard_role]
         game_roles = [league_role, hs_role, fortnite_role, pubg_role, tf2_role, gta_role, chiv_role, cs_role, aoe_role,

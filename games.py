@@ -17,6 +17,31 @@ class Games(commands.Cog):
 
     print("Loading Games...")
 
+    @client.event
+    async def on_ready(self):
+        text = []
+        for x in settings.group_roles:
+            guild = self.client.get_guild(settings.server_id)
+            text.append(self.letters[settings.group_roles.index(x)] + " " + discord.utils.get(guild.roles, id=int(
+                settings.group_roles[settings.group_roles.index(x)])).name)
+
+        embed = discord.Embed(color=settings.embed_color, title="Groups:",
+                              description="\n".join(text))
+
+        msg = await self.client.get_message(settings.games_message_id)
+        chnl = await self.client.get_channel(settings.games_channel_id)
+        print(msg.description)
+
+        try:
+            await msg.edit(embed=embed)
+        except discord.NotFound:
+            msg = await chnl.send(embed=embed)
+
+        for reaction in self.letters[:len(str(msg.embeds[0].description).split("\n"))]:
+            await msg.add_reaction(reaction)
+
+        await chnl.message.delete()
+
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
         if list(set(after.roles) - set(before.roles)):
@@ -91,6 +116,8 @@ class Games(commands.Cog):
 
         await ctx.message.delete()
 
+
+    """
     @client.command(hidden=True)
     @commands.has_role(settings.admin_role_name)
     async def groups(self, ctx):
@@ -111,7 +138,7 @@ class Games(commands.Cog):
             await msg.add_reaction(reaction)
 
         await ctx.message.delete()
-
+    """
 
 def setup(client):
     client.add_cog(Games(client))
