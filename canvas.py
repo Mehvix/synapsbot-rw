@@ -23,6 +23,7 @@ black = ":black:484770699790254091"
 class Canvas(commands.Cog):
     def __init__(self, client):
         self.client = client
+        self.letters = [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z]
 
     print("Loading Canvas...")
 
@@ -243,7 +244,7 @@ class Canvas(commands.Cog):
                     embed.set_footer(text="You can also try `.help verified`, `.help admin`, & `.help basic`")
                     await self.client.send_message(message.channel, embed=embed)
 
-                    await send_canvas(settings.canvas_channel)
+                    send_canvas(settings.canvas_channel)
                     return
 
                 if not line_content:
