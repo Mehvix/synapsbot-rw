@@ -112,7 +112,7 @@ async def timer():
             status = server.status()
             await chnl.edit(name="{} / 20 Online".format(status.players.online))
 
-        except (AttributeError, socket.timeout):
+        except (AttributeError, ConnectionRefusedError, socket.timeout):
             await chnl.edit(name="Server Offline")
 
         await asyncio.sleep(59)  # sometimes this skips if it's on 60?
