@@ -645,19 +645,33 @@ class Verified(commands.Cog):
 
         karma_leaderboard = sorted(file, key=lambda x: file[x].get(type_new, 0), reverse=True)
         msg = ''
+        await ctx.send("Compiling list of everyone and sorting it...")
         for number, user in enumerate(karma_leaderboard):
+
+            # TODO for now this works, but is pretty ugly and idk how it works - maybe rework it eventually?
             try:
-                name = file[user]['name']
+                if file[user]['name']:
+                    try:
+                        name = file[user]['name']
+                    except (KeyError, AttributeError):
+                        name = await self.client.get_user_info(file[user])
+                        karma.set_name(name)
+
+                        name = await self.client.get_user_info(str(user))
+                        name = name.name
+                else:
+                    name = await self.client.get_user_info(str(user))
+                    name = name.name
             except KeyError:
-                name = await self.client.get_user_info(file[user])
-                karma.set_name(name)
+                name = await self.client.get_user_info(str(user))
+                name = name.name
 
             try:
                 value = file[user].get(type_new, 0)
             except KeyError:
                 value = 0
 
-            msg += '__{}__. **{}** {} `{}` {} \n'.format(
+            msg += '{}.)\t **{}** {} `{}` {} \n'.format(  # thanks char for teaching me about \t!
                 number + 1, name, word, value, type_new)
         await ctx.send(msg)
 
