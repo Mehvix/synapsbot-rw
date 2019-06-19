@@ -39,7 +39,8 @@ class Basic(commands.Cog):
 
     @client.command(aliases=["idea", "suggest"], description="Link to Trello", brief="Trello")
     async def trello(self, ctx):
-        embed = discord.Embed(description="[Trello Page](https://trello.com/b/CQBT9vag/synapsbot)", color=settings.embed_color)
+        embed = discord.Embed(description="I'm now using [Github Projects Board](https://github.com/Mehvix/synapsBotRW/projects/1)", color=settings.embed_color)
+        await ctx.send(embed=embed)
 
     @client.command()
     async def pos(self, ctx, channel: discord.TextChannel):
@@ -47,7 +48,9 @@ class Basic(commands.Cog):
 
     @client.command(aliases=["code", "source"], description="Link to Github", brief="Github")
     async def github(self, ctx):
-        embed = discord.Embed(description="[Github Page](https://github.com/Mehvix/synapsBotRW)", color=settings.embed_color)
+        embed = discord.Embed(description="[• Github Repository](https://github.com/Mehvix/synapsBotRW)\n"
+                                          "[• Github Projects Board](https://github.com/Mehvix/synapsBotRW/projects/1)",
+                              color=settings.embed_color)
         await ctx.send(embed=embed)
 
     @client.command(aliases=["now"], description="Gets the time", brief="Gets the time")
@@ -123,6 +126,7 @@ class Basic(commands.Cog):
                         facts = soup.find('ol', attrs={'class': 'stripedList'})
                         facts = facts.text
                         facts = facts.split("\n")
+                        facts = list(filter(None, facts))
                         await message.channel.send("Speaking of {}, did you know that {}".format(word.title(), random.choice(facts)))
 
             try:
