@@ -86,7 +86,7 @@ class Admin(commands.Cog):
             inline=True)
         await ctx.message.channel.send(embed=embed)
 
-    @client.command(aliases=["gift"], description="Used to rewards users", usage="[@user] [amount]", brief="Used to reward members of the server")
+    @client.command(aliases=["gift", "addkarma"], description="Used to rewards users", usage="[@user] [amount]", brief="Used to reward members of the server")
     @commands.has_role(settings.admin_role_name)
     async def givekarma(self, ctx, target: discord.Member, amount: int):
         karma.user_add_karma(target.id, amount)
