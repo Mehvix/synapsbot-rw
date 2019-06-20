@@ -89,7 +89,7 @@ class Admin(commands.Cog):
     @client.command(aliases=["gift", "addkarma"], description="Used to rewards users", usage="[@user] [amount]", brief="Used to reward members of the server")
     @commands.has_role(settings.admin_role_name)
     async def givekarma(self, ctx, target: discord.Member, amount: int):
-        karma.user_add_karma(target.id, amount)
+        karma.Karma.user_add_karma(target.id, amount)
         await ctx.message.channel.send("You gave <@{}> `{}` karma. They now have a total of `{}` karma".format(
             target.id, amount, karma.get_karma(target.id)))
 

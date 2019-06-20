@@ -135,7 +135,7 @@ async def on_member_join(member):
         invite_user = client.get_user(invite_used[0][2])
 
         if member.guild.name != "Bot Test":
-            karma.user_add_karma(invite_user.id, 75)
+            karma.Karma.user_add_karma(invite_user.id, 75)
             channel = client.get_channel(id=settings.notification_channel)
             await channel.send("<@{}> used an invited created by <@{}> which gave the invite creator `75` karma".
                                format(member.id, invite_user.id))
