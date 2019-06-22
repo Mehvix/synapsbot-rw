@@ -599,7 +599,7 @@ class Verified(commands.Cog):
             json.dump(outcomes, fp, sort_keys=True, indent=4)
 
         if real_outcome == outcome:
-            karma.user_add_karma(ctx.message.author.id, amount*2, ctx.message.author.names)
+            karma.user_add_karma(ctx.message.author.id, amount*2, ctx.message.author.name)
             await ctx.message.channel.send("You won! :tada:\nYour new karma total is `{}`".format(
                 karma.get_karma(ctx.message.author.id)))
         else:
