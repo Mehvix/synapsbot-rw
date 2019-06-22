@@ -278,8 +278,8 @@ class Verified(commands.Cog):
             await ctx.send("You cannot trade more karma than you have")
             return
 
-        karma.Karma.user_add_karma(target.id, amount)
-        karma.Karma.user_add_karma(ctx.author.id, -amount)
+        karma.user_add_karma(target.id, amount, target.name)
+        karma.user_add_karma(ctx.author.id, -amount, ctx.author.name)
         await ctx.message.channel.send(
             "You traded <@{}> `{}` karma. They now have a total of `{}` karma and you have `{}`".format(
                 target.id, amount, karma.get_karma(target.id), karma.get_karma(ctx.author.id)))
@@ -571,7 +571,7 @@ class Verified(commands.Cog):
         with open('roulette_outcomes.json', 'w') as fp:
             json.dump(outcomes, fp, sort_keys=True, indent=4)
 
-        karma.Karma.user_add_karma(ctx.message.author.id, -amount)
+        karma.user_add_karma(ctx.message.author.id, -amount, ctx.message.author.name)
 
         spin = random.randint(0, 36)
 
@@ -580,7 +580,7 @@ class Verified(commands.Cog):
         if spin == 0:
             await msg.pin()
             if outcome == "zero":
-                karma.Karma.user_add_karma(ctx.message.author.id, amount * 14)
+                karma.user_add_karma(ctx.message.author.id, amount * 14, ctx.message.author.name)
                 await ctx.message.channel.send("You won! :tada:\nYour new karma total is `{}`".format(
                     karma.get_karma(ctx.message.author.id)))
             else:
@@ -599,7 +599,7 @@ class Verified(commands.Cog):
             json.dump(outcomes, fp, sort_keys=True, indent=4)
 
         if real_outcome == outcome:
-            karma.Karma.user_add_karma(ctx.message.author.id, amount*2)
+            karma.user_add_karma(ctx.message.author.id, amount*2, ctx.message.author.names)
             await ctx.message.channel.send("You won! :tada:\nYour new karma total is `{}`".format(
                 karma.get_karma(ctx.message.author.id)))
         else:

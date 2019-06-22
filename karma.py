@@ -97,7 +97,7 @@ class Karma(commands.Cog):
 
         # Message author variables
         user_id = message.author.id
-        user_name = message.author
+        user_name = message.author.name
 
         author_level = get_level(user_id)
         author_karma = get_karma(user_id)
@@ -156,35 +156,35 @@ class Karma(commands.Cog):
                 """
             await message.channel.send("Congrads, <@{}>! You're now level `{}`".format(user_id, new_level))
 
-        self.user_add_karma(user_id, 1)
+        user_add_karma(user_id, 1, user_name)
 
-    def user_add_karma(self, user_id: int, karma: int):
-        user_id = str(user_id)
-        if os.path.isfile("users.json"):
+
+def user_add_karma(user_id: int, karma: int, user_name: str):
+    user_id = str(user_id)
+    if os.path.isfile("users.json"):
+        try:
+            with open('users.json', 'r') as fp:
+                users = json.load(fp)
+            users[user_id]['karma'] += karma
+            with open('users.json', 'w') as fp:
+                json.dump(users, fp, sort_keys=True, indent=4)
+        except (TypeError, KeyError):
             try:
                 with open('users.json', 'r') as fp:
                     users = json.load(fp)
-                users[user_id]['karma'] += karma
+                users[user_id] = {}
+                users[user_id]['karma'] = karma
                 with open('users.json', 'w') as fp:
                     json.dump(users, fp, sort_keys=True, indent=4)
-            except (TypeError, KeyError):
-                try:
-                    with open('users.json', 'r') as fp:
-                        users = json.load(fp)
-                    users[user_id] = {}
-                    users[user_id]['karma'] = karma
-                    with open('users.json', 'w') as fp:
-                        json.dump(users, fp, sort_keys=True, indent=4)
-                except Exception as e:
-                    exc = '{}: {}'.format(type(e).__name__, e)
-                    print('Failed to load extension {}\n{}'.format(e, exc))
-            x = self.client.get_user(int(user_id))
-            set_name(user_id, x.name)
-        else:
-            users = {user_id: {}}
-            users[user_id]['karma'] = karma
-            with open('users.json', 'w') as fp:
-                json.dump(users, fp, sort_keys=True, indent=4)
+            except Exception as e:
+                exc = '{}: {}'.format(type(e).__name__, e)
+                print('Failed to load extension {}\n{}'.format(e, exc))
+        set_name(user_id, user_name)
+    else:
+        users = {user_id: {}}
+        users[user_id]['karma'] = karma
+        with open('users.json', 'w') as fp:
+            json.dump(users, fp, sort_keys=True, indent=4)
 
 
 def get_karma(user_id: int):
