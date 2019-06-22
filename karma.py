@@ -33,7 +33,7 @@ class Karma(commands.Cog):
                             and not member.voice.self_deaf \
                             and not member.voice.self_mute \
                             and not member.voice.afk:
-                        self.user_add_karma(member.id, 1)
+                        user_add_karma(member.id, 1, member.name)
             await asyncio.sleep(180)
 
     @commands.Cog.listener()
@@ -44,9 +44,9 @@ class Karma(commands.Cog):
         if str(reaction.emoji) == upvote or downvote:
             if user != reaction.message.author:
                 if str(reaction.emoji) == upvote:
-                    self.user_add_karma(reaction.message.author.id, 5)
+                    user_add_karma(reaction.message.author.id, 5, reaction.message.author.name)
                 if str(reaction.emoji) == downvote:
-                    self.user_add_karma(reaction.message.author.id, -5)
+                    user_add_karma(reaction.message.author.id, -5, reaction.message.author.name)
 
     @commands.Cog.listener()
     async def on_reaction_remove(self, reaction, user):
@@ -56,9 +56,9 @@ class Karma(commands.Cog):
         if str(reaction.emoji) == upvote or downvote:
             if user != reaction.message.author:
                 if str(reaction.emoji) == upvote:
-                    self.user_add_karma(reaction.message.author.id, -5)
+                    user_add_karma(reaction.message.author.id, -5, reaction.message.author.name)
                 if str(reaction.emoji) == downvote:
-                    self.user_add_karma(reaction.message.author.id, 5)
+                    user_add_karma(reaction.message.author.id, 5, reaction.message.author.name)
 
     @client.command(description="Finds out how much karma a user has", usage="[@user]", brief="Finds [@users] karma. If left blank it will find whoever sent the message's kamra")
     async def karma(self, ctx, *args):
@@ -106,7 +106,7 @@ class Karma(commands.Cog):
         """
         # Because @xpoes#9244 spams the shit out of our pokemon channel
         if message.channel.id != settings.pokemon_channel:
-            self.user_add_karma(user_id, 1)
+            user_add_karma(user_id, 1, user_name)
         """
 
         # Adds upvote to images / uploads and URLS
