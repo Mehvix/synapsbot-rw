@@ -154,18 +154,18 @@ class decode(commands.Cog):
                                           "\n[• View deck stats on HSReplay](https://hsreplay.net/decks/{}/)"
                               .format(deck.as_deckstring, shortid),
                               color=settings.embed_color)
-        embed.add_field(name="Format:", value=str(str(deck.format)[14:]).title(), inline=True)
-        embed.add_field(name="Cost:", value=str(total_cost), inline=True)
-        if "0." in str(num_of_spells / num_of_minions):
-            embed.add_field(name="Spells:Minions Ration:",
-                            value="{} : 1".format(str(num_of_minions / num_of_spells)[:5]), inline=True)
+        embed.add_field(name="Format:", value=str(str(deck.format)[14:]).title(), inline=False)
+        embed.add_field(name="Cost:", value=str(total_cost), inline=False)
+        if num_of_spells < num_of_minions:
+            embed.add_field(name="Minions to Spells Ratio:",
+                            value="{} : 1".format(str(num_of_minions / num_of_spells)[:5]), inline=False)
         else:
-            embed.add_field(name="Minions:Spell Ration:",
-                            value="{} : 1".format(str(num_of_spells / num_of_minions)[:5]), inline=True)
+            embed.add_field(name="Minions to Spell Ratio:",
+                            value="{} : 1".format(str(num_of_spells / num_of_minions)[:5]), inline=False)
         embed.set_thumbnail(url=image)
-        embed.add_field(name="# of Spells:", value=str(num_of_spells), inline=True)
-        embed.add_field(name="# of Minions:", value=str(num_of_minions), inline=True)
-        embed.add_field(name="Cards:", value='\n'.join(' '.join(elems[:-1]) for elems in fulldeck), inline=True)
+        embed.add_field(name="# of Spells:", value=str(num_of_spells), inline=False)
+        embed.add_field(name="# of Minions:", value=str(num_of_minions), inline=False)
+        embed.add_field(name="Cards:", value='\n'.join(' '.join(elems[:-1]) for elems in fulldeck), inline=False)
         await asyncio.sleep(1)
         await ctx.send(embed=embed)
 
