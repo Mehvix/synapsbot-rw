@@ -25,41 +25,44 @@ class decode(commands.Cog):
 
     print("Loading Decoder...")
 
-    @commands.command(aliases=["hs", "decode"], usage="[deckstring]", description="Decodes HS deckstring", brief="Decode [deckstring]")
+    @commands.command(aliases=["hs", "decode"], usage="[deckstring]", description="Decodes HS deckstring",
+                      brief="Decode [deckstring]")
     async def deck(self, ctx, target: str):
         deck = Deck.from_deckstring(target)
 
         image = ""
-        hero = deck.heroes[0]
-        if str(hero) == "274" or str(hero) == "50484":
-            hero = "Druid"
-            image ="https://d1u5p3l4wpay3k.cloudfront.net/hearthstone_gamepedia/8/8d/Icon_Druid_64.png?version=b6a84e24ff9417d99c04f883b5687ed3"
-        if str(hero) == "637" or str(hero) == "2829" or str(hero) == "39117":
-            hero = "Mage"
-            image ="https://d1u5p3l4wpay3k.cloudfront.net/hearthstone_gamepedia/f/f2/Icon_Mage_64.png?version=f16b540384ed113585c2f6b117aeb7d0"
-        if str(hero) == "31" or str(hero) == "2826":
-            hero = "Hunter"
-            image ="https://d1u5p3l4wpay3k.cloudfront.net/hearthstone_gamepedia/f/f4/Icon_Hunter_64.png?version=b9ee98cd8936a875ba84bc9d3f83bebc"
-        if str(hero) == "7" or str(hero) == "2828":
-            hero = "Warrior"
-            image = "https://d1u5p3l4wpay3k.cloudfront.net/hearthstone_gamepedia/1/19/Icon_Warrior_64.png?version=d0252ccedf6faab67e5ab506dddda2ea"
-        if str(hero) == "893" or str(hero) == "47817" or str(hero) == "51834":
-            hero = "Warlock"
-            image = "https://d1u5p3l4wpay3k.cloudfront.net/hearthstone_gamepedia/2/2e/Icon_Warlock_64.png?version=5f7037f5cb0b4be064ceb9f6c4528e73"
-        if str(hero) == "1066" or str(hero) == "40183":
-            hero = "Shaman"
-            image = "https://d1u5p3l4wpay3k.cloudfront.net/hearthstone_gamepedia/a/a8/Icon_Shaman_64.png?version=08bc485fb8261048c7a3a480953c7169"
-        if str(hero) == "930":
-            hero = "Rogue" or str(hero) == "40195"
-            image = "https://d1u5p3l4wpay3k.cloudfront.net/hearthstone_gamepedia/7/76/Icon_Rogue_64.png?version=04949ddceba669263317bf44edb981c1"
-        if str(hero) == "813"  or str(hero) == "41887":
-            hero = "Priest"
-            image = "https://d1u5p3l4wpay3k.cloudfront.net/hearthstone_gamepedia/2/23/Icon_Priest_64.png?version=a5d7b4e15c40dfd667e6868165b10677"
-        if str(hero) == "671" or str(hero) == "2827" or str(hero) == "46116":
-            hero = "Paladin"
-            image = "https://d1u5p3l4wpay3k.cloudfront.net/hearthstone_gamepedia/7/7b/Icon_Paladin_64.png?version=2a4e7cdbb3b5402f3e8a34ea156f9cf1"
+        hs_class = deck.heroes[0]
 
-        embed = discord.Embed()
+        # You can get hero ID's via https://www.hearthstonedb.net/cards/heroes-set
+        # todo automate this process^
+        if str(hs_class) == "274" or "50484":
+            hs_class = "Druid"
+            image = "https://gamepedia.cursecdn.com/hearthstone_gamepedia/1/13/Icon_Druid_48.png?version=04fe2182b995ef2bfa95a2782410a212"
+        elif str(hs_class) == "637" or "2829" or "39117":
+            hs_class = "Mage"
+            image = "https://gamepedia.cursecdn.com/hearthstone_gamepedia/a/ad/Icon_Mage_48.png?version=490a29a8d96557bb64f6b7bd825713cc"
+        elif str(hs_class) == "31" or "2826":
+            hs_class = "Hunter"
+            image = "https://gamepedia.cursecdn.com/hearthstone_gamepedia/8/82/Icon_Hunter_48.png?version=ad01d4f022ef5af731a6b9c41be9df58"
+        elif str(hs_class) == "7" or "2828":
+            hs_class = "Warrior"
+            image = "https://gamepedia.cursecdn.com/hearthstone_gamepedia/e/e8/Icon_Warrior_48.png?version=3fcf2ff09c6334756e9005ac69b77949"
+        elif str(hs_class) == "893" or "47817" or "51834":
+            hs_class = "Warlock"
+            image = "https://gamepedia.cursecdn.com/hearthstone_gamepedia/c/c3/Icon_Warlock_48.png?version=15d8a6846eff7ebd47fc439a7b3b0719"
+        elif str(hs_class) == "1066" or "40183" or "53237":
+            hs_class = "Shaman"
+            image = "https://gamepedia.cursecdn.com/hearthstone_gamepedia/d/da/Icon_Shaman_48.png?version=825a713ad65dcbd374e3501edc8fb42b"
+        elif str(hs_class) == "930" or "40195":
+            hs_class = "Rogue"
+            image = "https://gamepedia.cursecdn.com/hearthstone_gamepedia/1/13/Icon_Rogue_48.png?version=cc4b41c03ccdb9b0f666839ed1f72a51"
+        elif str(hs_class) == "813" or "41887" or "54816":
+            hs_class = "Priest"
+            image = "https://gamepedia.cursecdn.com/hearthstone_gamepedia/3/30/Icon_Priest_48.png?version=dc21614bcf47a51b6a28110fa639150e"
+        elif str(hs_class) == "671" or "2827" or "46116" or "53187":
+            hs_class = "Paladin"
+            image = "https://gamepedia.cursecdn.com/hearthstone_gamepedia/d/d3/Icon_Paladin_48.png?version=3386c8ba02bde1df93154aa6f595aa0e"
+
         num_of_spells = 0
         num_of_minions = 0
 
@@ -110,7 +113,8 @@ class decode(commands.Cog):
                             if rarity == "FREE":
                                 rarity = types_of_rarity[0]
 
-                            y = [str(num_of_cards), " x ", str(rarity) + " | ", str(name), "| " + str(cost) + " mana |", int(cost)]
+                            y = [str(num_of_cards), " x ", str(rarity) + " | ", str(name), "| " + str(cost) + " mana |",
+                                 int(cost)]
                             fulldeck.append(y)
                             x = len(result)
                         else:
@@ -121,7 +125,7 @@ class decode(commands.Cog):
 
         fulldeck.sort(key=getcost, reverse=True)
 
-        ALPHABET = string.ascii_letters + string.digits
+        alphabet = string.ascii_letters + string.digits
 
         # The following is yoinked from here:
         # https://github.com/HearthSim/HSReplay.net/blob/54a5e372e6ddd870fa102c7e827c359c28b81187/scripts/generating_deck_ids_example.py
@@ -147,7 +151,7 @@ class decode(commands.Cog):
 
         card_ids = deckids
         digest = generate_digest_from_deck_list(card_ids)
-        shortid = int_to_string(int(digest, 16), ALPHABET)
+        shortid = int_to_string(int(digest, 16), alphabet)
 
         embed = discord.Embed(title="{}'s Deck".format(ctx.author.name),
                               description="• Deckcode being used:\n`{}`"
@@ -155,6 +159,7 @@ class decode(commands.Cog):
                               .format(deck.as_deckstring, shortid),
                               color=settings.embed_color)
         embed.add_field(name="Format:", value=str(str(deck.format)[14:]).title(), inline=False)
+        embed.add_field(name="Class:", value=hs_class.title(), inline=False)
         embed.add_field(name="Cost:", value=str(total_cost), inline=False)
         if num_of_spells < num_of_minions:
             embed.add_field(name="Minions to Spells Ratio:",
@@ -176,6 +181,7 @@ class decode(commands.Cog):
                 await asyncio.sleep(1)
                 soup = BeautifulSoup(text.decode('utf-8'), 'html5lib')
                 data = soup.find('span', attrs={'class': 'infobox-value'})
+                # ^hmmm idk what I was gonnna do with this, but I'll leave it in incase I come back around to this
 
 
 def setup(client):

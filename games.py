@@ -4,7 +4,6 @@
 import discord
 from discord.ext import commands
 
-import karma
 import settings
 
 
@@ -42,6 +41,7 @@ class Games(commands.Cog):
 
         await chnl.message.delete()
 
+    """
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
         if list(set(after.roles) - set(before.roles)):
@@ -57,6 +57,7 @@ class Games(commands.Cog):
                 print(before.name + " had " + role.name + status)
         except UnboundLocalError:
             pass  # If user is updated but a role isn't add/removed
+    """
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
@@ -77,7 +78,6 @@ class Games(commands.Cog):
 
             # I was really tempted to do this: await user.add_roles(discord.utils.get(guild.roles,
             # id=int(style[self.letters.index("".join([x for x in self.letters if x == reaction]))])))
-
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
@@ -116,7 +116,6 @@ class Games(commands.Cog):
 
         await ctx.message.delete()
 
-
     """
     @client.command(hidden=True)
     @commands.has_role(settings.admin_role_name)
@@ -139,6 +138,7 @@ class Games(commands.Cog):
 
         await ctx.message.delete()
     """
+
 
 def setup(client):
     client.add_cog(Games(client))

@@ -9,12 +9,9 @@ import string
 import socket
 import aiohttp
 import pyqrcode
-import re#eeeeeeeeee
+from bs4 import BeautifulSoup
 from mcstatus import MinecraftServer
 from urbandictionary_top import udtop
-
-import requests
-from bs4 import BeautifulSoup
 
 import discord
 from discord.ext import commands
@@ -23,7 +20,6 @@ import zalgo
 import karma
 import curtime
 import settings
-
 
 image_files = ['.ras', '.xwd', '.bmp', '.jpe', '.jpg', '.jpeg', '.xpm', '.ief', '.pbm', '.tif', '.gif',
                '.ppm', '.xbm', '.tiff', '.rgb', '.pgm', '.png', '.pnm']
@@ -37,7 +33,9 @@ class Verified(commands.Cog):
 
     print("Loading Verified...")
 
-    @client.command(aliases=["urban", "dictionary", "definition", "define"], description="Finds the Urban Dictionary definition/example of a word", usage="[word]", brief="Gets the Urban Dictionary definition and examples of a [word]")
+    @client.command(aliases=["urban", "dictionary", "definition", "define"],
+                    description="Finds the Urban Dictionary definition/example of a word", usage="[word]",
+                    brief="Gets the Urban Dictionary definition and examples of a [word]")
     @commands.has_role(settings.verified_role_name)
     async def ud(self, ctx, *word: str):
         term = " ".join(word)
@@ -81,20 +79,23 @@ class Verified(commands.Cog):
                     await ctx.message.channel.send(result)
     '''
 
-    @client.command(description="Makes text look whack", usage="[word/sentence]", brief="Adds zalgo effect to [word/sentecne]")
+    @client.command(description="Makes text look whack", usage="[word/sentence]",
+                    brief="Adds zalgo effect to [word/sentecne]")
     @commands.has_role(settings.verified_role_name)
     async def zalgo(self, ctx, *target):
         target = " ".join(target)
         intensity = {"up": 5, "mid": 5, "down": 5}
         await ctx.message.channel.send(zalgo.zalgo(target, intensity))
 
-    @client.command(aliases=["up"], description="Returns how long the bot has been live", brief="Returns how long the bot has been live")
+    @client.command(aliases=["up"], description="Returns how long the bot has been live",
+                    brief="Returns how long the bot has been live")
     @commands.has_role(settings.verified_role_name)
     async def uptime(self, ctx):
         await ctx.message.channel.send("The bot has been live for `{}` {}".format(curtime.uptime(),
                                                                                   settings.random_clock()))
 
-    @client.command(description="Used to DM everyone in a role", usage="[role] [message]", brief="Sends everyone who has [role] the [message]. This should be used for game night/etc.")
+    @client.command(description="Used to DM everyone in a role", usage="[role] [message]",
+                    brief="Sends everyone who has [role] the [message]. This should be used for game night/etc.")
     @commands.has_role(settings.verified_role_name)
     async def announce(self, ctx, role: discord.Role, *message: str):
         print(role.members, message)
@@ -103,7 +104,7 @@ class Verified(commands.Cog):
             embed = discord.Embed(
                 color=settings.embed_color, description=message)
             embed.set_author(name="{} sent an announcement to you because you are a member of the group '{}''".format(
-                    ctx.message.author.name, role.name), icon_url=ctx.message.author.avatar_url)
+                ctx.message.author.name, role.name), icon_url=ctx.message.author.avatar_url)
             await member.send(embed=embed)
 
     @client.command(description="Gets a random Sammy pic", brief="Gets a random Sammy pic")
@@ -118,7 +119,7 @@ class Verified(commands.Cog):
         fp = random.choice(os.listdir("media/aidans"))
         await ctx.message.channel.send(file=discord.File("media/aidans/{}".format(fp)))
 
-    @client.command(aliases=["fren", "frens"],description="Gets a random Apu", brief="Gets a random Apu")
+    @client.command(aliases=["fren", "frens"], description="Gets a random Apu", brief="Gets a random Apu")
     @commands.has_role(settings.verified_role_name)
     async def apu(self, ctx):
         fp = random.choice(os.listdir("media/apus"))
@@ -168,7 +169,7 @@ class Verified(commands.Cog):
         em.add_field(name="Server ID:", value=ctx.message.guild.id)
         em.add_field(name="Owner:", value=ctx.message.guild.owner, inline=False)
         em.add_field(name="Members:", value=ctx.message.guild.member_count)
-        em.add_field(name="Members Online:", value=online)
+        em.add_field(name="Members Online:", value=str(online))
         em.add_field(name="Region:", value=ctx.message.guild.region)
         em.add_field(name="Verification Level:", value=str(ctx.message.guild.verification_level).capitalize())
         # em.add_field(name="Highest Ranking Role:", value=ctx.message.guild.role_hierarchy[0])
@@ -186,7 +187,8 @@ class Verified(commands.Cog):
         em.set_author(name="\u200b")
         await ctx.message.channel.send(embed=em)
 
-    @client.command(aliases=["emojis", "emotelist", "emojilist"], description="Returns all emotes in the server", brief="Returns all emotes in the server")
+    @client.command(aliases=["emojis", "emotelist", "emojilist"], description="Returns all emotes in the server",
+                    brief="Returns all emotes in the server")
     @commands.has_role(settings.verified_role_name)
     async def emotes(self, ctx):
         emojis = [str(x) for x in ctx.message.guild.emojis]
@@ -246,6 +248,8 @@ class Verified(commands.Cog):
     @client.command(description="Info about an invite", usage="[invite URL]", brief="Info about an invite")
     @commands.has_role(settings.verified_role_name)
     async def inviteinfo(self, ctx, invite: discord.Invite):
+
+        # todo fix
         invite.max_age = invite.max_age if invite.max_age is not None else 0
         m, s = divmod(invite.max_age, 60)
         h, m = divmod(m, 60)
@@ -267,7 +271,8 @@ class Verified(commands.Cog):
         invite.max_age > 0 else "Never")
         await ctx.send(embed=em)
 
-    @client.command(aliases=["transfer"], description="Lets users to give others karma", usage="[@user] [amount]", brief="Gives [@user] [amount] of karma from your account")
+    @client.command(aliases=["transfer"], description="Lets users to give others karma", usage="[@user] [amount]",
+                    brief="Gives [@user] [amount] of karma from your account")
     @commands.has_role(settings.verified_role_name)
     async def tradekarma(self, ctx, target: discord.Member, amount: int):
         if amount < 0:
@@ -313,7 +318,8 @@ class Verified(commands.Cog):
                                   " see the video by clicking on 'View Post'")
             embed.set_image(url=result[0]['data']['children'][0]['data']['preview']['images'][0]['source']['url'])
         else:
-            if any(word in str(result[0]['data']['children'][0]['data']['url']).rsplit('/', 1)[1] for word in image_files):
+            if any(word in str(result[0]['data']['children'][0]['data']['url']).rsplit('/', 1)[1] for word in
+                   image_files):
                 embed.set_image(url=result[0]['data']['children'][0]['data']['url'])
 
         if len(result[0]['data']['children'][0]['data']['selftext']) > 1800:
@@ -350,11 +356,13 @@ class Verified(commands.Cog):
                                   "Post' button above")
 
         if 'v.redd.it' in result[0]['data']['children'][0]['data']['url']:
-            embed.set_footer(text="NOTE: This is just the thumbnail of video that cannot be played via Discord. You can "
-                                  "see the video by clicking on 'View Post'")
+            embed.set_footer(
+                text="NOTE: This is just the thumbnail of video that cannot be played via Discord. You can "
+                     "see the video by clicking on 'View Post'")
             embed.set_image(url=result[0]['data']['children'][0]['data']['preview']['images'][0]['source']['url'])
         else:
-            if any(word in str(result[0]['data']['children'][0]['data']['url']).rsplit('/', 1)[1] for word in image_files):
+            if any(word in str(result[0]['data']['children'][0]['data']['url']).rsplit('/', 1)[1] for word in
+                   image_files):
                 embed.set_image(url=result[0]['data']['children'][0]['data']['url'])
 
         await ctx.message.channel.send(embed=embed)
@@ -387,16 +395,19 @@ class Verified(commands.Cog):
                                   "Post' button above")
 
         if 'v.redd.it' in result[0]['data']['children'][0]['data']['url']:
-            embed.set_footer(text="NOTE: This is just the thumbnail of video that cannot be played via Discord. You can "
-                                  "see the video by clicking on 'View Post'")
+            embed.set_footer(
+                text="NOTE: This is just the thumbnail of video that cannot be played via Discord. You can "
+                     "see the video by clicking on 'View Post'")
             embed.set_image(url=result[0]['data']['children'][0]['data']['preview']['images'][0]['source']['url'])
         else:
-            if any(word in str(result[0]['data']['children'][0]['data']['url']).rsplit('/', 1)[1] for word in image_files):
+            if any(word in str(result[0]['data']['children'][0]['data']['url']).rsplit('/', 1)[1] for word in
+                   image_files):
                 embed.set_image(url=result[0]['data']['children'][0]['data']['url'])
 
         await ctx.message.channel.send(embed=embed)
 
-    @client.command(aliases=["user", "info", "profile"], description="Gives info about a user", usage="[@user]", brief="Gives info about [@user]")
+    @client.command(aliases=["user", "info", "profile"], description="Gives info about a user", usage="[@user]",
+                    brief="Gives info about [@user]")
     @commands.has_role(settings.verified_role_name)
     async def whois(self, ctx, user: discord.Member):
         full_user_name = "{}#{}".format(user.name, user.discriminator)
@@ -415,7 +426,7 @@ class Verified(commands.Cog):
         embed.add_field(name="Status:", value=str(user.status).title())
         embed.add_field(name="Game/Activity:", value=user.activity.name)
         embed.add_field(name="Custom Name:", value=user.nick)
-        embed.add_field(name="Role Color:", value=user.color)
+        embed.add_field(name="Role Color:", value=str(user.color))
         if len(user.roles) > 1:  # TIL @everyone is a role that is assigned to everyone but hidden
             embed.add_field(name="User Top Role (Level):", value=user.top_role)
         else:
@@ -424,12 +435,14 @@ class Verified(commands.Cog):
         embed.set_thumbnail(url=user.avatar_url)
         await ctx.message.channel.send(embed=embed)
 
-    @client.command(aliases=["bans", "banslist"], description="Lists everyone banned from the server", brief="Lists everyone banned from the server")
+    @client.command(aliases=["bans", "banslist"], description="Lists everyone banned from the server",
+                    brief="Lists everyone banned from the server")
     @commands.has_role(settings.verified_role_name)
     async def banlist(self, ctx):
         bans = await ctx.message.guild.bans()
         if not bans:
-            embed = discord.Embed(title="Ban List", description="This server doesn't have anyone banned (yet)", color=settings.embed_color)
+            embed = discord.Embed(title="Ban List", description="This server doesn't have anyone banned (yet)",
+                                  color=settings.embed_color)
             await ctx.message.channel.send(embed=embed)
         else:
             embed = discord.Embed(title="🔨 Ban List:", color=settings.embed_color)
@@ -446,7 +459,8 @@ class Verified(commands.Cog):
 
             await ctx.message.channel.send(embed=embed)
 
-    @client.command(aliases=["invite"], description="Creates an invite for the server", brief="Creates an invite for the server")
+    @client.command(aliases=["invite"], description="Creates an invite for the server",
+                    brief="Creates an invite for the server")
     @commands.has_role(settings.verified_role_name)
     async def createinvite(self, ctx):
         invite = await ctx.channel.create_invite(
@@ -464,15 +478,17 @@ class Verified(commands.Cog):
 
         await ctx.send(file=discord.File("invite.png"))
 
-    @client.command(aliases=["8ball"], description="Answers questions 110% accurately", usage="[question]", brief="Answers [questions]")
+    @client.command(aliases=["8ball"], description="Answers questions 110% accurately", usage="[question]",
+                    brief="Answers [questions]")
     @commands.has_role(settings.verified_role_name)
     async def oujia(self, ctx, *question):
         question = "".join(question)
         if question != "":
             outcomes = ["Odds aren't that good" "It is certain.", "It is decidedly so.", "Without a doubt.",
-                        "Yes - definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.", "Outlook good.",
+                        "Yes - definitely.", "You may rely on it.", "As I see it, yes.", "Most likely.",
+                        "Outlook good.",
                         "Yes.", "Signs point to yes.", "Don't count on it.", "My reply is no.", "My sources say no",
-                        "Outlook not so good.", "Very doubtful." , "Yummy."]
+                        "Outlook not so good.", "Very doubtful.", "Yummy."]
             letters = list(string.printable)
             choice = "".join(random.choices(outcomes))
             nums = len(choice)
@@ -490,7 +506,8 @@ class Verified(commands.Cog):
                 while times != 1:  # fake hardsolving
                     bleh.insert(position, "".join(random.choices(letters)))
                     bleh.pop(position + 1)
-                    times = random.randint(1, 2)  # this could be at '(1,5)' or high but discord rate limits are very restrictive
+                    times = random.randint(1,
+                                           2)  # this could be at '(1,5)' or high but discord rate limits are very restrictive
                     await msg.edit(content="".join(bleh))
                 bleh.insert(position, str(choice)[position])
                 bleh.pop(position + 1)
@@ -520,7 +537,9 @@ class Verified(commands.Cog):
         embed.add_field(name="Zero", value=zero_total, inline=True)
         await ctx.message.channel.send(embed=embed)
 
-    @client.command(aliases=["r", "roulete", "roullete", "bet"], description="There is little time, do .roulette help", usage="[odd/even/zero] [amount of karma < 250 and > 10]", brief="Lets you bet [amount of karma] on an outcome, [odd/even/zero] ")
+    @client.command(aliases=["r", "roulete", "roullete", "bet"], description="There is little time, do .roulette help",
+                    usage="[odd/even/zero] [amount of karma < 250 and > 10]",
+                    brief="Lets you bet [amount of karma] on an outcome, [odd/even/zero] ")
     @commands.has_role(settings.verified_role_name)
     async def roulette(self, ctx, outcome: str, *amount):
         if "outcome" in outcome:
@@ -599,14 +618,15 @@ class Verified(commands.Cog):
             json.dump(outcomes, fp, sort_keys=True, indent=4)
 
         if real_outcome == outcome:
-            karma.user_add_karma(ctx.message.author.id, amount*2, ctx.message.author.name)
+            karma.user_add_karma(ctx.message.author.id, amount * 2, ctx.message.author.name)
             await ctx.message.channel.send("You won! :tada:\nYour new karma total is `{}`".format(
                 karma.get_karma(ctx.message.author.id)))
         else:
             await ctx.message.channel.send("You lost!\nYour new karma total is `{}`".format(
                 karma.get_karma(ctx.message.author.id)))
 
-    @client.command(aliases=["bannedword", "bannedwordlist"], description="Lists all banned words/terms", brief="Lists all banned words/terms")
+    @client.command(aliases=["bannedword", "bannedwordlist"], description="Lists all banned words/terms",
+                    brief="Lists all banned words/terms")
     @commands.has_role(settings.verified_role_name)
     async def bannedwords(self, ctx):
         banned_words = settings.get_json("banned_words.json")
@@ -621,7 +641,8 @@ class Verified(commands.Cog):
         pass
     '''
 
-    @client.command(description="👏 Makes 👏 this 👏 text 👏 with 👏 any 👏 emote 👏", usage="[emote] [text]", brief="Replaces all spaces in [text] with 2 spaces and emote between them")
+    @client.command(description="👏 Makes 👏 this 👏 text 👏 with 👏 any 👏 emote 👏", usage="[emote] [text]",
+                    brief="Replaces all spaces in [text] with 2 spaces and emote between them")
     @commands.has_role(settings.verified_role_name)
     async def generate(self, ctx, emote: str, *text):
         emote = emote
@@ -629,7 +650,8 @@ class Verified(commands.Cog):
 
         await ctx.send(str(text).replace(" ", " " + emote) + " " + emote)
 
-    @client.command(description="Displays who has the highest karam/level", usage="[kind] (karma/level)", brief="Displays who has the highest [kind]")
+    @client.command(description="Displays who has the highest karam/level", usage="[kind] (karma/level)",
+                    brief="Displays who has the highest [kind]")
     @commands.has_role(settings.verified_role_name)
     async def leaderboard(self, ctx, *kind):
         kind = " ".join(kind)
@@ -655,7 +677,7 @@ class Verified(commands.Cog):
                         name = file[user]['name']
                     except (KeyError, AttributeError):
                         name = await self.client.get_user_info(file[user])
-                        karma.set_name(name)
+                        karma.set_name(file[user], name)
 
                         name = await self.client.get_user_info(str(user))
                         name = name.name
@@ -700,7 +722,8 @@ class Verified(commands.Cog):
             embed.add_field(name='Revoked Invites ({})'.format(len(revoked_invites)), value='\n'.join(revoked_invites))
         await ctx.send(embed=embed)
 
-    @client.command(aliases=["roast"], description="Insults a user", usage="[@user]", brief="Roasts [@user] with one of 180+ insults")
+    @client.command(aliases=["roast"], description="Insults a user", usage="[@user]",
+                    brief="Roasts [@user] with one of 180+ insults")
     @commands.has_role(settings.verified_role_name)
     async def insult(self, ctx, user: discord.Member):
         insults = settings.get_json("insults.json")
@@ -749,10 +772,10 @@ class Verified(commands.Cog):
                 if username == value["name"]:
                     await ctx.send("You're already whitelisted in the server!")
                     users = []
-                    with open(location) as f:
-                        data = json.load(f)
-                        for value in data:
-                            users.append(value["name"])
+                    with open(location) as x:
+                        data = json.load(x)
+                        for contents in data:
+                            users.append(contents["name"])
                     await ctx.send("The current whitelist contains: \n`• {}`".format("\n• ".join(users)))
                     return
 

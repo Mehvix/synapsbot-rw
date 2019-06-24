@@ -1,3 +1,5 @@
+hearthstone
+websockets
 pyqrcode
 mcstatus
 django-qrcode

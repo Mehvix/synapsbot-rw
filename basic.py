@@ -3,7 +3,6 @@
 import sys
 import random
 from datetime import datetime
-from emoji import UNICODE_EMOJI
 
 import aiohttp
 import discord

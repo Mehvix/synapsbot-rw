@@ -1,11 +1,7 @@
 # coding=utf-8
 
-import os
-import sys
 import json
-import time
 import asyncio
-from datetime import datetime, timedelta
 
 import karma
 import curtime
@@ -31,8 +27,8 @@ class Admin(commands.Cog):
         if any(word in str(after.content).upper() for word in banned_words):
             await before.author.send(
                 "NO POOPY DOOPY WORDSIES!1! THE HECKIN BOOPIN POOPIN DOOPIN PUPPER SUPPER LUPPER DOGGO "
-                "NIGGOS NOT LIEK IT!!! BRB HAVIN A ZOOMIE! XDDDLOLOELELALA \nYou can see what is banned "
-                "via the `.bannedwords` command.")
+                "NIGGOS NOT LIEK IT!!! BRB HAVIN A ZOOMIE! XDDDLOLOELELALA "
+                "\nYou can see what is banned via the `.bannedwords` command.")
 
             await after.delete()
 
@@ -60,13 +56,15 @@ class Admin(commands.Cog):
                               "NIGGOS NOT LIEK IT!!! BRB HAVIN A ZOOMIE! XDDDLOLOELELALA \nYou can see what is banned "
                               "via the `.bannedwords` command.")
 
-    @client.command(aliases=['clear', 'snap'], description="Deletes messages", usage="(However man messages)", brief="Deletes messages")
+    @client.command(aliases=['clear', 'snap'], description="Deletes messages", usage="(However man messages)",
+                    brief="Deletes messages")
     @commands.has_role(settings.admin_role_name)
     async def clean(self, ctx, messages: int):
         deleted = await ctx.channel.purge(limit=messages + 1)
         await ctx.send('`{}` deleted `{}` message(s)'.format(ctx.message.author.name, len(deleted) - 1))
 
-    @client.command(aliases=["rules"], description="Displays Rules for the Server", brief="Used for the rules-and-info channel")
+    @client.command(aliases=["rules"], description="Displays Rules for the Server",
+                    brief="Used for the rules-and-info channel")
     @commands.has_role(settings.admin_role_name)
     async def serverrules(self, ctx):
         await ctx.message.delete()
@@ -86,14 +84,16 @@ class Admin(commands.Cog):
             inline=True)
         await ctx.message.channel.send(embed=embed)
 
-    @client.command(aliases=["gift", "addkarma"], description="Used to rewards users", usage="[@user] [amount]", brief="Used to reward members of the server")
+    @client.command(aliases=["gift", "addkarma"], description="Used to rewards users", usage="[@user] [amount]",
+                    brief="Used to reward members of the server")
     @commands.has_role(settings.admin_role_name)
     async def givekarma(self, ctx, target: discord.Member, amount: int):
         karma.user_add_karma(target.id, amount, target.name)
         await ctx.message.channel.send("You gave <@{}> `{}` karma. They now have a total of `{}` karma".format(
             target.id, amount, karma.get_karma(target.id)))
 
-    @client.command(description="Mutes Target", usage="[@user]", brief="Prevents spam by adding @muted role to the user")
+    @client.command(description="Mutes Target", usage="[@user]",
+                    brief="Prevents spam by adding @muted role to the user")
     @commands.has_role(settings.admin_role_name)
     async def mute(self, ctx, target: discord.Member):
         role = discord.utils.get(ctx.message.guild.roles, name=settings.mute_role_name)
@@ -107,7 +107,8 @@ class Admin(commands.Cog):
         await target.remove_roles(role)
         await ctx.send("<@{0}> unmuted <@{1}>".format(ctx.message.author.id, target.id))
 
-    @client.command(description="Adds [word] to the bannedword list", usage="[word]", brief="Adds [word] to a list that will prevent said word being in names or text channels. The list can be found via .bannedwords")
+    @client.command(description="Adds [word] to the bannedword list", usage="[word]",
+                    brief="Adds [word] to a list that will prevent said word being in names or text channels. The list can be found via .bannedwords")
     @commands.has_role(settings.admin_role_name)
     async def banword(self, ctx, *word):
         word = " ".join(word)
@@ -149,8 +150,8 @@ class Admin(commands.Cog):
         for target in targets:
             if reason != "()":
                 await target.ban(reason="{} ({}) used .ban command with the reason {}".format(ctx.message.author.name,
-                                                                                                ctx.message.author.id,
-                                                                                                reason))
+                                                                                              ctx.message.author.id,
+                                                                                              reason))
             else:
                 await target.ban(
                     reason="{} ({}) used .ban command".format(ctx.message.author.name, ctx.message.author.id))
@@ -161,9 +162,10 @@ class Admin(commands.Cog):
         reason = " ".join(reason)
         for target in targets:
             if reason != "()":
-                await target.unban(reason="{} ({}) used .unban command with the reason {}".format(ctx.message.author.name,
-                                                                                                ctx.message.author.id,
-                                                                                                reason))
+                await target.unban(
+                    reason="{} ({}) used .unban command with the reason {}".format(ctx.message.author.name,
+                                                                                   ctx.message.author.id,
+                                                                                   reason))
             else:
                 await target.unban(
                     reason="{} ({}) used .unban command".format(ctx.message.author.name, ctx.message.author.id))
@@ -200,7 +202,8 @@ class Admin(commands.Cog):
         if user_was_kicked is True:
             embed.add_field(name="Kicker:", value=kicker, inline=False)
             embed.add_field(name="Reason:", value=reason, inline=False)
-            embed.set_author(name="{} was kicked from the server 👋".format(member.name))  # todo replace this with boot emoji once it comes out
+            embed.set_author(name="{} was kicked from the server 👋".format(
+                member.name))  # todo replace this with boot emoji once it comes out
         else:
             embed.set_author(name="{} left the server 🙁".format(member.name))
         embed.add_field(name="Username:", value="{}#{}".format(member.name, member.discriminator), inline=False)
@@ -244,13 +247,12 @@ class Admin(commands.Cog):
         await channel.send(embed=embed)
 
     @commands.Cog.listener()
-    async def on_member_unban(self, guild, member):
+    async def on_member_unban(self, member):
         channel = self.client.get_channel(id=settings.notification_channel)
         await channel.send('{} (`{}`) was unbanned from the server :unlock:'.format(member.mention, member))
 
+    """
     # Cog Commands
-    # todo: add disable commands here
-
     @client.command(description="Loads a cog", usage="[cog name]", brief="Loads [cog name]")
     @commands.has_role(settings.admin_role_name)
     async def load(self, extension_name: str):
@@ -267,6 +269,7 @@ class Admin(commands.Cog):
     async def unload(self, extension_name: str):
         client.unload_extension(extension_name)
         print("{} unloaded.".format(extension_name))
+    """
 
 
 def setup(client):

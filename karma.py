@@ -102,7 +102,6 @@ class Karma(commands.Cog):
         author_level = get_level(user_id)
         author_karma = get_karma(user_id)
 
-
         """
         # Because @xpoes#9244 spams the shit out of our pokemon channel
         if message.channel.id != settings.pokemon_channel:

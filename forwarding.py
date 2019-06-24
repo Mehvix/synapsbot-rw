@@ -22,9 +22,8 @@ class Forwarding(commands.Cog):
     print("Loading Forwarding...")
 
     async def on_message(self, message):
-        my_id = 196355904503939073
-
-        if not isinstance(message.channel, discord.abc.PrivateChannel) or message.channel.recipient.id == my_id:
+        # todo check that this still works
+        if not isinstance(message.channel, discord.abc.PrivateChannel) or message.author.id == self.client.id:
             return
 
         embed = discord.Embed(color=settings.embed_color)
@@ -35,7 +34,7 @@ class Forwarding(commands.Cog):
                     message.channel.recipient.name, message.channel.recipient.discriminator, message.channel.recipient.id),
                 icon_url=message.author.avatar_url or message.author.default_avatar_url)
             '''
-            embed.set_author(name='{} ({}) messaged me:'.format(message.channel.recipient.name, message.channel.recipient.id),
+            embed.set_author(name='{} ({}) messaged me:'.format(message.author.name, message.author.id),
                              icon_url=message.author.avatar_url or message.author.default_avatar_url)
 
             embed.description = "{}".format(message.clean_content)
@@ -47,4 +46,3 @@ class Forwarding(commands.Cog):
 
 def setup(client):
     client.add_cog(Forwarding(client))
-

@@ -39,15 +39,11 @@ seconds = 0
 ban_message = 0
 users = 0
 
-global before_invites, after_invites
-before_invites = []
-after_invites = []
-
 
 def flair(num_of_users):  # todo: add more flairs
     flairs = ['Created by Mehvix#7966',
               'Running Version {}'.format(settings.get_version()),
-              'Used by {} users!'.format(num_of_users),
+              'Used by {} users'.format(num_of_users),
               'Try .github for code',
               'Try .trello for upcoming stuff'
               ]
@@ -71,7 +67,6 @@ def get_json(file_path):
 async def timer():
     await client.wait_until_ready()
     global seconds
-    oldstatus = "0"
     while True:
         # "Who invited" code
         for guild in client.guilds:
@@ -120,6 +115,10 @@ async def timer():
 
 @commands.Cog.listener()
 async def on_member_join(member):
+    global before_invites, after_invites
+    before_invites = []
+    after_invites = []
+
     for guild in client.guilds:
         for invite in await guild.invites():
             x = [invite.url, invite.uses, invite.inviter.id]

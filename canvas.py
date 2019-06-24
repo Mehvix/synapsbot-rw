@@ -20,6 +20,9 @@ white = ":white:481329771700289538"
 black = ":black:484770699790254091"
 
 
+# todo this is a disaster and I don't plan on using this ever again
+
+
 class Canvas(commands.Cog):
     def __init__(self, client):
         self.client = client

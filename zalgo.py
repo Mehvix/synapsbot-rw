@@ -6,10 +6,9 @@
 #                  By Corsair <chris.corsair@mail>                  #
 ######################################################################
 
-import os
-import sys
-import random
 import optparse
+import random
+import sys
 
 # Characters taken from http://str.blogsite.org/Zalgo.htm.
 CHAR_UP = ['\u030D', '\u030E', '\u0304', '\u0305', '\u033F',
@@ -52,18 +51,18 @@ def randstr(charset, count, allow_repeat=True, return_list=True):
     `return_list' is True, a list of chars is returned, otherwise a
     string is returned.
     """
-    Result = list()
+    result = list()
     if allow_repeat:
         for i in range(count):
-            Result.append(random.choice(charset))
+            result.append(random.choice(charset))
     else:
-        Result = random.sample(charset, count)
-        random.shuffle(Result)
+        result = random.sample(charset, count)
+        random.shuffle(result)
 
     if return_list:
-        return Result
+        return result
     else:
-        return ''.join(Result)
+        return ''.join(result)
 
 
 def zalgo(orig_str, intensities, excludes=' ', rand_intensity=True,
@@ -79,58 +78,58 @@ def zalgo(orig_str, intensities, excludes=' ', rand_intensity=True,
     `orig_str' is possible.  Characters in `excludes' will not be
     zalgo-ified.
     """
-    Result = []
+    result = []
     for OrigChar in orig_str:
         if OrigChar in excludes:
-            Result.append(OrigChar)
+            result.append(OrigChar)
         else:
-            ZalgoCounts = {"up": 0, "down": 0, "mid": 0}
+            zalgo_counts = {"up": 0, "down": 0, "mid": 0}
             for pos in ZALGO_POS:
                 if rand_intensity:
-                    ZalgoCounts[pos] = random.randint(0, intensities[pos])
+                    zalgo_counts[pos] = random.randint(0, intensities[pos])
                 else:
-                    ZalgoCounts[pos] = intensities[pos]
+                    zalgo_counts[pos] = intensities[pos]
 
-            Result.append(OrigChar)
+            result.append(OrigChar)
 
             for pos in ZALGO_POS:
-                Result += randstr(ZALGO_CHARS[pos], ZalgoCounts[pos], allow_repeat)
+                result += randstr(ZALGO_CHARS[pos], zalgo_counts[pos], allow_repeat)
 
-    return ''.join(Result)
+    return ''.join(result)
 
 
 def main():
-    Usage = "Usage: %prog [options]"
+    usage = "Usage: %prog [options]"
 
-    OptParser = optparse.OptionParser(usage=Usage)
+    opt_parser = optparse.OptionParser(usage=usage)
 
-    OptParser.add_option("-u", "--up-intensity", dest="IntenseUp", default=2,
+    opt_parser.add_option("-u", "--up-intensity", dest="IntenseUp", default=2,
                          type="int", metavar="NUM",
                          help="The number of Zalgo characters to put above"
                               "the original character.  Default: %default")
-    OptParser.add_option("-m", "--mid-intensity", dest="IntenseMid", default=1,
-                         type="int", metavar="NUM",
-                         help="The number of Zalgo characters to put at"
+    opt_parser.add_option("-m", "--mid-intensity", dest="IntenseMid", default=1,
+                          type="int", metavar="NUM",
+                          help="The number of Zalgo characters to put at"
                               "the original character.  Default: %default")
-    OptParser.add_option("-d", "--down-intensity", dest="IntenseDown", default=5,
-                         type="int", metavar="NUM",
-                         help="The number of Zalgo characters to put below"
+    opt_parser.add_option("-d", "--down-intensity", dest="IntenseDown", default=5,
+                          type="int", metavar="NUM",
+                          help="The number of Zalgo characters to put below"
                               "the original character.  Default: %default")
-    OptParser.add_option("-f", "--fix-intensity", dest="Random",
-                         default=True, action="store_false",
-                         help="Don’t randomize the intensity.")
-    OptParser.add_option("-e", "--excludes", dest="Excludes",
-                         default=' ', metavar="STR",
-                         help="Don’t Zalgo-ify characters in STR. "
+    opt_parser.add_option("-f", "--fix-intensity", dest="Random",
+                          default=True, action="store_false",
+                          help="Don’t randomize the intensity.")
+    opt_parser.add_option("-e", "--excludes", dest="Excludes",
+                          default=' ', metavar="STR",
+                          help="Don’t Zalgo-ify characters in STR. "
                               "Default: \"%default\"")
 
-    (Opts, Args) = OptParser.parse_args()
+    (Opts, Args) = opt_parser.parse_args()
 
-    Intense = {"up": Opts.IntenseUp, "mid": Opts.IntenseMid,
+    intense = {"up": Opts.IntenseUp, "mid": Opts.IntenseMid,
                "down": Opts.IntenseDown}
 
     for Line in sys.stdin:
-        print(zalgo(Line, Intense, tuple(Opts.Excludes), Opts.Random))
+        print(zalgo(Line, intense, Opts.Excludes, Opts.Random))
     return 0
 
 

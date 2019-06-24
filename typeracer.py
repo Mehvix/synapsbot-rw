@@ -51,6 +51,5 @@ class Typeracer(commands.Cog):
                     await ctx.send("That user doesn't exist :(")
 
 
-
 def setup(client):
     client.add_cog(Typeracer(client))
