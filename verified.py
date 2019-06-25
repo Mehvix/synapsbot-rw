@@ -584,11 +584,7 @@ class Verified(commands.Cog):
                 "You only have `{}` karma available for betting".format(karma.get_karma(ctx.message.author.id)))
             return
 
-        with open('roulette_outcomes.json', 'r') as fp:
-            outcomes = json.load(fp)
-        outcomes['total'] += amount
-        with open('roulette_outcomes.json', 'w') as fp:
-            json.dump(outcomes, fp, sort_keys=True, indent=4)
+        r_update('total', amount)
 
         karma.user_add_karma(ctx.message.author.id, -amount, ctx.message.author.name)
 
@@ -598,6 +594,7 @@ class Verified(commands.Cog):
 
         if spin == 0:
             await msg.pin()
+            r_update('zero', 1)
             if outcome == "zero":
                 karma.user_add_karma(ctx.message.author.id, amount * 14, ctx.message.author.name)
                 await ctx.message.channel.send("You won! :tada:\nYour new karma total is `{}`".format(
@@ -609,13 +606,10 @@ class Verified(commands.Cog):
             return
         if spin % 2 == 0:
             real_outcome = "even"
+            r_update('even', 1)
         else:
             real_outcome = "odd"
-        with open('roulette_outcomes.json', 'r') as fp:
-            outcomes = json.load(fp)
-        outcomes[real_outcome] += 1
-        with open('roulette_outcomes.json', 'w') as fp:
-            json.dump(outcomes, fp, sort_keys=True, indent=4)
+            r_update('odd', 1)
 
         if real_outcome == outcome:
             karma.user_add_karma(ctx.message.author.id, amount * 2, ctx.message.author.name)
@@ -806,6 +800,14 @@ class Verified(commands.Cog):
             for value in data:
                 users.append(value["name"])
         await ctx.send("The current whitelist contains: \n`• {}`".format("\n• ".join(users)))
+
+
+def r_update(outcome: str, change: int):
+    with open('roulette_outcomes.json', 'r') as fp:
+        outcomes = json.load(fp)
+    outcomes[outcome] += change
+    with open('roulette_outcomes.json', 'w') as fp:
+        json.dump(outcomes, fp, sort_keys=True, indent=4)
 
 
 def setup(client):
