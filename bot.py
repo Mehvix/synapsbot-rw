@@ -21,6 +21,7 @@ import random
 import sys
 from datetime import datetime
 from mcstatus import MinecraftServer
+import aiohttp
 
 import discord
 from discord.ext import commands
@@ -38,6 +39,10 @@ settings.set_server("main")  # make sure this is test or main
 seconds = 0
 ban_message = 0
 users = 0
+
+global before_invites, after_invites
+before_invites = []
+after_invites = []
 
 
 def flair(num_of_users):  # todo: add more flairs
@@ -79,7 +84,7 @@ async def timer():
             await client.change_presence(
                 activity=discord.Streaming(name=flair(users), url='https://twitch.tv/mehvix',
                                            twitch_name="Mehvix"))
-        except websockets.exceptions.ConnectionClosed:
+        except (websockets.exceptions.ConnectionClosed, aiohttp.client_exceptions.ClientConnectorError):
             pass  # Random error (I think?)
 
         try:
@@ -115,9 +120,6 @@ async def timer():
 
 @commands.Cog.listener()
 async def on_member_join(member):
-    global before_invites, after_invites
-    before_invites = []
-    after_invites = []
 
     for guild in client.guilds:
         for invite in await guild.invites():
