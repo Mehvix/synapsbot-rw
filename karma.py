@@ -130,7 +130,7 @@ class Karma(commands.Cog):
             if user_id == self.client.user.id:
                 return
 
-            if new_level <= 27:
+            if new_level <= 23:
                 level_role = discord.utils.get(message.guild.roles, name="Level {}".format(new_level))
                 old_level_role = discord.utils.get(message.guild.roles, name="Level {}".format(int(new_level) - 1))
 
