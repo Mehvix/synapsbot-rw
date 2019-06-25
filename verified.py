@@ -515,7 +515,7 @@ class Verified(commands.Cog):
         else:
             await ctx.send("You need a question!")
 
-    @client.command(aliases=["outcomes"], description="Roulette outcomes", brief="Roulette outcomes")
+    @client.command(aliases=["outcomes", "stats", "rstats"], description="Roulette outcomes", brief="Roulette outcomes")
     @commands.has_role(settings.verified_role_name)
     async def roulette_outcomes(self, ctx):
         with open('roulette_outcomes.json', 'r') as fp:
@@ -650,7 +650,8 @@ class Verified(commands.Cog):
 
         await ctx.send(str(text).replace(" ", " " + emote) + " " + emote)
 
-    @client.command(description="Displays who has the highest karam/level", usage="[kind] (karma/level)",
+    @client.command(aliases=["l", "leaderboards"], description="Displays who has the highest karam/level",
+                    usage="[kind] (karma/level)",
                     brief="Displays who has the highest [kind]")
     @commands.has_role(settings.verified_role_name)
     async def leaderboard(self, ctx, *kind):
@@ -693,7 +694,7 @@ class Verified(commands.Cog):
             except KeyError:
                 value = 0
 
-            msg += '{}.)\t **{}** {} `{}` {} \n'.format(  # thanks char for teaching me about \t!
+            msg += '{}.)\t|\t**{}** {} `{}` {} \n'.format(  # thanks char for teaching me about \t!
                 number + 1, name, word, value, type_new)
         await ctx.send(msg)
 
