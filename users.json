@@ -1,43 +1,45 @@
 {
     "188877019738537984": {
-        "karma": 62,
+        "karma": 86,
+        "level": 1,
         "name": "euviac"
     },
     "191010877275635713": {
-        "karma": 874,
-        "level": 2,
+        "karma": 737,
+        "level": 3,
         "name": "puppeT"
     },
     "193033478101532672": {
-        "karma": 97,
+        "karma": 113,
         "level": 1,
         "name": "RobotsUnited"
     },
     "196355904503939073": {
-        "karma": 1,
-        "level": 1,
+        "karma": 1051,
+        "level": 3,
         "name": "Mehvix"
     },
     "217341034298867712": {
-        "karma": 311,
-        "name": "Aj Witkovsky"
+        "karma": 139,
+        "level": 1,
+        "name": "hehe xd"
     },
     "218557224232943616": {
         "karma": 29,
         "name": "BrianJ"
     },
     "235088799074484224": {
-        "karma": 31,
+        "karma": 37,
         "level": 1,
         "name": "Rythm"
     },
     "240608458888445953": {
-        "karma": 707,
+        "karma": 3,
         "level": 3,
         "name": "xpoes"
     },
     "262677178590822400": {
-        "karma": 64,
+        "karma": 283,
         "level": 1,
         "name": "WalaCam"
     },
@@ -46,17 +48,28 @@
         "name": "MehvixBackup"
     },
     "365975655608745985": {
-        "karma": 25,
+        "karma": 41,
         "level": 1,
         "name": "Pok\u00e9cord"
     },
     "385183226420920322": {
-        "karma": 83,
+        "karma": 84,
+        "level": 1,
         "name": "boompig"
     },
     "414674255402237964": {
         "karma": 500,
         "level": 1,
         "name": "SynapsBot"
+    },
+    "455204812259196928": {
+        "karma": 31,
+        "level": 1,
+        "name": "LOVE"
+    },
+    "475147741517971488": {
+        "karma": 103,
+        "level": 1,
+        "name": "mic"
     }
 }
