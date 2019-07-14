@@ -530,11 +530,11 @@ class Verified(commands.Cog):
         total = sum(outcomes_list)
         embed = discord.Embed(title="\u200b", color=settings.embed_color)
         embed.set_author(name="Roulette Outcomes 📊")
-        embed.add_field(name="Total number of times 'spun'", value=total, inline=True)
-        embed.add_field(name="Total Karma Bet", value=total_total, inline=False)
-        embed.add_field(name="Odd", value=odd_total, inline=True)
-        embed.add_field(name="Even", value=even_total, inline=True)
-        embed.add_field(name="Zero", value=zero_total, inline=True)
+        embed.add_field(name="Spins", value=total, inline=True)
+        embed.add_field(name="Karma Bet", value=total_total, inline=True)
+        embed.add_field(name="Odd", value="{} - {}%".format(odd_total, round(odd_total/total*100, 1)), inline=False)
+        embed.add_field(name="Even", value="{} - {}%".format(even_total, round(even_total/total*100, 1)), inline=False)
+        embed.add_field(name="Zero", value="{} - {}%".format(zero_total, round(zero_total/total*100, 1)), inline=False)
         await ctx.message.channel.send(embed=embed)
 
     @client.command(aliases=["r", "roulete", "roullete", "bet"], description="There is little time, do .roulette help",
