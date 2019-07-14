@@ -2,15 +2,13 @@
 # -*- coding: utf-8 -*-
 # testing all branches are good.
 
-""" ''''''''''''''''''''''''''''''''''''''''''
-          TODOs are located on Trello:
-    https://trello.com/b/CQBT9vag/synapsbot
+"""
+TODOs:
+    https://github.com/Mehvix/synapsBotRW/projects/1
 
-
-          Code can be found on GitHub:
+Code:
     https://github.com/Mehvix/synapsBotRW
-
-'''''''''''''''''''''''''''''''''''''''''' """
+"""
 
 import socket
 import websockets
