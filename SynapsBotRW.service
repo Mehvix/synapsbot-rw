@@ -1,0 +1,12 @@
+[Unit]
+Description=SynapsBotRW's Service
+After=multi-user.target
+
+[Service]
+Type=idle
+
+WorkingDirectory=/home/pybot/SynapsBotRW
+ExecStart=/home/pybot/SynapsBotRW/venv/bin/python bot.py
+
+[Install]
+WantedBy=multi-user.target

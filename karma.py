@@ -118,7 +118,8 @@ class Karma(commands.Cog):
             r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
         if re.match(regex, message.content) is not None or message.attachments:
-            await message.add_reaction(settings.upvote_emoji)
+            user_add_karma(message.author.id, 5, message.author.name)
+            # await message.add_reaction(settings.upvote_emoji)
 
         # Checks Karma / Level
         try:
