@@ -40,7 +40,6 @@ CHAR_DOWN = ['\u0316', '\u0317', '\u0318', '\u0319', '\u031C',
 ZALGO_POS = ("up", "mid", "down")
 ZALGO_CHARS = {"up": CHAR_UP, "mid": CHAR_MID, "down": CHAR_DOWN}
 
-
 random.seed()
 
 
@@ -104,24 +103,24 @@ def main():
     opt_parser = optparse.OptionParser(usage=usage)
 
     opt_parser.add_option("-u", "--up-intensity", dest="IntenseUp", default=2,
-                         type="int", metavar="NUM",
-                         help="The number of Zalgo characters to put above"
-                              "the original character.  Default: %default")
+                          type="int", metavar="NUM",
+                          help="The number of Zalgo characters to put above"
+                               "the original character.  Default: %default")
     opt_parser.add_option("-m", "--mid-intensity", dest="IntenseMid", default=1,
                           type="int", metavar="NUM",
                           help="The number of Zalgo characters to put at"
-                              "the original character.  Default: %default")
+                               "the original character.  Default: %default")
     opt_parser.add_option("-d", "--down-intensity", dest="IntenseDown", default=5,
                           type="int", metavar="NUM",
                           help="The number of Zalgo characters to put below"
-                              "the original character.  Default: %default")
+                               "the original character.  Default: %default")
     opt_parser.add_option("-f", "--fix-intensity", dest="Random",
                           default=True, action="store_false",
                           help="Don’t randomize the intensity.")
     opt_parser.add_option("-e", "--excludes", dest="Excludes",
                           default=' ', metavar="STR",
                           help="Don’t Zalgo-ify characters in STR. "
-                              "Default: \"%default\"")
+                               "Default: \"%default\"")
 
     (Opts, Args) = opt_parser.parse_args()
 

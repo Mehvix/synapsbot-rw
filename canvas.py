@@ -20,7 +20,7 @@ white = ":white:481329771700289538"
 black = ":black:484770699790254091"
 
 
-# todo this is a disaster and I don't plan on using this ever again
+# this is a disaster and I don't plan on using this ever again  -- but it works!
 
 
 class Canvas(commands.Cog):

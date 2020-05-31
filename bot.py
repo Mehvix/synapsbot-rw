@@ -54,12 +54,12 @@ def flair(num_of_users):  # todo: add more flairs
 
 
 # Defines Client
-client = commands.Bot(description="If you have any issues please contact @Mehvix#7172",
+client = commands.Bot(description="If you have any issues please contact @Mehvix#7966",
                       command_prefix='.',
                       owner_id="196355904503939073",
                       case_insensitive=True)
 
-discord.ext.commands.HelpFormatter(show_hidden=False)
+# discord.ext.commands.HelpFormatter(show_hidden=False)
 
 
 def get_json(file_path):
@@ -82,12 +82,12 @@ async def timer():
             await client.change_presence(
                 activity=discord.Streaming(name=flair(users), url='https://twitch.tv/mehvix',
                                            twitch_name="Mehvix"))
-        except (websockets.exceptions.ConnectionClosed, aiohttp.client_exceptions.ClientConnectorError):
+        except (websockets.exceptions.ConnectionClosed):  # aiohttp.client_exceptions.ClientConnectorError
             pass  # Random error (I think?)
 
         try:
-            fp = random.choice(os.listdir("media/avatars"))
-            with open('media/avatars/{}'.format(fp), 'rb') as f:
+            fp = random.choice(os.listdir("avatars"))
+            with open('avatars/{}'.format(fp), 'rb') as f:
                 try:
                     await client.user.edit(avatar=f.read())
                 except discord.HTTPException:
@@ -96,16 +96,17 @@ async def timer():
             pass  # you dont have any avatars!
 
         # Comic Code
-        if str(str(str(datetime.now()).split(" ")[1]).split(".")[0])[:5] == "09:00":
-            date = datetime.today().strftime('%Y/%m/%d')
-            search = "https://www.gocomics.com/calvinandhobbes/{}".format(date)
-            print(search)
-            channel = client.get_channel(settings.notification_channel)
-            await channel.send(search)
-            await channel.send("https://xkcd.com/")
+        # if str(str(str(datetime.now()).split(" ")[1]).split(".")[0])[:5] == "09:00":
+        #     date = datetime.today().strftime('%Y/%m/%d')
+        #     search = "https://www.gocomics.com/calvinandhobbes/{}".format(date)
+        #     print(search)
+        #     channel = client.get_channel(settings.notification_channel)
+        #     await channel.send(search)
+        #     await channel.send("https://xkcd.com/")
 
         chnl = client.get_channel(settings.mc_data_channel)
-        server = MinecraftServer.lookup(":25565")
+        server = MinecraftServer.lookup("mc.mehvix.com:25544")
+
         try:
             status = server.status()
             await chnl.edit(name="{} / 20 Online".format(status.players.online))
@@ -178,8 +179,7 @@ async def on_ready():
         print("ISSUE: It's not recommended to have more than one server being hosted at the same time.")
 
     await client.change_presence(
-        activity=discord.Streaming(name=flair(users), url='https://twitch.tv/mehvix',
-                                   twitch_name="Mehvix"))  # TODO add more presences
+        activity=discord.Streaming(name=flair(users), url='https://twitch.tv/mehvix', twitch_name="Mehvix"))  # TODO add more presences
 
 
 @client.event
@@ -206,12 +206,7 @@ async def on_command_error(ctx, error):
         await ctx.send("Only the bot's owner can use this command")
 
     elif isinstance(error, commands.BotMissingPermissions):
-        await ctx.send("I need special permissions to use that command: \n{}".format(
-            "\n ".join(commands.BotMissingPermissions.missing_perms)))
-
-    elif isinstance(error, commands.MissingPermissions):
-        await ctx.send("You need special permissions to use that command: \n{}".format(
-            "\n ".join(commands.MissingPermissions.missing_perms)))
+        await ctx.send("I need special permissions to use that command.")
 
     elif isinstance(error, commands.BadArgument):
         await ctx.send(error)

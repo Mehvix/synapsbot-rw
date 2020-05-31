@@ -33,7 +33,7 @@ class Typeracer(commands.Cog):
                                     "".format(user), color=settings.embed_color)
                     embed.set_author(name="{}'s Type Racer Stats:".format(user))
                     embed.add_field(name="User name:", value=result["name"], inline=True)
-                    embed.add_field(name="Country:", value=str(result["country"]).upper(), inline=True)
+                    embed.add_field(name="Country:", value=str(":flag_"+str(result["country"]+":").lower()), inline=True)
                     embed.add_field(name="Points:", value=str(result["tstats"]["points"])[:10], inline=True)
                     embed.add_field(name="Level:", value=result["tstats"]["level"], inline=True)
                     embed.add_field(name="Games Won:", value=result["tstats"]["gamesWon"], inline=True)

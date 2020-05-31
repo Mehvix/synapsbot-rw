@@ -26,8 +26,7 @@ class Basic(commands.Cog):
         info = await self.client.application_info()
         embed = discord.Embed(
             title="Info about {}:".format(info.name),
-            description="• [Github](https://github.com/Mehvix/synapsBotRW)\n"
-                        "• [Trello](https://trello.com/b/CQBT9vag/synapsbot)",
+            description="[Github](https://github.com/Mehvix/synapsBotRW)\n",
             color=settings.embed_color)
         embed.add_field(name="Creator:", value=info.owner, inline=True)
         embed.add_field(name="Python Version:", value=sys.version.split()[0], inline=True)
@@ -40,10 +39,6 @@ class Basic(commands.Cog):
     async def trello(self, ctx):
         embed = discord.Embed(description="I'm now using [Github Projects Board](https://github.com/Mehvix/synapsBotRW/projects/1)", color=settings.embed_color)
         await ctx.send(embed=embed)
-
-    @client.command()
-    async def pos(self, ctx, channel: discord.TextChannel):
-        await ctx.send(str(channel.position))
 
     @client.command(aliases=["code", "source"], description="Link to Github", brief="Github")
     async def github(self, ctx):
@@ -65,26 +60,25 @@ class Basic(commands.Cog):
     async def ping(self, ctx):
         await ctx.send("I have a latency of `{}` ms".format(str(float(self.client.latency)*1000)[:2]))
 
-    '''
-    @client.command(case_insensitive=True)
-    async def notation(self, ctx):
-        level_role = discord.utils.get(ctx.guild.roles, id=settings.level_role)
-        roles_role = discord.utils.get(ctx.guild.roles, id=settings.roles_role)
-        groups_role = discord.utils.get(ctx.guild.roles, id=settings.groups_role)
-        games_role = discord.utils.get(ctx.guild.roles, id=settings.games_role)
-        restriction_role = discord.utils.get(ctx.guild.roles, id=settings.restriction_role)
-        level1_role = discord.utils.get(ctx.guild.roles, name="Level 1")
-
-        for member in ctx.message.guild.members:
-            if level_role and level_role not in member.roles:
-                await member.add_roles(level_role,
-                                               roles_role,
-                                               groups_role,
-                                               games_role,
-                                               restriction_role,
-                                               level1_role)
-                print("Added Notation Roles")
-    '''
+    # # These roles should be added automatically when a user joins the server
+    # @client.command(case_insensitive=True)
+    # async def notation(self, ctx):
+    #     level_role = discord.utils.get(ctx.guild.roles, id=settings.level_role)
+    #     roles_role = discord.utils.get(ctx.guild.roles, id=settings.roles_role)
+    #     groups_role = discord.utils.get(ctx.guild.roles, id=settings.groups_role)
+    #     games_role = discord.utils.get(ctx.guild.roles, id=settings.games_role)
+    #     restriction_role = discord.utils.get(ctx.guild.roles, id=settings.restriction_role)
+    #     level1_role = discord.utils.get(ctx.guild.roles, name="Level 1")
+    #
+    #     for member in ctx.message.guild.members:
+    #         if level_role and level_role not in member.roles:
+    #             await member.add_roles(level_role,
+    #                                            roles_role,
+    #                                            groups_role,
+    #                                            games_role,
+    #                                            restriction_role,
+    #                                            level1_role)
+    #             print("Added Notation Roles to " + member.name)
 
     @commands.Cog.listener()
     async def on_message(self, message):

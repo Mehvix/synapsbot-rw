@@ -23,7 +23,7 @@ class Reddit(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if "http" and "reddit.com/r/" in message.content:  # TODO make this work for subreddits
+        if "http" and "reddit.com/r/" in message.content:
             url = str(message.content)
             formatting_chars = ['<', '>', "*", "_"]
 

@@ -40,44 +40,20 @@ class Verified(commands.Cog):
     async def ud(self, ctx, *word: str):
         term = " ".join(word)
         term_link = term.replace(" ", "%20")
-        if term.upper() == "MAGGIE":
-            embed = discord.Embed(title="Definition Page", url="https://goo.gl/j2DX9N", color=settings.embed_color)
-            embed.set_author(name="Definition for Maggie", url="https://goo.gl/j2DX9N")
-            embed.add_field(name="Definition 📚", value="Girl with YUUUG milkers. Doesn't need a coat",
-                            inline=False)
-            embed.add_field(name="Example 💬",
-                            value="Maggie's got such big fun-fun milk bags, she doesn't need a coat! "
-                                  "-Aidan Witkovsky 2018",
-                            inline=True)
+        try:
+            term_def = udtop(term)
+
+            embed = discord.Embed(
+                title="Definition Page", url="https://www.urbandictionary.com/define.php?term={}".format(term_link),
+                color=settings.embed_color)
+            embed.set_author(name="Definition for {}".format(str(term).title()))
+            embed.add_field(name="📚 Definition ", value=term_def.definition[:1023], inline=False)
+            embed.add_field(name="💬 Example ", value=term_def.example[:1023], inline=True)
             await ctx.message.channel.send(embed=embed)
-        else:
-            try:
-                term_def = udtop(term)
-
-                embed = discord.Embed(
-                    title="Definition Page", url="https://www.urbandictionary.com/define.php?term={}".format(term_link),
-                    color=settings.embed_color)
-                embed.set_author(name="Definition for {}".format(str(term).title()))
-                embed.add_field(name="📚 Definition ", value=term_def.definition[:1023], inline=False)
-                embed.add_field(name="💬 Example ", value=term_def.example[:1023], inline=True)
-                await ctx.message.channel.send(embed=embed)
-            except udtop.TermNotFound as error:
-                await ctx.message.channel.send("ERROR: `{}`\n However, you can add your own here: "
-                                               "https://www.urbandictionary.com/add.php?word={}".
-                                               format(error, term_link))
-
-    '''
-    @client.command(description="TODO", usage="[]", brief="TODO")
-    @commands.has_role(settings.verified_role_name)
-    async def profile(self, ctx):
-        search = "https://discordapp.com/users/{}/profile".format(ctx.message.author.id)
-        # this is going to take a lot more webscraping knowledge than I have because you have to log into discord...
-        async with aiohttp.ClientSession() as session:
-            async with session.get(search) as r:
-                if r.status == 200:
-                    result = await r.json(content_type='application/json')
-                    await ctx.message.channel.send(result)
-    '''
+        except udtop.TermNotFound as error:
+            await ctx.message.channel.send("ERROR: `{}`\n However, you can add your own here: "
+                                           "https://www.urbandictionary.com/add.php?word={}".
+                                           format(error, term_link))
 
     @client.command(description="Makes text look whack", usage="[word/sentence]",
                     brief="Adds zalgo effect to [word/sentecne]")
@@ -100,36 +76,24 @@ class Verified(commands.Cog):
     async def announce(self, ctx, role: discord.Role, *message: str):
         print(role.members, message)
         message = " ".join(message)
+
+        embed = discord.Embed(
+            color=settings.embed_color, description=message)
+        embed.set_author(name="{} sent an announcement to you because you are a member of the group '{}'".format(
+            ctx.message.author.name, role.name), icon_url=ctx.message.author.avatar_url)
+
         for member in role.members:
-            embed = discord.Embed(
-                color=settings.embed_color, description=message)
-            embed.set_author(name="{} sent an announcement to you because you are a member of the group '{}''".format(
-                ctx.message.author.name, role.name), icon_url=ctx.message.author.avatar_url)
             await member.send(embed=embed)
 
-    @client.command(description="Gets a random Sammy pic", brief="Gets a random Sammy pic")
-    @commands.has_role(settings.verified_role_name)
-    async def sam(self, ctx):
-        fp = random.choice(os.listdir("media/sams"))
-        await ctx.message.channel.send(file=discord.File("media/sams/{}".format(fp)))
-
-    @client.command(description="Gets a random picture of Aidan", brief="Gets a random picture of Aidan")
-    @commands.has_role(settings.verified_role_name)
-    async def aidan(self, ctx):
-        fp = random.choice(os.listdir("media/aidans"))
-        await ctx.message.channel.send(file=discord.File("media/aidans/{}".format(fp)))
-
-    @client.command(aliases=["fren", "frens"], description="Gets a random Apu", brief="Gets a random Apu")
-    @commands.has_role(settings.verified_role_name)
-    async def apu(self, ctx):
-        fp = random.choice(os.listdir("media/apus"))
-        await ctx.message.channel.send(file=discord.File("media/apus/{}".format(fp)))
-
-    @client.command(description="Gets a random Bear gif", brief="Gets a random Bear gif")
+    @client.command(description="Gets a random Bear gif", brief="Gets a random Bear gif")  # todo update
     @commands.has_role(settings.verified_role_name)
     async def bear(self, ctx):
-        fp = random.choice(os.listdir("media/bears"))
-        await ctx.message.channel.send(file=discord.File("media/bears/{}".format(fp)))
+        async with aiohttp.ClientSession() as session:
+            async with session.get("https://mehvix.com/bear") as r:
+                text = await r.read()
+                soup = BeautifulSoup(text.decode('utf-8'), 'html5lib')
+                print(soup)
+                await ctx.message.channel.send(soup)
 
     @client.command(description="Gets a random Cat picture", brief="Gets a random Cat picture")
     @commands.has_role(settings.verified_role_name)
@@ -216,40 +180,10 @@ class Verified(commands.Cog):
             "<@{}> was accepted into the beta testing server! :tada:\nYou can apply via the `.beta` command.".format(
                 ctx.message.author.id))
 
-    @client.command(description="Random copypasta", brief="Gets a random post from /r/copypastas")
-    @commands.has_role(settings.verified_role_name)
-    async def copypasta(self, ctx):
-        search = "https://www.reddit.com/r/copypasta/random/.json?limit=1"
-        c = 0
-        while c != 1:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(search) as r:
-                    result = await r.json(content_type='application/json')
-                    if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
-                            result[0]['data']['children'][0]['data']['pinned'] == "true":
-                        print("Post was automodpost, skipping")
-                        pass
-                    else:
-                        c = 1
-
-        embed = discord.Embed(
-            title=str(result[0]['data']['children'][0]['data']['title'])[:256],
-            color=settings.embed_color,
-            description="[View Post]({})\n {}".format(
-                "https://old.reddit.com" + str(result[0]['data']['children'][0]['data']['permalink']),
-                str(result[0]['data']['children'][0]['data']['selftext'])[:1800]))
-
-        if len(result[0]['data']['children'][0]['data']['selftext']) > 1800:
-            embed.set_footer(text="This post was too long to fit. Full version can be found via the 'View "
-                                  "Post' button above")
-
-        await ctx.message.channel.send(embed=embed)
-
     @client.command(description="Info about an invite", usage="[invite URL]", brief="Info about an invite")
     @commands.has_role(settings.verified_role_name)
     async def inviteinfo(self, ctx, invite: discord.Invite):
 
-        # todo fix
         invite.max_age = invite.max_age if invite.max_age is not None else 0
         m, s = divmod(invite.max_age, 60)
         h, m = divmod(m, 60)
@@ -263,12 +197,13 @@ class Verified(commands.Cog):
         em.add_field(name="Server:", value="{} (ID: {})".format(invite.guild.name, invite.guild.id), inline=False)
         em.add_field(name="Channel:", value="#{} (ID: {})".format(invite.channel.name, invite.channel.id), inline=False)
         em.add_field(name="Inviter:", value="{} (ID: {})".format(invite.inviter.name, invite.inviter.id), inline=False)
-        em.add_field(name="Created At:", value=str(invite.created_at), inline=True)
-        em.add_field(name="Temporary?:", value=str(invite.temporary), inline=True)
-        em.add_field(name="Uses:", value=invite.uses, inline=True)
-        em.add_field(name="Max Uses:", value=invite.max_uses if invite.max_uses else "Infinite", inline=True)
-        em.add_field(name="Expires In:", value=f"{int(w)}w : {int(d)}d : {int(h)}h : {int(m)}m : {int(s)}s" if
-        invite.max_age > 0 else "Never")
+        # Dunno why but none of this works (I believe it's a discord.py error)
+        # em.add_field(name="Created At:", value=str(invite.created_at), inline=True)
+        # em.add_field(name="Temporary?:", value=str(invite.temporary), inline=True)
+        # em.add_field(name="Uses:", value=invite.uses, inline=True)
+        # em.add_field(name="Max Uses:", value=invite.max_uses if invite.max_uses else "Infinite", inline=True)
+        # em.add_field(name="Expires In:", value=f"{int(w)}w : {int(d)}d : {int(h)}h : {int(m)}m : {int(s)}s" if
+        # invite.max_age > 0 else "Never")
         await ctx.send(embed=em)
 
     @client.command(aliases=["transfer"], description="Lets users to give others karma", usage="[@user] [amount]",
@@ -289,12 +224,12 @@ class Verified(commands.Cog):
             "You traded <@{}> `{}` karma. They now have a total of `{}` karma and you have `{}`".format(
                 target.id, amount, karma.get_karma(target.id), karma.get_karma(ctx.author.id)))
 
-    @client.command(description="Random emojipasta", brief="Gets a random post from /r/emojipastas")
+    # todo: all of these reddit post functions could call a single function
+    @client.command(description="Random copypasta", brief="Gets a random post from /r/copypastas")
     @commands.has_role(settings.verified_role_name)
-    async def emojipasta(self, ctx):
-        search = "https://www.reddit.com/r/emojipasta/random/.json?limit=1"
-        c = 0
-        while c != 1:
+    async def copypasta(self, ctx):
+        search = "https://www.reddit.com/r/copypasta/random/.json?limit=1"
+        while True:
             async with aiohttp.ClientSession() as session:
                 async with session.get(search) as r:
                     result = await r.json(content_type='application/json')
@@ -303,9 +238,35 @@ class Verified(commands.Cog):
                         print("Post was automodpost, skipping")
                         pass
                     else:
-                        c = 1
+                        break
 
-        print(search)
+        embed = discord.Embed(
+            title=str(result[0]['data']['children'][0]['data']['title'])[:256],
+            color=settings.embed_color,
+            description="[View Post]({})\n {}".format(
+                "https://old.reddit.com" + str(result[0]['data']['children'][0]['data']['permalink']),
+                str(result[0]['data']['children'][0]['data']['selftext'])[:1800]))
+
+        if len(result[0]['data']['children'][0]['data']['selftext']) > 1800:
+            embed.set_footer(text="This post was too long to fit. Full version can be found via the 'View "
+                                  "Post' button above")
+
+        await ctx.message.channel.send(embed=embed)
+
+    @client.command(description="Random emojipasta", brief="Gets a random post from /r/emojipastas")
+    @commands.has_role(settings.verified_role_name)
+    async def emojipasta(self, ctx):
+        search = "https://www.reddit.com/r/emojipasta/random/.json?limit=1"
+        while True:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(search) as r:
+                    result = await r.json(content_type='application/json')
+                    if result[0]['data']['children'][0]['data']['author'] == "AutoModerator" or \
+                            result[0]['data']['children'][0]['data']['pinned'] == "true":
+                        print("Post was automodpost, skipping")
+                        pass
+                    else:
+                        break
 
         embed = discord.Embed(
             title=str(result[0]['data']['children'][0]['data']['title'])[:256],
@@ -332,8 +293,7 @@ class Verified(commands.Cog):
     @commands.has_role(settings.verified_role_name)
     async def coaxed(self, ctx):
         search = "https://www.reddit.com/r/coaxedintoasnafu/random/.json?limit=1"
-        c = 0
-        while c != 1:
+        while True:
             async with aiohttp.ClientSession() as session:
                 async with session.get(search) as r:
                     result = await r.json(content_type='application/json')
@@ -342,7 +302,7 @@ class Verified(commands.Cog):
                         print("Post was automodpost, skipping")
                         pass
                     else:
-                        c = 1
+                        break
 
         embed = discord.Embed(
             title=str(result[0]['data']['children'][0]['data']['title'])[:256],
@@ -371,8 +331,7 @@ class Verified(commands.Cog):
     @commands.has_role(settings.verified_role_name)
     async def hmmm(self, ctx):
         search = "https://www.reddit.com/r/hmmm/random/.json?limit=1"
-        c = 0
-        while c != 1:
+        while True:
             async with aiohttp.ClientSession() as session:
                 async with session.get(search) as r:
                     result = await r.json(content_type='application/json')
@@ -381,7 +340,7 @@ class Verified(commands.Cog):
                         print("Post was automodpost, skipping")
                         pass
                     else:
-                        c = 1
+                        break
 
         embed = discord.Embed(
             title=str(result[0]['data']['children'][0]['data']['title'])[:256],
@@ -424,9 +383,10 @@ class Verified(commands.Cog):
         embed.add_field(name="Account Created on:", value=user_created_at_date[:10])
         embed.add_field(name="Highest Role:", value=user.top_role)
         embed.add_field(name="Status:", value=str(user.status).title())
-        embed.add_field(name="Game/Activity:", value=user.activity.name)
+        # embed.add_field(name="Game/Activity:", value=user.activities)
         embed.add_field(name="Custom Name:", value=user.nick)
         embed.add_field(name="Role Color:", value=str(user.color))
+        embed.add_field(name="Premium Since:", value=str(user.premium_since))
         if len(user.roles) > 1:  # TIL @everyone is a role that is assigned to everyone but hidden
             embed.add_field(name="User Top Role (Level):", value=user.top_role)
         else:
@@ -435,6 +395,7 @@ class Verified(commands.Cog):
         embed.set_thumbnail(url=user.avatar_url)
         await ctx.message.channel.send(embed=embed)
 
+    # todo this is slow, could be optimized?
     @client.command(aliases=["bans", "banslist"], description="Lists everyone banned from the server",
                     brief="Lists everyone banned from the server")
     @commands.has_role(settings.verified_role_name)
@@ -491,17 +452,16 @@ class Verified(commands.Cog):
                         "Outlook not so good.", "Very doubtful.", "Yummy."]
             letters = list(string.printable)
             choice = "".join(random.choices(outcomes))
-            nums = len(choice)
             bleh = []
             z = 0
             position = 0
 
-            while z != nums:  # generate a str with same length as outcome with random characters
+            while z != len(choice):  # generate a str with same length as outcome with random characters
                 bleh.append("".join(random.choices(letters)))
                 z += 1
 
             msg = await ctx.send("".join(bleh))
-            while position != nums:
+            while position != len(choice):
                 times = 0
                 while times != 1:  # fake hardsolving
                     bleh.insert(position, "".join(random.choices(letters)))
@@ -509,6 +469,7 @@ class Verified(commands.Cog):
                     times = random.randint(1,
                                            2)  # this could be at '(1,5)' or high but discord rate limits are very restrictive
                     await msg.edit(content="".join(bleh))
+
                 bleh.insert(position, str(choice)[position])
                 bleh.pop(position + 1)
                 position += 1
@@ -628,13 +589,6 @@ class Verified(commands.Cog):
 
         await ctx.message.channel.send("**Banned Words List:** \n• {}".format("\n• ".join(lower)))
 
-    '''
-    @client.command()
-    @commands.has_role(settings.verified_role_name)
-    async def jpeg(self, ctx, *args):
-        pass
-    '''
-
     @client.command(description="👏 Makes 👏 this 👏 text 👏 with 👏 any 👏 emote 👏", usage="[emote] [text]",
                     brief="Replaces all spaces in [text] with 2 spaces and emote between them")
     @commands.has_role(settings.verified_role_name)
@@ -642,7 +596,7 @@ class Verified(commands.Cog):
         emote = emote
         text = " ".join(text)
 
-        await ctx.send(str(text).replace(" ", " " + emote) + " " + emote)
+        await ctx.send(emote + str(text).replace(" ", " " + emote) + " " + emote)
 
     @client.command(aliases=["l", "leaderboards"], description="Displays who has the highest karam/level",
                     usage="[kind] (karma/level)",
@@ -737,7 +691,7 @@ class Verified(commands.Cog):
     @commands.has_role(settings.mc_role)
     async def mc(self, ctx):
         chnl = self.client.get_channel(settings.mc_data_channel)
-        server = MinecraftServer.lookup(":25565")
+        server = MinecraftServer.lookup("mc.mehvix.com:25544")
 
         try:
             status = server.status()
@@ -755,11 +709,13 @@ class Verified(commands.Cog):
         await chnl.edit(name=channel)
         await ctx.send(info)
 
+    # TODO update location to server whitelist location
+    """ 
     @client.command(aliases=["whitelist"], description="Add's your username to the server whitelist")
     @commands.has_role(settings.mc_role)
     async def wl(self, ctx, username):
         search = "https://mcuuid.net/?q={}".format(username)
-        location = r"C:\Users\Max\Desktop\server\whitelist.json"
+        location = "C:\\Users\\Max\\Desktop\\server\\whitelist.json"
 
         with open(location) as f:
             data = json.load(f)
@@ -800,6 +756,7 @@ class Verified(commands.Cog):
             for value in data:
                 users.append(value["name"])
         await ctx.send("The current whitelist contains: \n`• {}`".format("\n• ".join(users)))
+        """
 
 
 def r_update(outcome: str, change: int):

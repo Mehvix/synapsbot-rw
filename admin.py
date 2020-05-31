@@ -36,13 +36,13 @@ class Admin(commands.Cog):
     async def on_message(self, message):
         banned_words = settings.get_json("banned_words.json")
 
-        if any(word in str(message.content).upper() for word in banned_words):
-            await message.author.send(
-                "NO POOPY DOOPY WORDSIES!1! THE HECKIN BOOPIN POOPIN DOOPIN PUPPER SUPPER LUPPER DOGGO "
-                "NIGGOS NOT LIEK IT!!! BRB HAVIN A ZOOMIE! XDDDLOLOELELALA \nYou can see what is banned "
-                "via the `.bannedwords` command.")
+        if message.author != self.client.user:
+            if any(word in str(message.content).upper() for word in banned_words):
+                await message.author.send(
+                    "NO POOPY DOOPY WORDSIES!1! THE HECKIN BOOPIN POOPIN DOOPIN PUPPER SUPPER LUPPER DOGGO NIGGOS NOT LIEK IT!!! BRB HAVIN A ZOOMIE! XDDDLOLOELELALA \n"
+                    "You can see what is banned via the `.bannedwords` command.")
 
-            await message.delete()
+                await message.delete()
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
@@ -52,9 +52,9 @@ class Admin(commands.Cog):
         if any(word in str(after.nick).upper() for word in banned_words):
             await after.edit(nick=before.nick)
 
-            await before.send("NO POOPY DOOPY WORDSIES!1! THE HECKIN BOOPIN POOPIN DOOPIN PUPPER SUPPER LUPPER DOGGO "
-                              "NIGGOS NOT LIEK IT!!! BRB HAVIN A ZOOMIE! XDDDLOLOELELALA \nYou can see what is banned "
-                              "via the `.bannedwords` command.")
+            await before.send(
+                "NO POOPY DOOPY WORDSIES!1! THE HECKIN BOOPIN POOPIN DOOPIN PUPPER SUPPER LUPPER DOGGO NIGGOS NOT LIEK IT!!! BRB HAVIN A ZOOMIE! XDDDLOLOELELALA \n"
+                "You can see what is banned via the `.bannedwords` command.")
 
     @client.command(aliases=['clear', 'snap'], description="Deletes messages", usage="(However man messages)",
                     brief="Deletes messages")
@@ -202,8 +202,7 @@ class Admin(commands.Cog):
         if user_was_kicked is True:
             embed.add_field(name="Kicker:", value=kicker, inline=False)
             embed.add_field(name="Reason:", value=reason, inline=False)
-            embed.set_author(name="{} was kicked from the server 👋".format(
-                member.name))  # todo replace this with boot emoji once it comes out
+            embed.set_author(name="{} was kicked from the server 👋".format(member.name))
         else:
             embed.set_author(name="{} left the server 🙁".format(member.name))
         embed.add_field(name="Username:", value="{}#{}".format(member.name, member.discriminator), inline=False)

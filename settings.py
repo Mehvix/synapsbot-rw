@@ -64,7 +64,7 @@ def set_server(server):
         accept_channel = 414974032048553984
         canvas_channel = 486702610745917460
 
-    if server == "main":
+    elif server == "main":
         print("Using MAIN account")
         jsontoken = get_json('tokens.json')
         token = jsontoken.get("main")

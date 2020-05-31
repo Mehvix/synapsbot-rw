@@ -99,8 +99,8 @@ class Karma(commands.Cog):
         user_id = message.author.id
         user_name = message.author.name
 
-        author_level = get_level(user_id)
         author_karma = get_karma(user_id)
+        author_level = get_level(user_id)
 
         """
         # Because @xpoes#9244 spams the shit out of our pokemon channel
@@ -191,6 +191,8 @@ def get_karma(user_id: int):
     if os.path.isfile('users.json'):
         with open('users.json', 'r') as fp:
             users = json.load(fp)
+        if user_id not in users:
+            users[user_id] = {'karma': 1, 'level': 1}
         return users[user_id]['karma']
 
     else:
@@ -202,7 +204,9 @@ def set_level(user_id: int, level: int):
     if os.path.isfile('users.json'):
         with open('users.json', 'r') as fp:
             users = json.load(fp)
-        users[user_id]["level"] = level
+        if user_id not in users:
+            users[user_id] = {'karma': 1, 'level': 1}
+        users[user_id]['level'] = level
         with open('users.json', 'w') as fp:
             json.dump(users, fp, sort_keys=True, indent=4)
 
