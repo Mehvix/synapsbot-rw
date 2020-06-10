@@ -130,7 +130,7 @@ class Verified(commands.Cog):
 
         em = discord.Embed(color=settings.embed_color, title="Server Info:")
         em.add_field(name="Server Name:", value=ctx.message.guild.name)
-        em.add_field(name="Server ID:", value=ctx.message.guild.id)
+        em.add_field(name="Server ID:", value=ctx.message.guild.id, inline=False)
         em.add_field(name="Owner:", value=ctx.message.guild.owner, inline=False)
         em.add_field(name="Members:", value=ctx.message.guild.member_count)
         em.add_field(name="Members Online:", value=str(online))

@@ -59,6 +59,7 @@ client = commands.Bot(description="If you have any issues please contact @Mehvix
                       owner_id="196355904503939073",
                       case_insensitive=True)
 
+
 # discord.ext.commands.HelpFormatter(show_hidden=False)
 
 
@@ -119,7 +120,7 @@ async def timer():
 
 @commands.Cog.listener()
 async def on_member_join(member):
-
+    channel = client.get_channel(id=settings.notification_channel)
     for guild in client.guilds:
         for invite in await guild.invites():
             x = [invite.url, invite.uses, invite.inviter.id]
@@ -136,10 +137,18 @@ async def on_member_join(member):
 
         if member.guild.name != "Bot Test":
             karma.user_add_karma(invite_user.id, 75, invite_user.name)
-            channel = client.get_channel(id=settings.notification_channel)
             await channel.send("<@{}> used an invited created by <@{}> which gave the invite creator `75` karma".
                                format(member.id, invite_user.id))
 
+    level_role = discord.utils.get(channel.guild.roles, id=settings.level_role)
+    roles_role = discord.utils.get(channel.guild.roles, id=settings.roles_role)
+    groups_role = discord.utils.get(channel.guild.roles, id=settings.groups_role)
+    games_role = discord.utils.get(channel.guild.roles, id=settings.games_role)
+    restriction_role = discord.utils.get(channel.guild.roles, id=settings.restriction_role)
+    level1_role = discord.utils.get(channel.guild.roles, name="Level 1")
+
+    if level_role not in member.roles:
+        await member.add_roles(level_role, roles_role, groups_role, games_role, restriction_role, level1_role)
 
 @client.event
 async def on_connect():
@@ -179,7 +188,8 @@ async def on_ready():
         print("ISSUE: It's not recommended to have more than one server being hosted at the same time.")
 
     await client.change_presence(
-        activity=discord.Streaming(name=flair(users), url='https://twitch.tv/mehvix', twitch_name="Mehvix"))  # TODO add more presences
+        activity=discord.Streaming(name=flair(users), url='https://twitch.tv/mehvix',
+                                   twitch_name="Mehvix"))  # TODO add more presences
 
 
 @client.event
